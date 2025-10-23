@@ -1,6 +1,6 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
-import { comparisonRequestSchema, type ComparisonResult, type TruckAnalysis, type YearCostBreakdown } from "@shared/schema";
+import { comparisonRequestSchema, type ComparisonResult, type TruckAnalysis, type YearCostBreakdown, regionalIncentives } from "@shared/schema";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   
@@ -8,12 +8,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const data = comparisonRequestSchema.parse(req.body);
       
-      const { dieselTruck, electricTruck1, electricTruck2, timeframeYears } = data;
+      const { dieselTruck, electricTruck1, electricTruck2, timeframeYears, taxIncentiveRegion } = data;
 
-      // Calculate TCO for each truck
-      const dieselAnalysis = calculateTruckAnalysis(dieselTruck, timeframeYears);
-      const electric1Analysis = calculateTruckAnalysis(electricTruck1, timeframeYears);
-      const electric2Analysis = calculateTruckAnalysis(electricTruck2, timeframeYears);
+      // Get tax incentive amount for electric vehicles
+      const incentiveAmount = regionalIncentives[taxIncentiveRegion || "federal"].totalIncentive;
+
+      // Calculate TCO for each truck (apply incentives to electric trucks)
+      const dieselAnalysis = calculateTruckAnalysis(dieselTruck, timeframeYears, 0);
+      const electric1Analysis = calculateTruckAnalysis(electricTruck1, timeframeYears, incentiveAmount);
+      const electric2Analysis = calculateTruckAnalysis(electricTruck2, timeframeYears, incentiveAmount);
 
       // Calculate break-even points
       const dieselVsElectric1 = calculateBreakEven(
@@ -75,19 +78,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
 function calculateTruckAnalysis(
   truck: typeof import("@shared/schema").truckParametersSchema._type,
-  timeframeYears: number
+  timeframeYears: number,
+  taxIncentive: number = 0
 ): TruckAnalysis {
   const yearlyBreakdown: YearCostBreakdown[] = [];
   let cumulativeCost = 0;
 
+  // Effective purchase price after tax incentives (only for electric)
+  const effectivePurchasePrice = truck.purchasePrice - taxIncentive;
+
   // Calculate depreciation based on expected lifespan
-  // Assume 20% residual value after expected lifespan
+  // Assume 20% residual value after expected lifespan (based on original price, not after incentives)
   const totalDepreciation = truck.purchasePrice * 0.8;
   const annualDepreciation = totalDepreciation / truck.expectedLifespanYears;
 
   for (let year = 1; year <= timeframeYears; year++) {
-    // Purchase cost only in year 1
-    const purchaseCost = year === 1 ? truck.purchasePrice : 0;
+    // Purchase cost only in year 1 (after tax incentives)
+    const purchaseCost = year === 1 ? effectivePurchasePrice : 0;
 
     // Calculate fuel cost based on type
     let fuelCost: number;

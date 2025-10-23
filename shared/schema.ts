@@ -15,12 +15,17 @@ export const truckParametersSchema = z.object({
 
 export type TruckParameters = z.infer<typeof truckParametersSchema>;
 
+// Regional tax incentives and rebates
+export const taxIncentiveRegions = ["federal", "california", "texas", "new-york", "florida", "none"] as const;
+export type TaxIncentiveRegion = typeof taxIncentiveRegions[number];
+
 // Comparison request schema
 export const comparisonRequestSchema = z.object({
   dieselTruck: truckParametersSchema,
   electricTruck1: truckParametersSchema,
   electricTruck2: truckParametersSchema,
   timeframeYears: z.number().min(1).max(30),
+  taxIncentiveRegion: z.enum(taxIncentiveRegions).optional().default("federal"),
 });
 
 export type ComparisonRequest = z.infer<typeof comparisonRequestSchema>;
@@ -86,6 +91,60 @@ export const comparisonResultSchema = z.object({
 });
 
 export type ComparisonResult = z.infer<typeof comparisonResultSchema>;
+
+// Regional incentive data
+export interface RegionalIncentive {
+  region: string;
+  federalCredit: number;
+  stateCredit: number;
+  totalIncentive: number;
+  description: string;
+}
+
+export const regionalIncentives: Record<TaxIncentiveRegion, RegionalIncentive> = {
+  "federal": {
+    region: "Federal Only",
+    federalCredit: 7500,
+    stateCredit: 0,
+    totalIncentive: 7500,
+    description: "Federal Clean Vehicle Credit (up to $7,500 for new EVs meeting requirements)",
+  },
+  "california": {
+    region: "California",
+    federalCredit: 7500,
+    stateCredit: 2000,
+    totalIncentive: 9500,
+    description: "Federal credit + CA Clean Vehicle Rebate Project (CVRP)",
+  },
+  "texas": {
+    region: "Texas",
+    federalCredit: 7500,
+    stateCredit: 2500,
+    totalIncentive: 10000,
+    description: "Federal credit + TX Light-Duty Motor Vehicle Purchase or Lease Incentive",
+  },
+  "new-york": {
+    region: "New York",
+    federalCredit: 7500,
+    stateCredit: 2000,
+    totalIncentive: 9500,
+    description: "Federal credit + NY Drive Clean Rebate",
+  },
+  "florida": {
+    region: "Florida",
+    federalCredit: 7500,
+    stateCredit: 0,
+    totalIncentive: 7500,
+    description: "Federal credit only (no state-level EV incentives)",
+  },
+  "none": {
+    region: "No Incentives",
+    federalCredit: 0,
+    stateCredit: 0,
+    totalIncentive: 0,
+    description: "Calculate without tax incentives",
+  },
+};
 
 // Preset truck models
 export const presetTruckModels: Record<string, TruckParameters> = {

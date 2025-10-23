@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { TruckParametersCard } from "@/components/truck-parameters-card";
 import { TimeframeSelector } from "@/components/timeframe-selector";
+import { TaxIncentiveSelector } from "@/components/tax-incentive-selector";
 import { Button } from "@/components/ui/button";
 import { SummaryMetrics } from "@/components/summary-metrics";
 import { AmortizationChart } from "@/components/amortization-chart";
@@ -10,7 +11,7 @@ import { EnvironmentalImpactCard } from "@/components/environmental-impact-card"
 import { Calculator, RotateCcw } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
-import type { TruckParameters, ComparisonResult } from "@shared/schema";
+import type { TruckParameters, ComparisonResult, TaxIncentiveRegion } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
 
 const defaultDieselTruck: TruckParameters = {
@@ -54,6 +55,7 @@ export default function Home() {
   const [electricTruck1, setElectricTruck1] = useState<TruckParameters>(defaultElectricTruck1);
   const [electricTruck2, setElectricTruck2] = useState<TruckParameters>(defaultElectricTruck2);
   const [timeframeYears, setTimeframeYears] = useState(10);
+  const [taxIncentiveRegion, setTaxIncentiveRegion] = useState<TaxIncentiveRegion>("federal");
   const [result, setResult] = useState<ComparisonResult | null>(null);
   const { toast } = useToast();
 
@@ -64,6 +66,7 @@ export default function Home() {
         electricTruck1,
         electricTruck2,
         timeframeYears,
+        taxIncentiveRegion,
       });
       const data = await response.json();
       return data as ComparisonResult;
@@ -98,6 +101,7 @@ export default function Home() {
     setElectricTruck1(defaultElectricTruck1);
     setElectricTruck2(defaultElectricTruck2);
     setTimeframeYears(10);
+    setTaxIncentiveRegion("federal");
     setResult(null);
   };
 
@@ -146,18 +150,27 @@ export default function Home() {
 
         {/* Calculation Controls */}
         <section className="space-y-6">
-          <div className="bg-card border border-card-border rounded-md p-6 space-y-6">
-            <div>
-              <h3 className="text-lg font-medium mb-2">Analysis Timeframe</h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                Select the period for total cost of ownership analysis
-              </p>
-              <TimeframeSelector
-                value={timeframeYears}
-                onChange={setTimeframeYears}
-              />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="bg-card border border-card-border rounded-md p-6 space-y-4">
+              <div>
+                <h3 className="text-lg font-medium mb-2">Analysis Timeframe</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Select the period for total cost of ownership analysis
+                </p>
+                <TimeframeSelector
+                  value={timeframeYears}
+                  onChange={setTimeframeYears}
+                />
+              </div>
             </div>
 
+            <TaxIncentiveSelector
+              value={taxIncentiveRegion}
+              onChange={setTaxIncentiveRegion}
+            />
+          </div>
+
+          <div className="bg-card border border-card-border rounded-md p-6">
             <div className="flex flex-col sm:flex-row gap-3">
               <Button
                 onClick={handleCalculate}
