@@ -68,6 +68,11 @@ function calculateTruckAnalysis(
   const yearlyBreakdown: YearCostBreakdown[] = [];
   let cumulativeCost = 0;
 
+  // Calculate depreciation based on expected lifespan
+  // Assume 20% residual value after expected lifespan
+  const totalDepreciation = truck.purchasePrice * 0.8;
+  const annualDepreciation = totalDepreciation / truck.expectedLifespanYears;
+
   for (let year = 1; year <= timeframeYears; year++) {
     // Purchase cost only in year 1
     const purchaseCost = year === 1 ? truck.purchasePrice : 0;
@@ -86,8 +91,12 @@ function calculateTruckAnalysis(
 
     const maintenanceCost = truck.maintenanceCostAnnual;
     const insuranceCost = truck.insuranceCostAnnual;
+    
+    // Include annual depreciation cost in each year's total
+    // Only apply depreciation up to the expected lifespan
+    const depreciationCost = year <= truck.expectedLifespanYears ? annualDepreciation : 0;
 
-    const totalCost = purchaseCost + fuelCost + maintenanceCost + insuranceCost;
+    const totalCost = purchaseCost + fuelCost + maintenanceCost + insuranceCost + depreciationCost;
     cumulativeCost += totalCost;
 
     yearlyBreakdown.push({
@@ -96,6 +105,7 @@ function calculateTruckAnalysis(
       fuelCost,
       maintenanceCost,
       insuranceCost,
+      depreciationCost,
       totalCost,
       cumulativeCost,
     });
@@ -105,13 +115,16 @@ function calculateTruckAnalysis(
   const totalMaintenanceCost = yearlyBreakdown.reduce((sum, year) => sum + year.maintenanceCost, 0);
   const totalInsuranceCost = yearlyBreakdown.reduce((sum, year) => sum + year.insuranceCost, 0);
 
-  // Simple depreciation: assume 20% residual value after expected lifespan
-  const depreciation = truck.purchasePrice * 0.8;
+  // Calculate total depreciation from yearly breakdown
+  const depreciation = yearlyBreakdown.reduce((sum, year) => sum + year.depreciationCost, 0);
+
+  // Total cost of ownership is the final cumulative cost (which now includes depreciation)
+  const totalCostOfOwnership = cumulativeCost;
 
   return {
     name: truck.name,
     type: truck.type,
-    totalCostOfOwnership: cumulativeCost,
+    totalCostOfOwnership,
     yearlyBreakdown,
     totalFuelCost,
     totalMaintenanceCost,

@@ -64,7 +64,8 @@ export default function Home() {
         electricTruck2,
         timeframeYears,
       });
-      return response as ComparisonResult;
+      const data = await response.json();
+      return data as ComparisonResult;
     },
     onSuccess: (data) => {
       setResult(data);

@@ -4,6 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Truck, Zap } from "lucide-react";
 import type { TruckParameters } from "@shared/schema";
+import { useState } from "react";
 
 interface TruckParametersCardProps {
   truck: TruckParameters;
@@ -12,7 +13,28 @@ interface TruckParametersCardProps {
 }
 
 export function TruckParametersCard({ truck, onChange, truckIndex }: TruckParametersCardProps) {
+  const [errors, setErrors] = useState<Partial<Record<keyof TruckParameters, string>>>({});
+
   const updateField = <K extends keyof TruckParameters>(field: K, value: TruckParameters[K]) => {
+    // Clear error for this field
+    setErrors(prev => ({ ...prev, [field]: undefined }));
+    
+    // Validate the field
+    if (typeof value === 'number') {
+      if (isNaN(value) || value < 0) {
+        setErrors(prev => ({ ...prev, [field]: 'Must be a positive number' }));
+        return;
+      }
+      if (field === 'expectedLifespanYears' && (value < 1 || value > 30)) {
+        setErrors(prev => ({ ...prev, [field]: 'Must be between 1 and 30 years' }));
+        return;
+      }
+    }
+    if (typeof value === 'string' && field === 'name' && value.trim().length === 0) {
+      setErrors(prev => ({ ...prev, [field]: 'Name is required' }));
+      return;
+    }
+    
     onChange({ ...truck, [field]: value });
   };
 
@@ -50,6 +72,9 @@ export function TruckParametersCard({ truck, onChange, truckIndex }: TruckParame
             placeholder="Enter truck model"
             data-testid={`input-name-${truckIndex}`}
           />
+          {errors.name && (
+            <p className="text-xs text-destructive">{errors.name}</p>
+          )}
         </div>
 
         <div className="grid grid-cols-2 gap-4">
@@ -64,13 +89,16 @@ export function TruckParametersCard({ truck, onChange, truckIndex }: TruckParame
               <Input
                 id={`purchase-${truckIndex}`}
                 type="number"
-                value={truck.purchasePrice}
+                value={truck.purchasePrice || ''}
                 onChange={(e) => updateField("purchasePrice", parseFloat(e.target.value) || 0)}
                 className="pl-7"
                 min="0"
                 data-testid={`input-purchase-${truckIndex}`}
               />
             </div>
+            {errors.purchasePrice && (
+              <p className="text-xs text-destructive">{errors.purchasePrice}</p>
+            )}
           </div>
 
           <div className="space-y-2">
@@ -80,12 +108,15 @@ export function TruckParametersCard({ truck, onChange, truckIndex }: TruckParame
             <Input
               id={`mileage-${truckIndex}`}
               type="number"
-              value={truck.annualMileage}
+              value={truck.annualMileage || ''}
               onChange={(e) => updateField("annualMileage", parseFloat(e.target.value) || 0)}
               placeholder="25000"
               min="0"
               data-testid={`input-mileage-${truckIndex}`}
             />
+            {errors.annualMileage && (
+              <p className="text-xs text-destructive">{errors.annualMileage}</p>
+            )}
           </div>
         </div>
 
@@ -102,13 +133,16 @@ export function TruckParametersCard({ truck, onChange, truckIndex }: TruckParame
                 id={`fuel-${truckIndex}`}
                 type="number"
                 step="0.01"
-                value={truck.fuelCostPerUnit}
+                value={truck.fuelCostPerUnit || ''}
                 onChange={(e) => updateField("fuelCostPerUnit", parseFloat(e.target.value) || 0)}
                 className="pl-7"
                 min="0"
                 data-testid={`input-fuel-${truckIndex}`}
               />
             </div>
+            {errors.fuelCostPerUnit && (
+              <p className="text-xs text-destructive">{errors.fuelCostPerUnit}</p>
+            )}
           </div>
 
           <div className="space-y-2">
@@ -119,12 +153,15 @@ export function TruckParametersCard({ truck, onChange, truckIndex }: TruckParame
               id={`efficiency-${truckIndex}`}
               type="number"
               step="0.1"
-              value={truck.fuelEfficiency}
+              value={truck.fuelEfficiency || ''}
               onChange={(e) => updateField("fuelEfficiency", parseFloat(e.target.value) || 0)}
               placeholder={isDiesel ? "8" : "2.5"}
               min="0"
               data-testid={`input-efficiency-${truckIndex}`}
             />
+            {errors.fuelEfficiency && (
+              <p className="text-xs text-destructive">{errors.fuelEfficiency}</p>
+            )}
           </div>
         </div>
 
@@ -140,13 +177,16 @@ export function TruckParametersCard({ truck, onChange, truckIndex }: TruckParame
               <Input
                 id={`maintenance-${truckIndex}`}
                 type="number"
-                value={truck.maintenanceCostAnnual}
+                value={truck.maintenanceCostAnnual || ''}
                 onChange={(e) => updateField("maintenanceCostAnnual", parseFloat(e.target.value) || 0)}
                 className="pl-7"
                 min="0"
                 data-testid={`input-maintenance-${truckIndex}`}
               />
             </div>
+            {errors.maintenanceCostAnnual && (
+              <p className="text-xs text-destructive">{errors.maintenanceCostAnnual}</p>
+            )}
           </div>
 
           <div className="space-y-2">
@@ -160,13 +200,16 @@ export function TruckParametersCard({ truck, onChange, truckIndex }: TruckParame
               <Input
                 id={`insurance-${truckIndex}`}
                 type="number"
-                value={truck.insuranceCostAnnual}
+                value={truck.insuranceCostAnnual || ''}
                 onChange={(e) => updateField("insuranceCostAnnual", parseFloat(e.target.value) || 0)}
                 className="pl-7"
                 min="0"
                 data-testid={`input-insurance-${truckIndex}`}
               />
             </div>
+            {errors.insuranceCostAnnual && (
+              <p className="text-xs text-destructive">{errors.insuranceCostAnnual}</p>
+            )}
           </div>
         </div>
 
@@ -177,13 +220,16 @@ export function TruckParametersCard({ truck, onChange, truckIndex }: TruckParame
           <Input
             id={`lifespan-${truckIndex}`}
             type="number"
-            value={truck.expectedLifespanYears}
+            value={truck.expectedLifespanYears || ''}
             onChange={(e) => updateField("expectedLifespanYears", parseFloat(e.target.value) || 1)}
             placeholder="10"
             min="1"
             max="30"
             data-testid={`input-lifespan-${truckIndex}`}
           />
+          {errors.expectedLifespanYears && (
+            <p className="text-xs text-destructive">{errors.expectedLifespanYears}</p>
+          )}
         </div>
       </CardContent>
     </Card>

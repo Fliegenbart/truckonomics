@@ -14,8 +14,9 @@ export function CostBreakdownChart({ result }: CostBreakdownChartProps) {
         fuel: acc.fuel + year.fuelCost,
         maintenance: acc.maintenance + year.maintenanceCost,
         insurance: acc.insurance + year.insuranceCost,
+        depreciation: acc.depreciation + year.depreciationCost,
       }),
-      { purchase: 0, fuel: 0, maintenance: 0, insurance: 0 }
+      { purchase: 0, fuel: 0, maintenance: 0, insurance: 0, depreciation: 0 }
     );
     return totals;
   };
@@ -33,6 +34,7 @@ export function CostBreakdownChart({ result }: CostBreakdownChartProps) {
       Fuel: Math.round(dieselTotals.fuel),
       Maintenance: Math.round(dieselTotals.maintenance),
       Insurance: Math.round(dieselTotals.insurance),
+      Depreciation: Math.round(dieselTotals.depreciation),
     },
     {
       name: result.electric1Analysis.name.length > 15 
@@ -42,6 +44,7 @@ export function CostBreakdownChart({ result }: CostBreakdownChartProps) {
       Fuel: Math.round(electric1Totals.fuel),
       Maintenance: Math.round(electric1Totals.maintenance),
       Insurance: Math.round(electric1Totals.insurance),
+      Depreciation: Math.round(electric1Totals.depreciation),
     },
     {
       name: result.electric2Analysis.name.length > 15 
@@ -51,6 +54,7 @@ export function CostBreakdownChart({ result }: CostBreakdownChartProps) {
       Fuel: Math.round(electric2Totals.fuel),
       Maintenance: Math.round(electric2Totals.maintenance),
       Insurance: Math.round(electric2Totals.insurance),
+      Depreciation: Math.round(electric2Totals.depreciation),
     },
   ];
 
@@ -102,6 +106,7 @@ export function CostBreakdownChart({ result }: CostBreakdownChartProps) {
               <Bar dataKey="Fuel" stackId="a" fill="hsl(var(--chart-2))" />
               <Bar dataKey="Maintenance" stackId="a" fill="hsl(var(--chart-4))" />
               <Bar dataKey="Insurance" stackId="a" fill="hsl(var(--chart-5))" />
+              <Bar dataKey="Depreciation" stackId="a" fill="hsl(var(--chart-3))" />
             </BarChart>
           </ResponsiveContainer>
         </div>

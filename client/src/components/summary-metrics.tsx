@@ -7,6 +7,10 @@ interface SummaryMetricsProps {
 }
 
 export function SummaryMetrics({ result }: SummaryMetricsProps) {
+  if (!result || !result.electric1Analysis || !result.electric2Analysis || !result.dieselAnalysis) {
+    return null;
+  }
+
   const bestElectric = result.bestElectricOption === "electric1" 
     ? result.electric1Analysis 
     : result.electric2Analysis;
@@ -25,7 +29,7 @@ export function SummaryMetrics({ result }: SummaryMetricsProps) {
   };
 
   const formatBreakEven = () => {
-    if (bestBreakEven.breakEvenYear === null) {
+    if (!bestBreakEven || bestBreakEven.breakEvenYear === null) {
       return "Not within timeframe";
     }
     if (bestBreakEven.breakEvenMonth) {

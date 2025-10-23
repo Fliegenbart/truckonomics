@@ -32,6 +32,7 @@ export const yearCostBreakdownSchema = z.object({
   fuelCost: z.number(),
   maintenanceCost: z.number(),
   insuranceCost: z.number(),
+  depreciationCost: z.number(),
   totalCost: z.number(),
   cumulativeCost: z.number(),
 });
