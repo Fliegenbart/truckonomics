@@ -38,8 +38,12 @@ Preferred communication style: Simple, everyday language.
 
 **Runtime**: Node.js with Express.js server framework.
 
-**API Design**: RESTful API with a single primary endpoint:
+**API Design**: RESTful API with calculation and persistence endpoints:
 - `POST /api/calculate-tco`: Accepts truck parameters and timeframe, returns comprehensive TCO analysis
+- `GET /api/scenarios`: Retrieve all saved scenarios
+- `POST /api/scenarios`: Save new scenario configuration
+- `PATCH /api/scenarios/:id`: Update existing scenario
+- `DELETE /api/scenarios/:id`: Delete saved scenario
 
 **Calculation Engine**: Server-side TypeScript functions that:
 - Calculate yearly cost breakdowns (fuel, maintenance, insurance)
@@ -47,7 +51,7 @@ Preferred communication style: Simple, everyday language.
 - Determine break-even points between diesel and electric options
 - Identify optimal electric truck choice based on total cost
 
-**Data Flow**: Stateless request/response model. No session management or persistent storage required as calculations are performed on-demand based on user inputs.
+**Data Flow**: Hybrid model - TCO calculations are stateless (performed on-demand), while scenario configurations can be persisted to database for later retrieval and comparison. No session management or user authentication required.
 
 **Validation**: Zod schemas shared between client and server for type-safe data validation. Truck parameters validated for:
 - Positive numeric values for costs and mileage
@@ -58,11 +62,27 @@ Preferred communication style: Simple, everyday language.
 
 ### Data Storage Solutions
 
-**Storage Architecture**: No persistent database required. The application is completely stateless.
+**Storage Architecture**: PostgreSQL database via Neon serverless with Drizzle ORM for scenario persistence.
 
-**Rationale**: TCO calculations are deterministic based on input parameters. There's no need to store user data, calculation history, or session state. This simplifies deployment and eliminates database overhead.
+**Database Tables**:
+- `scenarios`: Stores saved truck comparison configurations
+  - id (serial primary key)
+  - name (text)
+  - dieselTruck, electricTruck1, electricTruck2 (JSONB)
+  - timeframeYears (integer)
+  - taxIncentiveRegion (text)
+  - createdAt, updatedAt (timestamps)
 
-**Schema Definition**: Drizzle ORM configuration exists for potential future database integration (PostgreSQL via Neon), but is not currently utilized. The schema file defines TypeScript types using Zod for runtime validation.
+**API Endpoints**:
+- `GET /api/scenarios` - List all saved scenarios
+- `GET /api/scenarios/:id` - Retrieve specific scenario
+- `POST /api/scenarios` - Save new scenario
+- `PATCH /api/scenarios/:id` - Update scenario
+- `DELETE /api/scenarios/:id` - Delete scenario
+
+**Storage Interface**: DatabaseStorage class implements IStorage interface providing CRUD operations for scenarios.
+
+**Rationale**: While TCO calculations are stateless, users requested the ability to save and compare multiple configurations over time. JSONB columns store truck parameters flexibly while timestamps track scenario modifications.
 
 ### Authentication and Authorization
 
@@ -73,9 +93,10 @@ Preferred communication style: Simple, everyday language.
 ### External Dependencies
 
 **Database**: 
-- Drizzle ORM configured for PostgreSQL (via `@neondatabase/serverless`)
-- Connection string expected via `DATABASE_URL` environment variable
-- Currently unused but infrastructure prepared for future features
+- Drizzle ORM with PostgreSQL via `@neondatabase/serverless`
+- Neon serverless connection with WebSocket support
+- Connection string via `DATABASE_URL` environment variable
+- Active scenario persistence with CRUD operations
 
 **UI Libraries**:
 - Radix UI primitives for accessible component foundations
