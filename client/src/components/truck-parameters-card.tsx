@@ -2,8 +2,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Truck, Zap } from "lucide-react";
 import type { TruckParameters } from "@shared/schema";
+import { presetTruckModels } from "@shared/schema";
 import { useState } from "react";
 
 interface TruckParametersCardProps {
@@ -40,6 +42,19 @@ export function TruckParametersCard({ truck, onChange, truckIndex }: TruckParame
 
   const isDiesel = truck.type === "diesel";
 
+  const handlePresetSelect = (presetId: string) => {
+    if (presetId === "custom") return;
+    const preset = presetTruckModels[presetId];
+    if (preset) {
+      onChange(preset);
+      setErrors({});
+    }
+  };
+
+  const dieselPresets = Object.entries(presetTruckModels).filter(([, model]) => model.type === "diesel");
+  const electricPresets = Object.entries(presetTruckModels).filter(([, model]) => model.type === "electric");
+  const availablePresets = isDiesel ? dieselPresets : electricPresets;
+
   return (
     <Card>
       <CardHeader className="space-y-3 pb-4">
@@ -61,6 +76,25 @@ export function TruckParametersCard({ truck, onChange, truckIndex }: TruckParame
       </CardHeader>
 
       <CardContent className="space-y-4">
+        <div className="space-y-2">
+          <Label htmlFor={`preset-${truckIndex}`} className="text-xs uppercase tracking-wider font-medium">
+            Preset Model
+          </Label>
+          <Select onValueChange={handlePresetSelect} data-testid={`select-preset-${truckIndex}`}>
+            <SelectTrigger id={`preset-${truckIndex}`}>
+              <SelectValue placeholder="Select a preset or enter custom" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="custom">Custom Configuration</SelectItem>
+              {availablePresets.map(([id, model]) => (
+                <SelectItem key={id} value={id}>
+                  {model.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
         <div className="space-y-2">
           <Label htmlFor={`name-${truckIndex}`} className="text-xs uppercase tracking-wider font-medium">
             Model Name

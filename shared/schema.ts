@@ -77,3 +77,95 @@ export const comparisonResultSchema = z.object({
 });
 
 export type ComparisonResult = z.infer<typeof comparisonResultSchema>;
+
+// Preset truck models
+export const presetTruckModels: Record<string, TruckParameters> = {
+  "ford-f150-diesel": {
+    name: "Ford F-150 PowerStroke Diesel",
+    type: "diesel",
+    purchasePrice: 68000,
+    annualMileage: 25000,
+    fuelCostPerUnit: 4.5,
+    maintenanceCostAnnual: 7500,
+    insuranceCostAnnual: 3200,
+    expectedLifespanYears: 12,
+    fuelEfficiency: 24, // Combined MPG
+  },
+  "ram-2500-diesel": {
+    name: "RAM 2500 Cummins Diesel",
+    type: "diesel",
+    purchasePrice: 75000,
+    annualMileage: 30000,
+    fuelCostPerUnit: 4.5,
+    maintenanceCostAnnual: 8500,
+    insuranceCostAnnual: 3800,
+    expectedLifespanYears: 15,
+    fuelEfficiency: 20, // Combined MPG
+  },
+  "chevy-silverado-diesel": {
+    name: "Chevy Silverado 3500HD Duramax",
+    type: "diesel",
+    purchasePrice: 85000,
+    annualMileage: 25000,
+    fuelCostPerUnit: 4.5,
+    maintenanceCostAnnual: 8000,
+    insuranceCostAnnual: 3500,
+    expectedLifespanYears: 10,
+    fuelEfficiency: 18, // Combined MPG
+  },
+  "ford-f150-lightning": {
+    name: "Ford F-150 Lightning",
+    type: "electric",
+    purchasePrice: 62000,
+    annualMileage: 25000,
+    fuelCostPerUnit: 0.13,
+    maintenanceCostAnnual: 2800,
+    insuranceCostAnnual: 2900,
+    expectedLifespanYears: 12,
+    fuelEfficiency: 49, // kWh per 100 miles (EPA: 70 MPGe combined)
+  },
+  "rivian-r1t": {
+    name: "Rivian R1T",
+    type: "electric",
+    purchasePrice: 73000,
+    annualMileage: 25000,
+    fuelCostPerUnit: 0.13,
+    maintenanceCostAnnual: 2500,
+    insuranceCostAnnual: 3200,
+    expectedLifespanYears: 12,
+    fuelEfficiency: 51, // kWh per 100 miles (EPA: dual motor)
+  },
+  "tesla-cybertruck": {
+    name: "Tesla Cybertruck",
+    type: "electric",
+    purchasePrice: 80000,
+    annualMileage: 25000,
+    fuelCostPerUnit: 0.13,
+    maintenanceCostAnnual: 2200,
+    insuranceCostAnnual: 3500,
+    expectedLifespanYears: 15,
+    fuelEfficiency: 56, // kWh per 100 miles (dual motor AWD)
+  },
+  "chevy-silverado-ev": {
+    name: "Chevy Silverado EV",
+    type: "electric",
+    purchasePrice: 96000,
+    annualMileage: 25000,
+    fuelCostPerUnit: 0.13,
+    maintenanceCostAnnual: 3000,
+    insuranceCostAnnual: 3300,
+    expectedLifespanYears: 12,
+    fuelEfficiency: 60, // kWh per 100 miles (RST trim)
+  },
+  "gmc-hummer-ev": {
+    name: "GMC Hummer EV Pickup",
+    type: "electric",
+    purchasePrice: 110000,
+    annualMileage: 20000,
+    fuelCostPerUnit: 0.13,
+    maintenanceCostAnnual: 3500,
+    insuranceCostAnnual: 4200,
+    expectedLifespanYears: 12,
+    fuelEfficiency: 70, // kWh per 100 miles (heavier vehicle, EPA data)
+  },
+};
