@@ -1,6 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
-import { comparisonRequestSchema, type ComparisonResult, type TruckAnalysis, type YearCostBreakdown, regionalIncentives } from "@shared/schema";
+import { comparisonRequestSchema, type ComparisonResult, type TruckAnalysis, type YearCostBreakdown, regionalIncentives, insertScenarioSchema } from "@shared/schema";
+import { storage } from "./storage";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   
@@ -69,6 +70,94 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("TCO calculation error:", error);
       res.status(400).json({ error: "Invalid request data" });
+    }
+  });
+
+  // Scenario management routes
+  
+  // Get all saved scenarios
+  app.get("/api/scenarios", async (_req, res) => {
+    try {
+      const scenarios = await storage.getAllScenarios();
+      res.json(scenarios);
+    } catch (error) {
+      console.error("Error fetching scenarios:", error);
+      res.status(500).json({ error: "Failed to fetch scenarios" });
+    }
+  });
+
+  // Get a specific scenario
+  app.get("/api/scenarios/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid scenario ID" });
+      }
+      
+      const scenario = await storage.getScenario(id);
+      if (!scenario) {
+        return res.status(404).json({ error: "Scenario not found" });
+      }
+      
+      res.json(scenario);
+    } catch (error) {
+      console.error("Error fetching scenario:", error);
+      res.status(500).json({ error: "Failed to fetch scenario" });
+    }
+  });
+
+  // Create a new scenario
+  app.post("/api/scenarios", async (req, res) => {
+    try {
+      const data = insertScenarioSchema.parse(req.body);
+      const scenario = await storage.createScenario(data);
+      res.status(201).json(scenario);
+    } catch (error) {
+      console.error("Error creating scenario:", error);
+      res.status(400).json({ error: "Invalid scenario data" });
+    }
+  });
+
+  // Update a scenario
+  app.patch("/api/scenarios/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid scenario ID" });
+      }
+      
+      const data = insertScenarioSchema.partial().parse(req.body);
+      const scenario = await storage.updateScenario(id, data);
+      
+      if (!scenario) {
+        return res.status(404).json({ error: "Scenario not found" });
+      }
+      
+      res.json(scenario);
+    } catch (error) {
+      console.error("Error updating scenario:", error);
+      res.status(400).json({ error: "Invalid scenario data" });
+    }
+  });
+
+  // Delete a scenario
+  app.delete("/api/scenarios/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid scenario ID" });
+      }
+      
+      const success = await storage.deleteScenario(id);
+      
+      if (!success) {
+        return res.status(404).json({ error: "Scenario not found" });
+      }
+      
+      res.status(204).send();
+    } catch (error) {
+      console.error("Error deleting scenario:", error);
+      res.status(500).json({ error: "Failed to delete scenario" });
     }
   });
 

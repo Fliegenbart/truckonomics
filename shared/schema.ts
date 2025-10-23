@@ -1,4 +1,6 @@
 import { z } from "zod";
+import { pgTable, serial, integer, text, jsonb, timestamp } from "drizzle-orm/pg-core";
+import { createInsertSchema } from "drizzle-zod";
 
 // Truck parameters schema
 export const truckParametersSchema = z.object({
@@ -237,3 +239,26 @@ export const presetTruckModels: Record<string, TruckParameters> = {
     fuelEfficiency: 70, // kWh per 100 miles (heavier vehicle, EPA data)
   },
 };
+
+// Database table: Saved scenarios
+export const scenarios = pgTable("scenarios", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  dieselTruck: jsonb("diesel_truck").notNull().$type<TruckParameters>(),
+  electricTruck1: jsonb("electric_truck_1").notNull().$type<TruckParameters>(),
+  electricTruck2: jsonb("electric_truck_2").notNull().$type<TruckParameters>(),
+  timeframeYears: integer("timeframe_years").notNull(),
+  taxIncentiveRegion: text("tax_incentive_region").notNull().$type<TaxIncentiveRegion>(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+// Insert and select schemas for scenarios
+export const insertScenarioSchema = createInsertSchema(scenarios).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type InsertScenario = z.infer<typeof insertScenarioSchema>;
+export type Scenario = typeof scenarios.$inferSelect;

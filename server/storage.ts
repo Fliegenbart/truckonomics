@@ -1,15 +1,59 @@
-// No persistent storage needed for this application
-// All calculations are performed on-demand
+import { scenarios, type Scenario, type InsertScenario } from "@shared/schema";
+import { db } from "./db";
+import { eq, desc } from "drizzle-orm";
 
+// Storage interface for scenario persistence
 export interface IStorage {
-  // This application doesn't require data persistence
-  // All TCO calculations are stateless
+  // Scenario management
+  getAllScenarios(): Promise<Scenario[]>;
+  getScenario(id: number): Promise<Scenario | undefined>;
+  createScenario(scenario: InsertScenario): Promise<Scenario>;
+  updateScenario(id: number, scenario: Partial<InsertScenario>): Promise<Scenario | undefined>;
+  deleteScenario(id: number): Promise<boolean>;
 }
 
-export class MemStorage implements IStorage {
-  constructor() {
-    // No state needed for stateless calculations
+export class DatabaseStorage implements IStorage {
+  async getAllScenarios(): Promise<Scenario[]> {
+    return await db
+      .select()
+      .from(scenarios)
+      .orderBy(desc(scenarios.createdAt));
+  }
+
+  async getScenario(id: number): Promise<Scenario | undefined> {
+    const [scenario] = await db
+      .select()
+      .from(scenarios)
+      .where(eq(scenarios.id, id));
+    return scenario || undefined;
+  }
+
+  async createScenario(insertScenario: InsertScenario): Promise<Scenario> {
+    const [scenario] = await db
+      .insert(scenarios)
+      .values(insertScenario)
+      .returning();
+    return scenario;
+  }
+
+  async updateScenario(id: number, updateData: Partial<InsertScenario>): Promise<Scenario | undefined> {
+    const [scenario] = await db
+      .update(scenarios)
+      .set({
+        ...updateData,
+        updatedAt: new Date(),
+      } as any)
+      .where(eq(scenarios.id, id))
+      .returning();
+    return scenario || undefined;
+  }
+
+  async deleteScenario(id: number): Promise<boolean> {
+    const result = await db
+      .delete(scenarios)
+      .where(eq(scenarios.id, id));
+    return result.rowCount ? result.rowCount > 0 : false;
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();
