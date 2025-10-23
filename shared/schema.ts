@@ -49,6 +49,11 @@ export const truckAnalysisSchema = z.object({
   totalMaintenanceCost: z.number(),
   totalInsuranceCost: z.number(),
   depreciation: z.number(),
+  environmentalImpact: z.object({
+    totalCO2Emissions: z.number(), // Total CO2 in pounds over timeframe
+    totalFuelConsumed: z.number(), // Gallons for diesel, kWh for electric
+    fuelUnit: z.enum(["gallons", "kWh"]),
+  }),
 });
 
 export type TruckAnalysis = z.infer<typeof truckAnalysisSchema>;
@@ -74,6 +79,10 @@ export const comparisonResultSchema = z.object({
   bestElectricOption: z.enum(["electric1", "electric2"]),
   maxSavings: z.number(),
   timeframeYears: z.number(),
+  environmentalComparison: z.object({
+    bestElectricCO2Saved: z.number(), // Total CO2 saved by best electric option vs diesel
+    bestElectricName: z.string(),
+  }),
 });
 
 export type ComparisonResult = z.infer<typeof comparisonResultSchema>;

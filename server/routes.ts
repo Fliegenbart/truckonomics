@@ -39,6 +39,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const maxSavings = dieselAnalysis.totalCostOfOwnership - bestElectricTCO;
 
+      // Calculate environmental comparison
+      const bestElectricAnalysis = bestElectricOption === "electric1" 
+        ? electric1Analysis 
+        : electric2Analysis;
+      
+      const bestElectricCO2Saved = dieselAnalysis.environmentalImpact.totalCO2Emissions - 
+        bestElectricAnalysis.environmentalImpact.totalCO2Emissions;
+
       const result: ComparisonResult = {
         dieselAnalysis,
         electric1Analysis,
@@ -48,6 +56,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         bestElectricOption,
         maxSavings,
         timeframeYears,
+        environmentalComparison: {
+          bestElectricCO2Saved,
+          bestElectricName: bestElectricAnalysis.name,
+        },
       };
 
       res.json(result);
@@ -121,6 +133,25 @@ function calculateTruckAnalysis(
   // Total cost of ownership is the final cumulative cost (which now includes depreciation)
   const totalCostOfOwnership = cumulativeCost;
 
+  // Calculate environmental impact
+  let totalFuelConsumed: number;
+  let totalCO2Emissions: number;
+  let fuelUnit: "gallons" | "kWh";
+
+  if (truck.type === "diesel") {
+    // Diesel: gallons consumed and CO2 emissions
+    totalFuelConsumed = (truck.annualMileage / truck.fuelEfficiency) * timeframeYears;
+    // Diesel emits approximately 22 lbs of CO2 per gallon burned
+    totalCO2Emissions = totalFuelConsumed * 22;
+    fuelUnit = "gallons";
+  } else {
+    // Electric: kWh consumed and CO2 emissions from grid
+    totalFuelConsumed = ((truck.annualMileage / 100) * truck.fuelEfficiency) * timeframeYears;
+    // US grid average: approximately 0.85 lbs CO2 per kWh (varies by region)
+    totalCO2Emissions = totalFuelConsumed * 0.85;
+    fuelUnit = "kWh";
+  }
+
   return {
     name: truck.name,
     type: truck.type,
@@ -130,6 +161,11 @@ function calculateTruckAnalysis(
     totalMaintenanceCost,
     totalInsuranceCost,
     depreciation,
+    environmentalImpact: {
+      totalCO2Emissions,
+      totalFuelConsumed,
+      fuelUnit,
+    },
   };
 }
 

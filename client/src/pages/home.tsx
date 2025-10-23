@@ -6,6 +6,7 @@ import { SummaryMetrics } from "@/components/summary-metrics";
 import { AmortizationChart } from "@/components/amortization-chart";
 import { CostBreakdownChart } from "@/components/cost-breakdown-chart";
 import { DetailedTCOTable } from "@/components/detailed-tco-table";
+import { EnvironmentalImpactCard } from "@/components/environmental-impact-card";
 import { Calculator, RotateCcw } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
@@ -200,6 +201,8 @@ export default function Home() {
               <AmortizationChart result={result} />
               <CostBreakdownChart result={result} />
             </div>
+
+            <EnvironmentalImpactCard result={result} />
 
             <DetailedTCOTable result={result} />
           </section>
