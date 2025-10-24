@@ -1,8 +1,10 @@
-# Truck TCO Calculator
+# Truckonomics - Heavy-Duty Truck TCO Calculator
 
 ## Overview
 
-A web-based Total Cost of Ownership (TCO) calculator designed to compare diesel trucks against electric truck alternatives. The application performs stateless calculations to help users make informed financial decisions about truck purchases by analyzing purchase price, fuel costs, maintenance, insurance, and break-even points over customizable timeframes (3-20 years).
+A web-based Total Cost of Ownership (TCO) calculator designed to compare Class 8 heavy-duty diesel semi-trucks against electric truck alternatives. The application performs stateless calculations to help users make informed financial decisions about commercial truck purchases by analyzing purchase price, fuel costs, maintenance, insurance, and break-even points over customizable timeframes (3-20 years).
+
+**Branding**: The application is branded as "Truckonomics" with a hero-style header featuring a professional Class 8 semi-truck image and modern Apple-inspired design aesthetics.
 
 ## User Preferences
 

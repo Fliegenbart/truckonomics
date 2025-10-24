@@ -13,6 +13,7 @@ import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import type { TruckParameters, ComparisonResult, TaxIncentiveRegion } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
+import truckHeaderImage from "@assets/stock_images/modern_class_8_semi-_a48fa740.jpg";
 
 const defaultDieselTruck: TruckParameters = {
   name: "Diesel Semi-Truck",
@@ -107,24 +108,41 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-card border-b border-card-border backdrop-blur-lg bg-opacity-80">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="p-3 bg-primary/10 rounded-xl">
-              <Truck className="h-8 w-8 text-primary" />
+      {/* Hero Header with Truck Image */}
+      <header className="relative overflow-hidden border-b border-card-border">
+        <div className="absolute inset-0">
+          <img 
+            src={truckHeaderImage} 
+            alt="Class 8 Semi-Truck" 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/90 to-background/70" />
+        </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="p-3 bg-primary/10 rounded-xl backdrop-blur-sm border border-primary/20">
+              <Truck className="h-10 w-10 text-primary" />
             </div>
             <div>
-              <h1 className="text-xl sm:text-2xl font-bold tracking-tight" data-testid="text-app-title">
-                Heavy-Duty Truck TCO
+              <h1 className="text-4xl sm:text-5xl font-bold tracking-tight" data-testid="text-app-title">
+                Truckonomics
               </h1>
-              <p className="text-sm text-muted-foreground hidden sm:block">
-                Compare Class 8 diesel vs electric semi-trucks
+              <p className="text-lg sm:text-xl text-muted-foreground mt-1">
+                Total Cost of Ownership Calculator
               </p>
             </div>
           </div>
+          <p className="text-base text-foreground/80 max-w-2xl">
+            Compare Class 8 diesel and electric semi-trucks with comprehensive TCO analysis including purchase price, fuel costs, maintenance, insurance, and environmental impact.
+          </p>
         </div>
       </header>
+
+      {/* Sticky Navigation Bar */}
+      <div className="sticky top-0 z-50 bg-card/95 backdrop-blur-lg border-b border-card-border">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
+        </div>
+      </div>
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
