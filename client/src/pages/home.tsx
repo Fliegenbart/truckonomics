@@ -8,46 +8,46 @@ import { AmortizationChart } from "@/components/amortization-chart";
 import { CostBreakdownChart } from "@/components/cost-breakdown-chart";
 import { DetailedTCOTable } from "@/components/detailed-tco-table";
 import { EnvironmentalImpactCard } from "@/components/environmental-impact-card";
-import { Calculator, RotateCcw } from "lucide-react";
+import { Calculator, RotateCcw, Truck } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import type { TruckParameters, ComparisonResult, TaxIncentiveRegion } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
 
 const defaultDieselTruck: TruckParameters = {
-  name: "Diesel Truck",
+  name: "Diesel Semi-Truck",
   type: "diesel",
-  purchasePrice: 85000,
-  annualMileage: 25000,
-  fuelCostPerUnit: 4.5,
-  maintenanceCostAnnual: 8000,
-  insuranceCostAnnual: 3500,
-  expectedLifespanYears: 10,
-  fuelEfficiency: 8,
+  purchasePrice: 165000,
+  annualMileage: 120000,
+  fuelCostPerUnit: 3.8,
+  maintenanceCostAnnual: 15000,
+  insuranceCostAnnual: 12000,
+  expectedLifespanYears: 12,
+  fuelEfficiency: 6.5,
 };
 
 const defaultElectricTruck1: TruckParameters = {
-  name: "Electric Truck Model 1",
+  name: "Electric Semi-Truck 1",
   type: "electric",
-  purchasePrice: 125000,
-  annualMileage: 25000,
+  purchasePrice: 180000,
+  annualMileage: 120000,
   fuelCostPerUnit: 0.13,
-  maintenanceCostAnnual: 3500,
-  insuranceCostAnnual: 3000,
-  expectedLifespanYears: 10,
-  fuelEfficiency: 2.5,
+  maintenanceCostAnnual: 8000,
+  insuranceCostAnnual: 11000,
+  expectedLifespanYears: 15,
+  fuelEfficiency: 170,
 };
 
 const defaultElectricTruck2: TruckParameters = {
-  name: "Electric Truck Model 2",
+  name: "Electric Semi-Truck 2",
   type: "electric",
-  purchasePrice: 140000,
-  annualMileage: 25000,
+  purchasePrice: 350000,
+  annualMileage: 100000,
   fuelCostPerUnit: 0.13,
-  maintenanceCostAnnual: 3000,
-  insuranceCostAnnual: 2800,
-  expectedLifespanYears: 10,
-  fuelEfficiency: 2.2,
+  maintenanceCostAnnual: 9000,
+  insuranceCostAnnual: 12000,
+  expectedLifespanYears: 12,
+  fuelEfficiency: 180,
 };
 
 export default function Home() {
@@ -108,11 +108,21 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-card border-b border-card-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <h1 className="text-xl sm:text-2xl font-semibold tracking-tight" data-testid="text-app-title">
-            Truck TCO Calculator
-          </h1>
+      <header className="sticky top-0 z-50 bg-card border-b border-card-border backdrop-blur-lg bg-opacity-80">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div className="p-3 bg-primary/10 rounded-xl">
+              <Truck className="h-8 w-8 text-primary" />
+            </div>
+            <div>
+              <h1 className="text-xl sm:text-2xl font-bold tracking-tight" data-testid="text-app-title">
+                Heavy-Duty Truck TCO
+              </h1>
+              <p className="text-sm text-muted-foreground hidden sm:block">
+                Compare Class 8 diesel vs electric semi-trucks
+              </p>
+            </div>
+          </div>
         </div>
       </header>
 
@@ -122,10 +132,10 @@ export default function Home() {
         <section className="space-y-6">
           <div>
             <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight mb-2">
-              Vehicle Parameters
+              Truck Specifications
             </h2>
             <p className="text-muted-foreground text-sm sm:text-base">
-              Enter the specifications and costs for each truck to compare
+              Configure your Class 8 heavy-duty trucks for comparison
             </p>
           </div>
 

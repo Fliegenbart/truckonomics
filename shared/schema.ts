@@ -148,95 +148,95 @@ export const regionalIncentives: Record<TaxIncentiveRegion, RegionalIncentive> =
   },
 };
 
-// Preset truck models
+// Preset truck models - Class 8 Heavy-Duty Trucks (40-ton)
 export const presetTruckModels: Record<string, TruckParameters> = {
-  "ford-f150-diesel": {
-    name: "Ford F-150 PowerStroke Diesel",
+  "freightliner-cascadia": {
+    name: "Freightliner Cascadia",
     type: "diesel",
-    purchasePrice: 68000,
-    annualMileage: 25000,
-    fuelCostPerUnit: 4.5,
-    maintenanceCostAnnual: 7500,
-    insuranceCostAnnual: 3200,
+    purchasePrice: 165000,
+    annualMileage: 120000,
+    fuelCostPerUnit: 3.8,
+    maintenanceCostAnnual: 15000,
+    insuranceCostAnnual: 12000,
     expectedLifespanYears: 12,
-    fuelEfficiency: 24, // Combined MPG
+    fuelEfficiency: 6.5, // MPG (diesel)
   },
-  "ram-2500-diesel": {
-    name: "RAM 2500 Cummins Diesel",
+  "volvo-vnl": {
+    name: "Volvo VNL 760",
     type: "diesel",
-    purchasePrice: 75000,
-    annualMileage: 30000,
-    fuelCostPerUnit: 4.5,
-    maintenanceCostAnnual: 8500,
-    insuranceCostAnnual: 3800,
-    expectedLifespanYears: 15,
-    fuelEfficiency: 20, // Combined MPG
+    purchasePrice: 175000,
+    annualMileage: 110000,
+    fuelCostPerUnit: 3.8,
+    maintenanceCostAnnual: 16000,
+    insuranceCostAnnual: 13000,
+    expectedLifespanYears: 12,
+    fuelEfficiency: 7.0, // MPG (diesel, aerodynamic)
   },
-  "chevy-silverado-diesel": {
-    name: "Chevy Silverado 3500HD Duramax",
+  "kenworth-t680": {
+    name: "Kenworth T680",
     type: "diesel",
-    purchasePrice: 85000,
-    annualMileage: 25000,
-    fuelCostPerUnit: 4.5,
+    purchasePrice: 170000,
+    annualMileage: 115000,
+    fuelCostPerUnit: 3.8,
+    maintenanceCostAnnual: 15500,
+    insuranceCostAnnual: 12500,
+    expectedLifespanYears: 12,
+    fuelEfficiency: 6.8, // MPG (diesel)
+  },
+  "tesla-semi": {
+    name: "Tesla Semi",
+    type: "electric",
+    purchasePrice: 180000,
+    annualMileage: 120000,
+    fuelCostPerUnit: 0.13,
     maintenanceCostAnnual: 8000,
-    insuranceCostAnnual: 3500,
-    expectedLifespanYears: 10,
-    fuelEfficiency: 18, // Combined MPG
-  },
-  "ford-f150-lightning": {
-    name: "Ford F-150 Lightning",
-    type: "electric",
-    purchasePrice: 62000,
-    annualMileage: 25000,
-    fuelCostPerUnit: 0.13,
-    maintenanceCostAnnual: 2800,
-    insuranceCostAnnual: 2900,
-    expectedLifespanYears: 12,
-    fuelEfficiency: 49, // kWh per 100 miles (EPA: 70 MPGe combined)
-  },
-  "rivian-r1t": {
-    name: "Rivian R1T",
-    type: "electric",
-    purchasePrice: 73000,
-    annualMileage: 25000,
-    fuelCostPerUnit: 0.13,
-    maintenanceCostAnnual: 2500,
-    insuranceCostAnnual: 3200,
-    expectedLifespanYears: 12,
-    fuelEfficiency: 51, // kWh per 100 miles (EPA: dual motor)
-  },
-  "tesla-cybertruck": {
-    name: "Tesla Cybertruck",
-    type: "electric",
-    purchasePrice: 80000,
-    annualMileage: 25000,
-    fuelCostPerUnit: 0.13,
-    maintenanceCostAnnual: 2200,
-    insuranceCostAnnual: 3500,
+    insuranceCostAnnual: 11000,
     expectedLifespanYears: 15,
-    fuelEfficiency: 56, // kWh per 100 miles (dual motor AWD)
+    fuelEfficiency: 170, // kWh per 100 miles (~1.7 kWh/mile)
   },
-  "chevy-silverado-ev": {
-    name: "Chevy Silverado EV",
+  "freightliner-ecascadia": {
+    name: "Freightliner eCascadia",
     type: "electric",
-    purchasePrice: 96000,
-    annualMileage: 25000,
+    purchasePrice: 350000,
+    annualMileage: 100000,
     fuelCostPerUnit: 0.13,
-    maintenanceCostAnnual: 3000,
-    insuranceCostAnnual: 3300,
+    maintenanceCostAnnual: 9000,
+    insuranceCostAnnual: 12000,
     expectedLifespanYears: 12,
-    fuelEfficiency: 60, // kWh per 100 miles (RST trim)
+    fuelEfficiency: 180, // kWh per 100 miles
   },
-  "gmc-hummer-ev": {
-    name: "GMC Hummer EV Pickup",
+  "volvo-vnr-electric": {
+    name: "Volvo VNR Electric",
     type: "electric",
-    purchasePrice: 110000,
-    annualMileage: 20000,
+    purchasePrice: 330000,
+    annualMileage: 100000,
     fuelCostPerUnit: 0.13,
-    maintenanceCostAnnual: 3500,
-    insuranceCostAnnual: 4200,
+    maintenanceCostAnnual: 8500,
+    insuranceCostAnnual: 11500,
     expectedLifespanYears: 12,
-    fuelEfficiency: 70, // kWh per 100 miles (heavier vehicle, EPA data)
+    fuelEfficiency: 175, // kWh per 100 miles
+  },
+  "nikola-tre": {
+    name: "Nikola Tre BEV",
+    type: "electric",
+    purchasePrice: 380000,
+    annualMileage: 95000,
+    fuelCostPerUnit: 0.13,
+    maintenanceCostAnnual: 9500,
+    insuranceCostAnnual: 13000,
+    expectedLifespanYears: 12,
+    fuelEfficiency: 185, // kWh per 100 miles
+  },
+  "peterbilt-579ev": {
+    name: "Peterbilt 579EV",
+    type: "electric",
+    purchasePrice: 340000,
+    annualMileage: 100000,
+    fuelCostPerUnit: 0.13,
+    maintenanceCostAnnual: 8800,
+    insuranceCostAnnual: 12000,
+    expectedLifespanYears: 12,
+    fuelEfficiency: 178, // kWh per 100 miles
   },
 };
 
