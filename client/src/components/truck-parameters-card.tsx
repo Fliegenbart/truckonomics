@@ -3,9 +3,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Truck, Zap } from "lucide-react";
-import type { TruckParameters } from "@shared/schema";
-import { presetTruckModels } from "@shared/schema";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Button } from "@/components/ui/button";
+import { Truck, Zap, ChevronDown, Settings2 } from "lucide-react";
+import type { TruckParameters, TechnicalSpecs, AxleConfiguration, CabinType } from "@shared/schema";
+import { presetTruckModels, axleConfigurations, cabinTypes } from "@shared/schema";
 import { useState } from "react";
 
 interface TruckParametersCardProps {
@@ -16,6 +18,7 @@ interface TruckParametersCardProps {
 
 export function TruckParametersCard({ truck, onChange, truckIndex }: TruckParametersCardProps) {
   const [errors, setErrors] = useState<Partial<Record<keyof TruckParameters, string>>>({});
+  const [specsOpen, setSpecsOpen] = useState(false);
 
   const updateField = <K extends keyof TruckParameters>(field: K, value: TruckParameters[K]) => {
     setErrors(prev => ({ ...prev, [field]: undefined }));
@@ -38,7 +41,19 @@ export function TruckParametersCard({ truck, onChange, truckIndex }: TruckParame
     onChange({ ...truck, [field]: value });
   };
 
+  const updateTechnicalSpec = <K extends keyof TechnicalSpecs>(field: K, value: TechnicalSpecs[K]) => {
+    const currentSpecs = truck.technicalSpecs || {};
+    onChange({
+      ...truck,
+      technicalSpecs: {
+        ...currentSpecs,
+        [field]: value,
+      },
+    });
+  };
+
   const isDiesel = truck.type === "diesel";
+  const specs = truck.technicalSpecs || {};
 
   const handlePresetSelect = (presetId: string) => {
     if (presetId === "custom") return;
@@ -268,6 +283,298 @@ export function TruckParametersCard({ truck, onChange, truckIndex }: TruckParame
             <p className="text-xs text-destructive">{errors.expectedLifespanYears}</p>
           )}
         </div>
+
+        <Collapsible open={specsOpen} onOpenChange={setSpecsOpen}>
+          <CollapsibleTrigger asChild>
+            <Button 
+              variant="ghost" 
+              className="w-full justify-between px-3 py-2 h-auto text-sm font-medium"
+              data-testid={`toggle-specs-${truckIndex}`}
+            >
+              <div className="flex items-center gap-2">
+                <Settings2 className="h-4 w-4" />
+                <span>Technische Spezifikationen</span>
+              </div>
+              <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${specsOpen ? 'rotate-180' : ''}`} />
+            </Button>
+          </CollapsibleTrigger>
+          <CollapsibleContent className="pt-4 space-y-4">
+            <div className="p-4 rounded-lg bg-muted/30 border border-border/50 space-y-4">
+              <h4 className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">Gewicht & Konfiguration</h4>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor={`zgg-${truckIndex}`} className="text-xs uppercase tracking-wider font-medium">
+                    Zul. Gesamtgewicht (kg)
+                  </Label>
+                  <Input
+                    id={`zgg-${truckIndex}`}
+                    type="number"
+                    value={specs.zulaessigesGesamtgewicht || ''}
+                    onChange={(e) => updateTechnicalSpec("zulaessigesGesamtgewicht", parseFloat(e.target.value) || undefined)}
+                    placeholder="18000"
+                    min="0"
+                    data-testid={`input-zgg-${truckIndex}`}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor={`zuggewicht-${truckIndex}`} className="text-xs uppercase tracking-wider font-medium">
+                    Zuggesamtgewicht (kg)
+                  </Label>
+                  <Input
+                    id={`zuggewicht-${truckIndex}`}
+                    type="number"
+                    value={specs.zugGesamtgewicht || ''}
+                    onChange={(e) => updateTechnicalSpec("zugGesamtgewicht", parseFloat(e.target.value) || undefined)}
+                    placeholder="40000"
+                    min="0"
+                    data-testid={`input-zuggewicht-${truckIndex}`}
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor={`achse-${truckIndex}`} className="text-xs uppercase tracking-wider font-medium">
+                    Achskonfiguration
+                  </Label>
+                  <Select 
+                    value={specs.achskonfiguration || ''} 
+                    onValueChange={(v) => updateTechnicalSpec("achskonfiguration", v as AxleConfiguration)}
+                  >
+                    <SelectTrigger id={`achse-${truckIndex}`} data-testid={`select-achse-${truckIndex}`}>
+                      <SelectValue placeholder="Auswählen" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {axleConfigurations.map((config) => (
+                        <SelectItem key={config} value={config}>
+                          {config}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor={`nutzlast-${truckIndex}`} className="text-xs uppercase tracking-wider font-medium">
+                    Nutzlast (kg)
+                  </Label>
+                  <Input
+                    id={`nutzlast-${truckIndex}`}
+                    type="number"
+                    value={specs.nutzlast || ''}
+                    onChange={(e) => updateTechnicalSpec("nutzlast", parseFloat(e.target.value) || undefined)}
+                    placeholder="26000"
+                    min="0"
+                    data-testid={`input-nutzlast-${truckIndex}`}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="p-4 rounded-lg bg-muted/30 border border-border/50 space-y-4">
+              <h4 className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">Antrieb & Leistung</h4>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor={`leistung-kw-${truckIndex}`} className="text-xs uppercase tracking-wider font-medium">
+                    Leistung (kW)
+                  </Label>
+                  <Input
+                    id={`leistung-kw-${truckIndex}`}
+                    type="number"
+                    value={specs.leistungKW || ''}
+                    onChange={(e) => updateTechnicalSpec("leistungKW", parseFloat(e.target.value) || undefined)}
+                    placeholder="350"
+                    min="0"
+                    data-testid={`input-leistung-kw-${truckIndex}`}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor={`leistung-ps-${truckIndex}`} className="text-xs uppercase tracking-wider font-medium">
+                    Leistung (PS)
+                  </Label>
+                  <Input
+                    id={`leistung-ps-${truckIndex}`}
+                    type="number"
+                    value={specs.leistungPS || ''}
+                    onChange={(e) => updateTechnicalSpec("leistungPS", parseFloat(e.target.value) || undefined)}
+                    placeholder="476"
+                    min="0"
+                    data-testid={`input-leistung-ps-${truckIndex}`}
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor={`drehmoment-${truckIndex}`} className="text-xs uppercase tracking-wider font-medium">
+                    Drehmoment (Nm)
+                  </Label>
+                  <Input
+                    id={`drehmoment-${truckIndex}`}
+                    type="number"
+                    value={specs.drehmoment || ''}
+                    onChange={(e) => updateTechnicalSpec("drehmoment", parseFloat(e.target.value) || undefined)}
+                    placeholder="2300"
+                    min="0"
+                    data-testid={`input-drehmoment-${truckIndex}`}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor={`reichweite-${truckIndex}`} className="text-xs uppercase tracking-wider font-medium">
+                    Reichweite (km)
+                  </Label>
+                  <Input
+                    id={`reichweite-${truckIndex}`}
+                    type="number"
+                    value={specs.reichweite || ''}
+                    onChange={(e) => updateTechnicalSpec("reichweite", parseFloat(e.target.value) || undefined)}
+                    placeholder={isDiesel ? "1200" : "500"}
+                    min="0"
+                    data-testid={`input-reichweite-${truckIndex}`}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="p-4 rounded-lg bg-muted/30 border border-border/50 space-y-4">
+              <h4 className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">
+                {isDiesel ? "Tank & Kabine" : "Batterie & Laden"}
+              </h4>
+              
+              <div className="grid grid-cols-2 gap-4">
+                {isDiesel ? (
+                  <div className="space-y-2">
+                    <Label htmlFor={`tank-${truckIndex}`} className="text-xs uppercase tracking-wider font-medium">
+                      Tankkapazität (L)
+                    </Label>
+                    <Input
+                      id={`tank-${truckIndex}`}
+                      type="number"
+                      value={specs.tankKapazitaet || ''}
+                      onChange={(e) => updateTechnicalSpec("tankKapazitaet", parseFloat(e.target.value) || undefined)}
+                      placeholder="400"
+                      min="0"
+                      data-testid={`input-tank-${truckIndex}`}
+                    />
+                  </div>
+                ) : (
+                  <>
+                    <div className="space-y-2">
+                      <Label htmlFor={`batterie-${truckIndex}`} className="text-xs uppercase tracking-wider font-medium">
+                        Batteriekapazität (kWh)
+                      </Label>
+                      <Input
+                        id={`batterie-${truckIndex}`}
+                        type="number"
+                        value={specs.batterieKapazitaet || ''}
+                        onChange={(e) => updateTechnicalSpec("batterieKapazitaet", parseFloat(e.target.value) || undefined)}
+                        placeholder="600"
+                        min="0"
+                        data-testid={`input-batterie-${truckIndex}`}
+                      />
+                    </div>
+                  </>
+                )}
+
+                <div className="space-y-2">
+                  <Label htmlFor={`fahrerhaus-${truckIndex}`} className="text-xs uppercase tracking-wider font-medium">
+                    Fahrerhaus
+                  </Label>
+                  <Select 
+                    value={specs.fahrerhaus || ''} 
+                    onValueChange={(v) => updateTechnicalSpec("fahrerhaus", v as CabinType)}
+                  >
+                    <SelectTrigger id={`fahrerhaus-${truckIndex}`} data-testid={`select-fahrerhaus-${truckIndex}`}>
+                      <SelectValue placeholder="Auswählen" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {cabinTypes.map((cabin) => (
+                        <SelectItem key={cabin} value={cabin}>
+                          {cabin}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              {!isDiesel && (
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor={`lade-ac-${truckIndex}`} className="text-xs uppercase tracking-wider font-medium">
+                      Ladeleistung AC (kW)
+                    </Label>
+                    <Input
+                      id={`lade-ac-${truckIndex}`}
+                      type="number"
+                      value={specs.ladeLeistungAC || ''}
+                      onChange={(e) => updateTechnicalSpec("ladeLeistungAC", parseFloat(e.target.value) || undefined)}
+                      placeholder="22"
+                      min="0"
+                      data-testid={`input-lade-ac-${truckIndex}`}
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor={`lade-dc-${truckIndex}`} className="text-xs uppercase tracking-wider font-medium">
+                      Ladeleistung DC (kW)
+                    </Label>
+                    <Input
+                      id={`lade-dc-${truckIndex}`}
+                      type="number"
+                      value={specs.ladeLeistungDC || ''}
+                      onChange={(e) => updateTechnicalSpec("ladeLeistungDC", parseFloat(e.target.value) || undefined)}
+                      placeholder="400"
+                      min="0"
+                      data-testid={`input-lade-dc-${truckIndex}`}
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="p-4 rounded-lg bg-muted/30 border border-border/50 space-y-4">
+              <h4 className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">Abmessungen</h4>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor={`laenge-${truckIndex}`} className="text-xs uppercase tracking-wider font-medium">
+                    Länge (mm)
+                  </Label>
+                  <Input
+                    id={`laenge-${truckIndex}`}
+                    type="number"
+                    value={specs.laenge || ''}
+                    onChange={(e) => updateTechnicalSpec("laenge", parseFloat(e.target.value) || undefined)}
+                    placeholder="6200"
+                    min="0"
+                    data-testid={`input-laenge-${truckIndex}`}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor={`hoehe-${truckIndex}`} className="text-xs uppercase tracking-wider font-medium">
+                    Höhe (mm)
+                  </Label>
+                  <Input
+                    id={`hoehe-${truckIndex}`}
+                    type="number"
+                    value={specs.hoehe || ''}
+                    onChange={(e) => updateTechnicalSpec("hoehe", parseFloat(e.target.value) || undefined)}
+                    placeholder="3950"
+                    min="0"
+                    data-testid={`input-hoehe-${truckIndex}`}
+                  />
+                </div>
+              </div>
+            </div>
+          </CollapsibleContent>
+        </Collapsible>
       </CardContent>
     </Card>
   );

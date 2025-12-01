@@ -253,6 +253,7 @@ function calculateTruckAnalysis(
       totalFuelConsumed,
       fuelUnit,
     },
+    technicalSpecs: truck.technicalSpecs,
   };
 }
 

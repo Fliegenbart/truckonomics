@@ -8,6 +8,7 @@ import { AmortizationChart } from "@/components/amortization-chart";
 import { CostBreakdownChart } from "@/components/cost-breakdown-chart";
 import { DetailedTCOTable } from "@/components/detailed-tco-table";
 import { EnvironmentalImpactCard } from "@/components/environmental-impact-card";
+import { TechnicalSpecsComparison } from "@/components/technical-specs-comparison";
 import { Calculator, RotateCcw, Truck } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
@@ -25,6 +26,20 @@ const defaultDieselTruck: TruckParameters = {
   insuranceCostAnnual: 11000,
   expectedLifespanYears: 12,
   fuelEfficiency: 32,
+  technicalSpecs: {
+    zulaessigesGesamtgewicht: 18000,
+    zugGesamtgewicht: 40000,
+    achskonfiguration: "4x2",
+    nutzlast: 26000,
+    leistungKW: 350,
+    leistungPS: 476,
+    drehmoment: 2300,
+    tankKapazitaet: 400,
+    reichweite: 1200,
+    fahrerhaus: "Fernverkehr",
+    laenge: 6200,
+    hoehe: 3950,
+  },
 };
 
 const defaultElectricTruck1: TruckParameters = {
@@ -37,6 +52,22 @@ const defaultElectricTruck1: TruckParameters = {
   insuranceCostAnnual: 10000,
   expectedLifespanYears: 15,
   fuelEfficiency: 120,
+  technicalSpecs: {
+    zulaessigesGesamtgewicht: 27000,
+    zugGesamtgewicht: 40000,
+    achskonfiguration: "6x2",
+    nutzlast: 22000,
+    leistungKW: 400,
+    leistungPS: 544,
+    drehmoment: 2100,
+    batterieKapazitaet: 600,
+    reichweite: 500,
+    ladeLeistungAC: 22,
+    ladeLeistungDC: 400,
+    fahrerhaus: "Fernverkehr",
+    laenge: 6400,
+    hoehe: 3950,
+  },
 };
 
 const defaultElectricTruck2: TruckParameters = {
@@ -49,6 +80,22 @@ const defaultElectricTruck2: TruckParameters = {
   insuranceCostAnnual: 11000,
   expectedLifespanYears: 12,
   fuelEfficiency: 130,
+  technicalSpecs: {
+    zulaessigesGesamtgewicht: 27000,
+    zugGesamtgewicht: 44000,
+    achskonfiguration: "6x4",
+    nutzlast: 23000,
+    leistungKW: 450,
+    leistungPS: 612,
+    drehmoment: 2200,
+    batterieKapazitaet: 624,
+    reichweite: 530,
+    ladeLeistungAC: 43,
+    ladeLeistungDC: 375,
+    fahrerhaus: "Fernverkehr",
+    laenge: 6450,
+    hoehe: 4000,
+  },
 };
 
 export default function Home() {
@@ -256,6 +303,14 @@ export default function Home() {
 
             <div className="card-hover">
               <EnvironmentalImpactCard result={result} />
+            </div>
+
+            <div className="card-hover">
+              <TechnicalSpecsComparison
+                dieselAnalysis={result.dieselAnalysis}
+                electric1Analysis={result.electric1Analysis}
+                electric2Analysis={result.electric2Analysis}
+              />
             </div>
 
             <DetailedTCOTable result={result} />
