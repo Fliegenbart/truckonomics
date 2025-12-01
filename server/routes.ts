@@ -11,8 +11,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const { dieselTruck, electricTruck1, electricTruck2, timeframeYears, taxIncentiveRegion } = data;
 
-      // Get tax incentive amount for electric vehicles
-      const incentiveAmount = regionalIncentives[taxIncentiveRegion || "federal"].totalIncentive;
+      const incentiveAmount = regionalIncentives[taxIncentiveRegion || "bundesfoerderung"].totalIncentive;
 
       // Calculate TCO for each truck (apply incentives to electric trucks)
       const dieselAnalysis = calculateTruckAnalysis(dieselTruck, timeframeYears, 0);
@@ -185,14 +184,11 @@ function calculateTruckAnalysis(
     // Purchase cost only in year 1 (after tax incentives)
     const purchaseCost = year === 1 ? effectivePurchasePrice : 0;
 
-    // Calculate fuel cost based on type
     let fuelCost: number;
     if (truck.type === "diesel") {
-      // Diesel: annualMileage / MPG * pricePerGallon
-      const gallonsPerYear = truck.annualMileage / truck.fuelEfficiency;
-      fuelCost = gallonsPerYear * truck.fuelCostPerUnit;
+      const litersPerYear = (truck.annualMileage / 100) * truck.fuelEfficiency;
+      fuelCost = litersPerYear * truck.fuelCostPerUnit;
     } else {
-      // Electric: (annualMileage / 100) * kWh per 100 miles * price per kWh
       const kWhPerYear = (truck.annualMileage / 100) * truck.fuelEfficiency;
       fuelCost = kWhPerYear * truck.fuelCostPerUnit;
     }
@@ -229,22 +225,17 @@ function calculateTruckAnalysis(
   // Total cost of ownership is the final cumulative cost (which now includes depreciation)
   const totalCostOfOwnership = cumulativeCost;
 
-  // Calculate environmental impact
   let totalFuelConsumed: number;
   let totalCO2Emissions: number;
-  let fuelUnit: "gallons" | "kWh";
+  let fuelUnit: "liters" | "kWh";
 
   if (truck.type === "diesel") {
-    // Diesel: gallons consumed and CO2 emissions
-    totalFuelConsumed = (truck.annualMileage / truck.fuelEfficiency) * timeframeYears;
-    // Diesel emits approximately 22 lbs of CO2 per gallon burned
-    totalCO2Emissions = totalFuelConsumed * 22;
-    fuelUnit = "gallons";
-  } else {
-    // Electric: kWh consumed and CO2 emissions from grid
     totalFuelConsumed = ((truck.annualMileage / 100) * truck.fuelEfficiency) * timeframeYears;
-    // US grid average: approximately 0.85 lbs CO2 per kWh (varies by region)
-    totalCO2Emissions = totalFuelConsumed * 0.85;
+    totalCO2Emissions = totalFuelConsumed * 2.64;
+    fuelUnit = "liters";
+  } else {
+    totalFuelConsumed = ((truck.annualMileage / 100) * truck.fuelEfficiency) * timeframeYears;
+    totalCO2Emissions = totalFuelConsumed * 0.38;
     fuelUnit = "kWh";
   }
 

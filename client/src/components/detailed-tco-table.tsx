@@ -15,9 +15,9 @@ interface DetailedTCOTableProps {
 
 export function DetailedTCOTable({ result }: DetailedTCOTableProps) {
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat("en-US", {
+    return new Intl.NumberFormat("de-DE", {
       style: "currency",
-      currency: "USD",
+      currency: "EUR",
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(value);
@@ -46,9 +46,9 @@ export function DetailedTCOTable({ result }: DetailedTCOTableProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Year-by-Year Cost Breakdown</CardTitle>
+        <CardTitle>Jährliche Kostenübersicht</CardTitle>
         <p className="text-sm text-muted-foreground">
-          Detailed annual costs and savings comparison
+          Detaillierte jährliche Kosten- und Ersparnis-Vergleich
         </p>
       </CardHeader>
       <CardContent>
@@ -56,18 +56,18 @@ export function DetailedTCOTable({ result }: DetailedTCOTableProps) {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="sticky left-0 bg-card z-10 min-w-20">Year</TableHead>
+                <TableHead className="sticky left-0 bg-card z-10 min-w-20">Jahr</TableHead>
                 <TableHead className="text-right min-w-32">{result.dieselAnalysis.name}</TableHead>
                 <TableHead className="text-right min-w-32">{result.electric1Analysis.name}</TableHead>
                 <TableHead className="text-right min-w-32">{result.electric2Analysis.name}</TableHead>
-                <TableHead className="text-right min-w-32">Annual Savings</TableHead>
+                <TableHead className="text-right min-w-32">Jährl. Ersparnis</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {tableData.map((row) => (
                 <TableRow key={row.year} data-testid={`row-year-${row.year}`}>
                   <TableCell className="sticky left-0 bg-card z-10 font-medium">
-                    Year {row.year}
+                    Jahr {row.year}
                   </TableCell>
                   <TableCell className="text-right tabular-nums">
                     {formatCurrency(row.dieselCost)}
@@ -85,7 +85,7 @@ export function DetailedTCOTable({ result }: DetailedTCOTableProps) {
               ))}
               <TableRow className="font-semibold bg-muted/50">
                 <TableCell className="sticky left-0 bg-muted/50 z-10">
-                  Total
+                  Gesamt
                 </TableCell>
                 <TableCell className="text-right tabular-nums" data-testid="total-diesel">
                   {formatCurrency(result.dieselAnalysis.totalCostOfOwnership)}

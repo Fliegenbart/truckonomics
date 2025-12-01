@@ -1,132 +1,153 @@
-# Truckonomics - Heavy-Duty Truck TCO Calculator
+# Truckonomics - Schwerlast-LKW TCO-Rechner
 
-## Overview
+## Übersicht
 
-A web-based Total Cost of Ownership (TCO) calculator designed to compare Class 8 heavy-duty diesel semi-trucks against electric truck alternatives. The application performs stateless calculations to help users make informed financial decisions about commercial truck purchases by analyzing purchase price, fuel costs, maintenance, insurance, and break-even points over customizable timeframes (3-20 years).
+Ein webbasierter Gesamtbetriebskosten-Rechner (TCO) zum Vergleich von schweren Diesel-Sattelzügen (40-Tonner) mit Elektro-Alternativen. Die Anwendung führt zustandslose Berechnungen durch, um Benutzern bei fundierten finanziellen Entscheidungen beim Kauf von Nutzfahrzeugen zu helfen. Analysiert werden Kaufpreis, Kraftstoffkosten, Wartung, Versicherung und Amortisationspunkte über wählbare Zeiträume (3-20 Jahre).
 
-**Branding**: The application is branded as "Truckonomics" with a hero-style header featuring a professional Class 8 semi-truck image and modern Apple-inspired design aesthetics.
+**Branding**: Die Anwendung heißt "Truckonomics" mit einem Hero-Header mit professionellem Sattelzug-Bild und modernem Apple-inspiriertem Design.
 
-## User Preferences
+**Sprache**: Deutsch (de-DE)
+**Währung**: Euro (€)
 
-Preferred communication style: Simple, everyday language.
+## Benutzereinstellungen
 
-## System Architecture
+Bevorzugter Kommunikationsstil: Einfache, alltägliche Sprache.
 
-### Frontend Architecture
+## Systemarchitektur
 
-**Framework**: React 18 with TypeScript, using Vite as the build tool and development server.
+### Frontend-Architektur
 
-**Routing**: Wouter for lightweight client-side routing. The application uses a minimal routing structure with a home page for the calculator and a 404 fallback.
+**Framework**: React 18 mit TypeScript, Vite als Build-Tool und Entwicklungsserver.
 
-**UI Framework**: Shadcn UI (New York style variant) built on Radix UI primitives with Tailwind CSS for styling. This provides a comprehensive component library with accessible, customizable components.
+**Routing**: Wouter für leichtgewichtiges Client-seitiges Routing. Minimale Routing-Struktur mit einer Startseite für den Rechner und einer 404-Fallback-Seite.
 
-**Design System**: Carbon Design System principles focusing on clarity, scannable information architecture, and professional aesthetics. The color palette uses neutral tones with professional blue for primary actions and green/orange for savings/cost indicators.
+**UI-Framework**: Shadcn UI (New York Style Variante) basierend auf Radix UI Primitiven mit Tailwind CSS für Styling. Bietet eine umfassende Komponentenbibliothek mit barrierefreien, anpassbaren Komponenten.
+
+**Design-System**: Premium Apple/Jony Ive-inspirierte Ästhetik mit:
+- Animiertem Gradient-Mesh-Hintergrund
+- Glasmorphismus-Effekte (Backdrop-Blur)
+- Lebhaftes Blau als Primärfarbe (210 100% 55%)
+- Subtile lila Gradient-Akzente
+- Großzügige Weißräume
+- Feine Interaktionsanimationen (300-700ms Übergänge)
+- Blaue Schatten-Töne
 
 **State Management**: 
-- React Hook Form with Zod resolvers for form validation
-- TanStack Query (React Query) for server state management (though this app performs stateless calculations)
-- Local component state for UI interactions
+- React Hook Form mit Zod Resolvers für Formular-Validierung
+- TanStack Query (React Query) für Server State Management
+- Lokaler Komponentenstatus für UI-Interaktionen
 
-**Data Visualization**: Recharts library for rendering interactive charts including:
-- Amortization timeline (line chart showing cumulative costs)
-- Cost breakdown (stacked bar chart by category)
-- Year-by-year comparison tables
+**Datenvisualisierung**: Recharts-Bibliothek für interaktive Diagramme:
+- Amortisationszeitraum (Liniendiagramm mit kumulativen Kosten)
+- Kostenaufschlüsselung (Gestapeltes Balkendiagramm nach Kategorie)
+- Jahres-Vergleichstabellen
 
-**Typography**: Inter font family loaded via Google Fonts with specific size scales for headings (32px), section headers (24px), body text (14px), and data values (16px with tabular numbers).
+**Typografie**: Inter Schriftfamilie via Google Fonts mit spezifischen Größenskalen.
 
-**Theme Support**: Built-in light/dark mode toggle with theme persistence via localStorage. Theme variables defined in CSS custom properties with automatic computation for interactive states.
+**Theme-Unterstützung**: Integrierter Hell-/Dunkelmodus-Toggle mit Theme-Persistenz via localStorage.
 
-### Backend Architecture
+### Backend-Architektur
 
-**Runtime**: Node.js with Express.js server framework.
+**Runtime**: Node.js mit Express.js Server-Framework.
 
-**API Design**: RESTful API with calculation and persistence endpoints:
-- `POST /api/calculate-tco`: Accepts truck parameters and timeframe, returns comprehensive TCO analysis
-- `GET /api/scenarios`: Retrieve all saved scenarios
-- `POST /api/scenarios`: Save new scenario configuration
-- `PATCH /api/scenarios/:id`: Update existing scenario
-- `DELETE /api/scenarios/:id`: Delete saved scenario
+**API-Design**: RESTful API mit Berechnungs- und Persistenz-Endpunkten:
+- `POST /api/calculate-tco`: Akzeptiert LKW-Parameter und Zeitraum, gibt umfassende TCO-Analyse zurück
+- `GET /api/scenarios`: Alle gespeicherten Szenarien abrufen
+- `POST /api/scenarios`: Neues Szenario speichern
+- `PATCH /api/scenarios/:id`: Bestehendes Szenario aktualisieren
+- `DELETE /api/scenarios/:id`: Gespeichertes Szenario löschen
 
-**Calculation Engine**: Server-side TypeScript functions that:
-- Calculate yearly cost breakdowns (fuel, maintenance, insurance)
-- Compute cumulative costs over timeframes
-- Determine break-even points between diesel and electric options
-- Identify optimal electric truck choice based on total cost
+**Berechnungs-Engine**: Server-seitige TypeScript-Funktionen:
+- Jährliche Kostenaufschlüsselung (Kraftstoff, Wartung, Versicherung)
+- Kumulative Kosten über Zeiträume
+- Amortisationspunkte zwischen Diesel und Elektro
+- Optimale Elektro-LKW-Auswahl basierend auf Gesamtkosten
 
-**Data Flow**: Hybrid model - TCO calculations are stateless (performed on-demand), while scenario configurations can be persisted to database for later retrieval and comparison. No session management or user authentication required.
+**Validierung**: Zod-Schemas zwischen Client und Server geteilt für typsichere Datenvalidierung.
 
-**Validation**: Zod schemas shared between client and server for type-safe data validation. Truck parameters validated for:
-- Positive numeric values for costs and mileage
-- Lifespan constraints (1-30 years)
-- Required string fields (truck names)
+### Datenspeicherung
 
-**Development Server**: Vite integration with HMR (Hot Module Replacement) for efficient development workflow. Express middleware serves Vite's development server in dev mode.
+**Speicherarchitektur**: PostgreSQL-Datenbank via Neon Serverless mit Drizzle ORM für Szenario-Persistenz.
 
-### Data Storage Solutions
-
-**Storage Architecture**: PostgreSQL database via Neon serverless with Drizzle ORM for scenario persistence.
-
-**Database Tables**:
-- `scenarios`: Stores saved truck comparison configurations
-  - id (serial primary key)
-  - name (text)
+**Datenbank-Tabellen**:
+- `scenarios`: Speichert gespeicherte LKW-Vergleichskonfigurationen
+  - id (Serial Primary Key)
+  - name (Text)
   - dieselTruck, electricTruck1, electricTruck2 (JSONB)
-  - timeframeYears (integer)
-  - taxIncentiveRegion (text)
-  - createdAt, updatedAt (timestamps)
+  - timeframeYears (Integer)
+  - taxIncentiveRegion (Text)
+  - createdAt, updatedAt (Timestamps)
 
-**API Endpoints**:
-- `GET /api/scenarios` - List all saved scenarios
-- `GET /api/scenarios/:id` - Retrieve specific scenario
-- `POST /api/scenarios` - Save new scenario
-- `PATCH /api/scenarios/:id` - Update scenario
-- `DELETE /api/scenarios/:id` - Delete scenario
+### LKW-Voreinstellungen (Europäische Modelle)
 
-**Storage Interface**: DatabaseStorage class implements IStorage interface providing CRUD operations for scenarios.
+**Diesel-LKWs**:
+- Mercedes-Benz Actros
+- MAN TGX
+- Scania R-Serie
+- Volvo FH
+- DAF XG+
 
-**Rationale**: While TCO calculations are stateless, users requested the ability to save and compare multiple configurations over time. JSONB columns store truck parameters flexibly while timestamps track scenario modifications.
+**Elektro-LKWs**:
+- Mercedes-Benz eActros
+- MAN eTGX
+- Volvo FH Electric
+- DAF XF Electric
+- Scania 45 R Electric
+- Renault E-Tech T
 
-### Authentication and Authorization
+### Förderungsregionen (Deutschland)
 
-**Current Implementation**: None. The application is public and requires no user accounts or authentication.
+- Nur Bundesförderung (KsNI-Förderung)
+- Bayern
+- Baden-Württemberg
+- Nordrhein-Westfalen
+- Niedersachsen
+- Keine Förderung
 
-**Design Decision**: As a calculation tool without data persistence, authentication would add unnecessary complexity without providing value. Users can perform calculations anonymously.
+### Einheiten
 
-### External Dependencies
+**Kraftstoffeffizienz**:
+- Diesel: L/100km (Liter pro 100 Kilometer)
+- Elektro: kWh/100km (Kilowattstunden pro 100 Kilometer)
 
-**Database**: 
-- Drizzle ORM with PostgreSQL via `@neondatabase/serverless`
-- Neon serverless connection with WebSocket support
-- Connection string via `DATABASE_URL` environment variable
-- Active scenario persistence with CRUD operations
+**Kraftstoffkosten**:
+- Diesel: €/L (Euro pro Liter)
+- Elektro: €/kWh (Euro pro Kilowattstunde)
 
-**UI Libraries**:
-- Radix UI primitives for accessible component foundations
-- Recharts for data visualization
-- Lucide React for iconography
-- Tailwind CSS for utility-first styling
+**CO₂-Emissionen**: kg CO₂ (basierend auf deutschem Strommix: 0,38 kg CO₂/kWh)
 
-**Form Management**:
-- React Hook Form for form state and validation
-- Hookform Resolvers for Zod schema integration
+### Authentifizierung und Autorisierung
 
-**Utilities**:
-- date-fns for date manipulation
-- clsx and tailwind-merge for conditional class name composition
-- class-variance-authority for component variant management
+**Aktuelle Implementierung**: Keine. Die Anwendung ist öffentlich und erfordert keine Benutzerkonten.
 
-**Development Tools**:
-- TypeScript for type safety across client and server
-- Vite plugins for Replit integration (runtime error overlay, dev banner, cartographer)
-- ESBuild for production server bundling
-- PostCSS with Autoprefixer for CSS processing
+### Externe Abhängigkeiten
 
-**Key Architectural Decisions**:
+**Datenbank**: 
+- Drizzle ORM mit PostgreSQL via `@neondatabase/serverless`
+- Neon Serverless-Verbindung mit WebSocket-Unterstützung
+- Verbindungsstring via `DATABASE_URL` Umgebungsvariable
 
-1. **Stateless Calculation Model**: Chose to perform calculations on-demand rather than caching results, prioritizing simplicity and reducing infrastructure requirements.
+**UI-Bibliotheken**:
+- Radix UI Primitive für barrierefreie Komponenten
+- Recharts für Datenvisualisierung
+- Lucide React für Icons
+- Tailwind CSS für Utility-First Styling
 
-2. **Shared Schema Validation**: Using Zod schemas in a shared directory allows both client and server to validate data with identical rules, preventing type mismatches and validation discrepancies.
+**Formular-Management**:
+- React Hook Form für Formular-Status und Validierung
+- Hookform Resolvers für Zod-Schema-Integration
 
-3. **Component-Driven UI**: Shadcn UI provides a balance between pre-built components and customization, avoiding the weight of full UI frameworks while maintaining consistency.
+**Entwicklungswerkzeuge**:
+- TypeScript für Typsicherheit
+- Vite Plugins für Replit-Integration
+- ESBuild für Produktions-Server-Bundling
 
-4. **Monorepo Structure**: Client and server code in a single repository with shared types enables faster development and easier maintenance, though requires careful path aliasing configuration.
+### Wichtige Architekturentscheidungen
+
+1. **Zustandsloses Berechnungsmodell**: Berechnungen werden bei Bedarf durchgeführt statt gecacht.
+
+2. **Geteilte Schema-Validierung**: Zod-Schemas im shared-Verzeichnis ermöglichen Client und Server identische Validierungsregeln.
+
+3. **Komponentengetriebene UI**: Shadcn UI bietet Balance zwischen vorgefertigten Komponenten und Anpassungsmöglichkeiten.
+
+4. **Monorepo-Struktur**: Client- und Server-Code in einem Repository mit geteilten Typen.

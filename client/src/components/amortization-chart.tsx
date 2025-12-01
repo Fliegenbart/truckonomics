@@ -20,9 +20,9 @@ export function AmortizationChart({ result }: AmortizationChartProps) {
   });
 
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat("en-US", {
+    return new Intl.NumberFormat("de-DE", {
       style: "currency",
-      currency: "USD",
+      currency: "EUR",
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(value);
@@ -31,9 +31,9 @@ export function AmortizationChart({ result }: AmortizationChartProps) {
   return (
     <Card className="overflow-hidden border-card-border/50 shadow-sm">
       <CardHeader className="pb-4">
-        <CardTitle className="text-xl font-semibold">Amortization Timeline</CardTitle>
+        <CardTitle className="text-xl font-semibold">Amortisationszeitraum</CardTitle>
         <p className="text-sm text-muted-foreground">
-          Cumulative cost comparison over time
+          Kumulativer Kostenvergleich über die Zeit
         </p>
       </CardHeader>
       <CardContent>
@@ -43,12 +43,12 @@ export function AmortizationChart({ result }: AmortizationChartProps) {
               <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
               <XAxis 
                 dataKey="year" 
-                label={{ value: "Years", position: "insideBottom", offset: -5 }}
+                label={{ value: "Jahre", position: "insideBottom", offset: -5 }}
                 className="text-xs"
               />
               <YAxis 
-                tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
-                label={{ value: "Total Cost ($)", angle: -90, position: "insideLeft" }}
+                tickFormatter={(value) => `€${(value / 1000).toFixed(0)}k`}
+                label={{ value: "Gesamtkosten (€)", angle: -90, position: "insideLeft" }}
                 className="text-xs"
               />
               <Tooltip

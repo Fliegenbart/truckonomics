@@ -18,22 +18,20 @@ export function TruckParametersCard({ truck, onChange, truckIndex }: TruckParame
   const [errors, setErrors] = useState<Partial<Record<keyof TruckParameters, string>>>({});
 
   const updateField = <K extends keyof TruckParameters>(field: K, value: TruckParameters[K]) => {
-    // Clear error for this field
     setErrors(prev => ({ ...prev, [field]: undefined }));
     
-    // Validate the field
     if (typeof value === 'number') {
       if (isNaN(value) || value < 0) {
-        setErrors(prev => ({ ...prev, [field]: 'Must be a positive number' }));
+        setErrors(prev => ({ ...prev, [field]: 'Muss eine positive Zahl sein' }));
         return;
       }
       if (field === 'expectedLifespanYears' && (value < 1 || value > 30)) {
-        setErrors(prev => ({ ...prev, [field]: 'Must be between 1 and 30 years' }));
+        setErrors(prev => ({ ...prev, [field]: 'Muss zwischen 1 und 30 Jahren liegen' }));
         return;
       }
     }
     if (typeof value === 'string' && field === 'name' && value.trim().length === 0) {
-      setErrors(prev => ({ ...prev, [field]: 'Name is required' }));
+      setErrors(prev => ({ ...prev, [field]: 'Name ist erforderlich' }));
       return;
     }
     
@@ -68,14 +66,14 @@ export function TruckParametersCard({ truck, onChange, truckIndex }: TruckParame
               )}
             </div>
             <CardTitle className="text-xl font-semibold">
-              {isDiesel ? "Diesel Truck" : `Electric Truck ${truckIndex}`}
+              {isDiesel ? "Diesel-LKW" : `Elektro-LKW ${truckIndex}`}
             </CardTitle>
           </div>
           <Badge 
             variant={isDiesel ? "secondary" : "default"} 
             className={`shrink-0 px-3 py-1 rounded-full font-medium ${isDiesel ? '' : 'bg-chart-2 hover:bg-chart-2/90'}`}
           >
-            {isDiesel ? "Diesel" : "Electric"}
+            {isDiesel ? "Diesel" : "Elektro"}
           </Badge>
         </div>
       </CardHeader>
@@ -83,14 +81,14 @@ export function TruckParametersCard({ truck, onChange, truckIndex }: TruckParame
       <CardContent className="space-y-5 pt-2">
         <div className="space-y-2">
           <Label htmlFor={`preset-${truckIndex}`} className="text-xs uppercase tracking-wider font-medium">
-            Preset Model
+            Voreinstellung
           </Label>
           <Select onValueChange={handlePresetSelect} data-testid={`select-preset-${truckIndex}`}>
             <SelectTrigger id={`preset-${truckIndex}`}>
-              <SelectValue placeholder="Select a preset or enter custom" />
+              <SelectValue placeholder="Voreinstellung wählen oder anpassen" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="custom">Custom Configuration</SelectItem>
+              <SelectItem value="custom">Eigene Konfiguration</SelectItem>
               {availablePresets.map(([id, model]) => (
                 <SelectItem key={id} value={id}>
                   {model.name}
@@ -102,13 +100,13 @@ export function TruckParametersCard({ truck, onChange, truckIndex }: TruckParame
 
         <div className="space-y-2">
           <Label htmlFor={`name-${truckIndex}`} className="text-xs uppercase tracking-wider font-medium">
-            Model Name
+            Modellname
           </Label>
           <Input
             id={`name-${truckIndex}`}
             value={truck.name}
             onChange={(e) => updateField("name", e.target.value)}
-            placeholder="Enter truck model"
+            placeholder="LKW-Modell eingeben"
             data-testid={`input-name-${truckIndex}`}
           />
           {errors.name && (
@@ -119,11 +117,11 @@ export function TruckParametersCard({ truck, onChange, truckIndex }: TruckParame
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor={`purchase-${truckIndex}`} className="text-xs uppercase tracking-wider font-medium">
-              Purchase Price
+              Kaufpreis
             </Label>
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">
-                $
+                €
               </span>
               <Input
                 id={`purchase-${truckIndex}`}
@@ -142,14 +140,14 @@ export function TruckParametersCard({ truck, onChange, truckIndex }: TruckParame
 
           <div className="space-y-2">
             <Label htmlFor={`mileage-${truckIndex}`} className="text-xs uppercase tracking-wider font-medium">
-              Annual Mileage
+              Jahreskilometer
             </Label>
             <Input
               id={`mileage-${truckIndex}`}
               type="number"
               value={truck.annualMileage || ''}
               onChange={(e) => updateField("annualMileage", parseFloat(e.target.value) || 0)}
-              placeholder="25000"
+              placeholder="120000"
               min="0"
               data-testid={`input-mileage-${truckIndex}`}
             />
@@ -162,11 +160,11 @@ export function TruckParametersCard({ truck, onChange, truckIndex }: TruckParame
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor={`fuel-${truckIndex}`} className="text-xs uppercase tracking-wider font-medium">
-              {isDiesel ? "Diesel ($/gal)" : "Electricity ($/kWh)"}
+              {isDiesel ? "Diesel (€/L)" : "Strom (€/kWh)"}
             </Label>
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">
-                $
+                €
               </span>
               <Input
                 id={`fuel-${truckIndex}`}
@@ -186,7 +184,7 @@ export function TruckParametersCard({ truck, onChange, truckIndex }: TruckParame
 
           <div className="space-y-2">
             <Label htmlFor={`efficiency-${truckIndex}`} className="text-xs uppercase tracking-wider font-medium">
-              {isDiesel ? "MPG" : "kWh/100mi"}
+              {isDiesel ? "L/100km" : "kWh/100km"}
             </Label>
             <Input
               id={`efficiency-${truckIndex}`}
@@ -194,7 +192,7 @@ export function TruckParametersCard({ truck, onChange, truckIndex }: TruckParame
               step="0.1"
               value={truck.fuelEfficiency || ''}
               onChange={(e) => updateField("fuelEfficiency", parseFloat(e.target.value) || 0)}
-              placeholder={isDiesel ? "8" : "2.5"}
+              placeholder={isDiesel ? "32" : "120"}
               min="0"
               data-testid={`input-efficiency-${truckIndex}`}
             />
@@ -207,11 +205,11 @@ export function TruckParametersCard({ truck, onChange, truckIndex }: TruckParame
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor={`maintenance-${truckIndex}`} className="text-xs uppercase tracking-wider font-medium">
-              Maintenance (Annual)
+              Wartung (Jährlich)
             </Label>
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">
-                $
+                €
               </span>
               <Input
                 id={`maintenance-${truckIndex}`}
@@ -230,11 +228,11 @@ export function TruckParametersCard({ truck, onChange, truckIndex }: TruckParame
 
           <div className="space-y-2">
             <Label htmlFor={`insurance-${truckIndex}`} className="text-xs uppercase tracking-wider font-medium">
-              Insurance (Annual)
+              Versicherung (Jährlich)
             </Label>
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">
-                $
+                €
               </span>
               <Input
                 id={`insurance-${truckIndex}`}
@@ -254,7 +252,7 @@ export function TruckParametersCard({ truck, onChange, truckIndex }: TruckParame
 
         <div className="space-y-2">
           <Label htmlFor={`lifespan-${truckIndex}`} className="text-xs uppercase tracking-wider font-medium">
-            Expected Lifespan (Years)
+            Erwartete Lebensdauer (Jahre)
           </Label>
           <Input
             id={`lifespan-${truckIndex}`}

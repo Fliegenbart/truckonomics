@@ -30,38 +30,38 @@ export function CostBreakdownChart({ result }: CostBreakdownChartProps) {
       name: result.dieselAnalysis.name.length > 15 
         ? result.dieselAnalysis.name.substring(0, 15) + "..." 
         : result.dieselAnalysis.name,
-      Purchase: Math.round(dieselTotals.purchase),
-      Fuel: Math.round(dieselTotals.fuel),
-      Maintenance: Math.round(dieselTotals.maintenance),
-      Insurance: Math.round(dieselTotals.insurance),
-      Depreciation: Math.round(dieselTotals.depreciation),
+      Kaufpreis: Math.round(dieselTotals.purchase),
+      Kraftstoff: Math.round(dieselTotals.fuel),
+      Wartung: Math.round(dieselTotals.maintenance),
+      Versicherung: Math.round(dieselTotals.insurance),
+      Abschreibung: Math.round(dieselTotals.depreciation),
     },
     {
       name: result.electric1Analysis.name.length > 15 
         ? result.electric1Analysis.name.substring(0, 15) + "..." 
         : result.electric1Analysis.name,
-      Purchase: Math.round(electric1Totals.purchase),
-      Fuel: Math.round(electric1Totals.fuel),
-      Maintenance: Math.round(electric1Totals.maintenance),
-      Insurance: Math.round(electric1Totals.insurance),
-      Depreciation: Math.round(electric1Totals.depreciation),
+      Kaufpreis: Math.round(electric1Totals.purchase),
+      Kraftstoff: Math.round(electric1Totals.fuel),
+      Wartung: Math.round(electric1Totals.maintenance),
+      Versicherung: Math.round(electric1Totals.insurance),
+      Abschreibung: Math.round(electric1Totals.depreciation),
     },
     {
       name: result.electric2Analysis.name.length > 15 
         ? result.electric2Analysis.name.substring(0, 15) + "..." 
         : result.electric2Analysis.name,
-      Purchase: Math.round(electric2Totals.purchase),
-      Fuel: Math.round(electric2Totals.fuel),
-      Maintenance: Math.round(electric2Totals.maintenance),
-      Insurance: Math.round(electric2Totals.insurance),
-      Depreciation: Math.round(electric2Totals.depreciation),
+      Kaufpreis: Math.round(electric2Totals.purchase),
+      Kraftstoff: Math.round(electric2Totals.fuel),
+      Wartung: Math.round(electric2Totals.maintenance),
+      Versicherung: Math.round(electric2Totals.insurance),
+      Abschreibung: Math.round(electric2Totals.depreciation),
     },
   ];
 
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat("en-US", {
+    return new Intl.NumberFormat("de-DE", {
       style: "currency",
-      currency: "USD",
+      currency: "EUR",
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(value);
@@ -70,9 +70,9 @@ export function CostBreakdownChart({ result }: CostBreakdownChartProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Cost Breakdown Comparison</CardTitle>
+        <CardTitle>Kostenaufschlüsselung</CardTitle>
         <p className="text-sm text-muted-foreground">
-          Total costs by category over {result.timeframeYears} years
+          Gesamtkosten nach Kategorie über {result.timeframeYears} Jahre
         </p>
       </CardHeader>
       <CardContent>
@@ -88,8 +88,8 @@ export function CostBreakdownChart({ result }: CostBreakdownChartProps) {
                 height={80}
               />
               <YAxis 
-                tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
-                label={{ value: "Cost ($)", angle: -90, position: "insideLeft" }}
+                tickFormatter={(value) => `€${(value / 1000).toFixed(0)}k`}
+                label={{ value: "Kosten (€)", angle: -90, position: "insideLeft" }}
                 className="text-xs"
               />
               <Tooltip
@@ -102,11 +102,11 @@ export function CostBreakdownChart({ result }: CostBreakdownChartProps) {
                 }}
               />
               <Legend wrapperStyle={{ paddingTop: "10px" }} />
-              <Bar dataKey="Purchase" stackId="a" fill="hsl(var(--chart-1))" />
-              <Bar dataKey="Fuel" stackId="a" fill="hsl(var(--chart-2))" />
-              <Bar dataKey="Maintenance" stackId="a" fill="hsl(var(--chart-4))" />
-              <Bar dataKey="Insurance" stackId="a" fill="hsl(var(--chart-5))" />
-              <Bar dataKey="Depreciation" stackId="a" fill="hsl(var(--chart-3))" />
+              <Bar dataKey="Kaufpreis" stackId="a" fill="hsl(var(--chart-1))" />
+              <Bar dataKey="Kraftstoff" stackId="a" fill="hsl(var(--chart-2))" />
+              <Bar dataKey="Wartung" stackId="a" fill="hsl(var(--chart-4))" />
+              <Bar dataKey="Versicherung" stackId="a" fill="hsl(var(--chart-5))" />
+              <Bar dataKey="Abschreibung" stackId="a" fill="hsl(var(--chart-3))" />
             </BarChart>
           </ResponsiveContainer>
         </div>

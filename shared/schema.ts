@@ -2,37 +2,33 @@ import { z } from "zod";
 import { pgTable, serial, integer, text, jsonb, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 
-// Truck parameters schema
 export const truckParametersSchema = z.object({
-  name: z.string().min(1, "Name is required"),
+  name: z.string().min(1, "Name ist erforderlich"),
   type: z.enum(["diesel", "electric"]),
-  purchasePrice: z.number().min(0, "Purchase price must be positive"),
-  annualMileage: z.number().min(0, "Annual mileage must be positive"),
-  fuelCostPerUnit: z.number().min(0, "Fuel/electricity cost must be positive"),
-  maintenanceCostAnnual: z.number().min(0, "Maintenance cost must be positive"),
-  insuranceCostAnnual: z.number().min(0, "Insurance cost must be positive"),
-  expectedLifespanYears: z.number().min(1).max(30, "Lifespan must be between 1 and 30 years"),
-  fuelEfficiency: z.number().min(0, "Fuel efficiency must be positive"), // MPG for diesel, kWh/100mi for electric
+  purchasePrice: z.number().min(0, "Kaufpreis muss positiv sein"),
+  annualMileage: z.number().min(0, "Jahreskilometer muss positiv sein"),
+  fuelCostPerUnit: z.number().min(0, "Kraftstoff-/Stromkosten müssen positiv sein"),
+  maintenanceCostAnnual: z.number().min(0, "Wartungskosten müssen positiv sein"),
+  insuranceCostAnnual: z.number().min(0, "Versicherungskosten müssen positiv sein"),
+  expectedLifespanYears: z.number().min(1).max(30, "Lebensdauer muss zwischen 1 und 30 Jahren liegen"),
+  fuelEfficiency: z.number().min(0, "Kraftstoffeffizienz muss positiv sein"),
 });
 
 export type TruckParameters = z.infer<typeof truckParametersSchema>;
 
-// Regional tax incentives and rebates
-export const taxIncentiveRegions = ["federal", "california", "texas", "new-york", "florida", "none"] as const;
+export const taxIncentiveRegions = ["bundesfoerderung", "bayern", "baden-wuerttemberg", "nordrhein-westfalen", "niedersachsen", "keine"] as const;
 export type TaxIncentiveRegion = typeof taxIncentiveRegions[number];
 
-// Comparison request schema
 export const comparisonRequestSchema = z.object({
   dieselTruck: truckParametersSchema,
   electricTruck1: truckParametersSchema,
   electricTruck2: truckParametersSchema,
   timeframeYears: z.number().min(1).max(30),
-  taxIncentiveRegion: z.enum(taxIncentiveRegions).optional().default("federal"),
+  taxIncentiveRegion: z.enum(taxIncentiveRegions).optional().default("bundesfoerderung"),
 });
 
 export type ComparisonRequest = z.infer<typeof comparisonRequestSchema>;
 
-// Year-by-year cost breakdown
 export const yearCostBreakdownSchema = z.object({
   year: z.number(),
   purchaseCost: z.number(),
@@ -46,7 +42,6 @@ export const yearCostBreakdownSchema = z.object({
 
 export type YearCostBreakdown = z.infer<typeof yearCostBreakdownSchema>;
 
-// Truck analysis result
 export const truckAnalysisSchema = z.object({
   name: z.string(),
   type: z.enum(["diesel", "electric"]),
@@ -57,15 +52,14 @@ export const truckAnalysisSchema = z.object({
   totalInsuranceCost: z.number(),
   depreciation: z.number(),
   environmentalImpact: z.object({
-    totalCO2Emissions: z.number(), // Total CO2 in pounds over timeframe
-    totalFuelConsumed: z.number(), // Gallons for diesel, kWh for electric
-    fuelUnit: z.enum(["gallons", "kWh"]),
+    totalCO2Emissions: z.number(),
+    totalFuelConsumed: z.number(),
+    fuelUnit: z.enum(["liters", "kWh"]),
   }),
 });
 
 export type TruckAnalysis = z.infer<typeof truckAnalysisSchema>;
 
-// Break-even analysis
 export const breakEvenAnalysisSchema = z.object({
   truck1Name: z.string(),
   truck2Name: z.string(),
@@ -76,7 +70,6 @@ export const breakEvenAnalysisSchema = z.object({
 
 export type BreakEvenAnalysis = z.infer<typeof breakEvenAnalysisSchema>;
 
-// Complete comparison result
 export const comparisonResultSchema = z.object({
   dieselAnalysis: truckAnalysisSchema,
   electric1Analysis: truckAnalysisSchema,
@@ -87,14 +80,13 @@ export const comparisonResultSchema = z.object({
   maxSavings: z.number(),
   timeframeYears: z.number(),
   environmentalComparison: z.object({
-    bestElectricCO2Saved: z.number(), // Total CO2 saved by best electric option vs diesel
+    bestElectricCO2Saved: z.number(),
     bestElectricName: z.string(),
   }),
 });
 
 export type ComparisonResult = z.infer<typeof comparisonResultSchema>;
 
-// Regional incentive data
 export interface RegionalIncentive {
   region: string;
   federalCredit: number;
@@ -104,143 +96,174 @@ export interface RegionalIncentive {
 }
 
 export const regionalIncentives: Record<TaxIncentiveRegion, RegionalIncentive> = {
-  "federal": {
-    region: "Federal Only",
-    federalCredit: 7500,
+  "bundesfoerderung": {
+    region: "Nur Bundesförderung",
+    federalCredit: 80000,
     stateCredit: 0,
-    totalIncentive: 7500,
-    description: "Federal Clean Vehicle Credit (up to $7,500 for new EVs meeting requirements)",
+    totalIncentive: 80000,
+    description: "KsNI-Förderung für klimaschonende Nutzfahrzeuge (bis zu 80% der Mehrkosten)",
   },
-  "california": {
-    region: "California",
-    federalCredit: 7500,
-    stateCredit: 2000,
-    totalIncentive: 9500,
-    description: "Federal credit + CA Clean Vehicle Rebate Project (CVRP)",
+  "bayern": {
+    region: "Bayern",
+    federalCredit: 80000,
+    stateCredit: 10000,
+    totalIncentive: 90000,
+    description: "Bundesförderung + Bayerische Förderung für E-Nutzfahrzeuge",
   },
-  "texas": {
-    region: "Texas",
-    federalCredit: 7500,
-    stateCredit: 2500,
-    totalIncentive: 10000,
-    description: "Federal credit + TX Light-Duty Motor Vehicle Purchase or Lease Incentive",
+  "baden-wuerttemberg": {
+    region: "Baden-Württemberg",
+    federalCredit: 80000,
+    stateCredit: 15000,
+    totalIncentive: 95000,
+    description: "Bundesförderung + BW-e-Gutschein für E-Nutzfahrzeuge",
   },
-  "new-york": {
-    region: "New York",
-    federalCredit: 7500,
-    stateCredit: 2000,
-    totalIncentive: 9500,
-    description: "Federal credit + NY Drive Clean Rebate",
+  "nordrhein-westfalen": {
+    region: "Nordrhein-Westfalen",
+    federalCredit: 80000,
+    stateCredit: 8000,
+    totalIncentive: 88000,
+    description: "Bundesförderung + NRW progres.nrw Emissionsarme Mobilität",
   },
-  "florida": {
-    region: "Florida",
-    federalCredit: 7500,
-    stateCredit: 0,
-    totalIncentive: 7500,
-    description: "Federal credit only (no state-level EV incentives)",
+  "niedersachsen": {
+    region: "Niedersachsen",
+    federalCredit: 80000,
+    stateCredit: 5000,
+    totalIncentive: 85000,
+    description: "Bundesförderung + Niedersächsische Klimaschutzförderung",
   },
-  "none": {
-    region: "No Incentives",
+  "keine": {
+    region: "Keine Förderung",
     federalCredit: 0,
     stateCredit: 0,
     totalIncentive: 0,
-    description: "Calculate without tax incentives",
+    description: "Berechnung ohne Förderungen",
   },
 };
 
-// Preset truck models - Class 8 Heavy-Duty Trucks (40-ton)
 export const presetTruckModels: Record<string, TruckParameters> = {
-  "freightliner-cascadia": {
-    name: "Freightliner Cascadia",
+  "mercedes-actros": {
+    name: "Mercedes-Benz Actros",
     type: "diesel",
-    purchasePrice: 165000,
+    purchasePrice: 155000,
     annualMileage: 120000,
-    fuelCostPerUnit: 3.8,
-    maintenanceCostAnnual: 15000,
-    insuranceCostAnnual: 12000,
-    expectedLifespanYears: 12,
-    fuelEfficiency: 6.5, // MPG (diesel)
-  },
-  "volvo-vnl": {
-    name: "Volvo VNL 760",
-    type: "diesel",
-    purchasePrice: 175000,
-    annualMileage: 110000,
-    fuelCostPerUnit: 3.8,
-    maintenanceCostAnnual: 16000,
-    insuranceCostAnnual: 13000,
-    expectedLifespanYears: 12,
-    fuelEfficiency: 7.0, // MPG (diesel, aerodynamic)
-  },
-  "kenworth-t680": {
-    name: "Kenworth T680",
-    type: "diesel",
-    purchasePrice: 170000,
-    annualMileage: 115000,
-    fuelCostPerUnit: 3.8,
-    maintenanceCostAnnual: 15500,
-    insuranceCostAnnual: 12500,
-    expectedLifespanYears: 12,
-    fuelEfficiency: 6.8, // MPG (diesel)
-  },
-  "tesla-semi": {
-    name: "Tesla Semi",
-    type: "electric",
-    purchasePrice: 180000,
-    annualMileage: 120000,
-    fuelCostPerUnit: 0.13,
-    maintenanceCostAnnual: 8000,
+    fuelCostPerUnit: 1.65,
+    maintenanceCostAnnual: 14000,
     insuranceCostAnnual: 11000,
-    expectedLifespanYears: 15,
-    fuelEfficiency: 170, // kWh per 100 miles (~1.7 kWh/mile)
-  },
-  "freightliner-ecascadia": {
-    name: "Freightliner eCascadia",
-    type: "electric",
-    purchasePrice: 350000,
-    annualMileage: 100000,
-    fuelCostPerUnit: 0.13,
-    maintenanceCostAnnual: 9000,
-    insuranceCostAnnual: 12000,
     expectedLifespanYears: 12,
-    fuelEfficiency: 180, // kWh per 100 miles
+    fuelEfficiency: 32,
   },
-  "volvo-vnr-electric": {
-    name: "Volvo VNR Electric",
-    type: "electric",
-    purchasePrice: 330000,
-    annualMileage: 100000,
-    fuelCostPerUnit: 0.13,
-    maintenanceCostAnnual: 8500,
+  "man-tgx": {
+    name: "MAN TGX",
+    type: "diesel",
+    purchasePrice: 150000,
+    annualMileage: 115000,
+    fuelCostPerUnit: 1.65,
+    maintenanceCostAnnual: 13500,
+    insuranceCostAnnual: 10500,
+    expectedLifespanYears: 12,
+    fuelEfficiency: 33,
+  },
+  "scania-r-series": {
+    name: "Scania R-Serie",
+    type: "diesel",
+    purchasePrice: 160000,
+    annualMileage: 120000,
+    fuelCostPerUnit: 1.65,
+    maintenanceCostAnnual: 14500,
     insuranceCostAnnual: 11500,
     expectedLifespanYears: 12,
-    fuelEfficiency: 175, // kWh per 100 miles
+    fuelEfficiency: 31,
   },
-  "nikola-tre": {
-    name: "Nikola Tre BEV",
+  "volvo-fh": {
+    name: "Volvo FH",
+    type: "diesel",
+    purchasePrice: 158000,
+    annualMileage: 118000,
+    fuelCostPerUnit: 1.65,
+    maintenanceCostAnnual: 14200,
+    insuranceCostAnnual: 11200,
+    expectedLifespanYears: 12,
+    fuelEfficiency: 32,
+  },
+  "daf-xg": {
+    name: "DAF XG+",
+    type: "diesel",
+    purchasePrice: 162000,
+    annualMileage: 120000,
+    fuelCostPerUnit: 1.65,
+    maintenanceCostAnnual: 14000,
+    insuranceCostAnnual: 11000,
+    expectedLifespanYears: 12,
+    fuelEfficiency: 30,
+  },
+  "mercedes-eactros": {
+    name: "Mercedes-Benz eActros",
+    type: "electric",
+    purchasePrice: 450000,
+    annualMileage: 100000,
+    fuelCostPerUnit: 0.35,
+    maintenanceCostAnnual: 8000,
+    insuranceCostAnnual: 10000,
+    expectedLifespanYears: 15,
+    fuelEfficiency: 120,
+  },
+  "man-etgx": {
+    name: "MAN eTGX",
+    type: "electric",
+    purchasePrice: 420000,
+    annualMileage: 100000,
+    fuelCostPerUnit: 0.35,
+    maintenanceCostAnnual: 7500,
+    insuranceCostAnnual: 9500,
+    expectedLifespanYears: 15,
+    fuelEfficiency: 125,
+  },
+  "volvo-fh-electric": {
+    name: "Volvo FH Electric",
+    type: "electric",
+    purchasePrice: 400000,
+    annualMileage: 100000,
+    fuelCostPerUnit: 0.35,
+    maintenanceCostAnnual: 7800,
+    insuranceCostAnnual: 9800,
+    expectedLifespanYears: 15,
+    fuelEfficiency: 118,
+  },
+  "daf-xf-electric": {
+    name: "DAF XF Electric",
     type: "electric",
     purchasePrice: 380000,
     annualMileage: 95000,
-    fuelCostPerUnit: 0.13,
-    maintenanceCostAnnual: 9500,
-    insuranceCostAnnual: 13000,
-    expectedLifespanYears: 12,
-    fuelEfficiency: 185, // kWh per 100 miles
+    fuelCostPerUnit: 0.35,
+    maintenanceCostAnnual: 7600,
+    insuranceCostAnnual: 9600,
+    expectedLifespanYears: 15,
+    fuelEfficiency: 130,
   },
-  "peterbilt-579ev": {
-    name: "Peterbilt 579EV",
+  "scania-electric": {
+    name: "Scania 45 R Electric",
     type: "electric",
-    purchasePrice: 340000,
+    purchasePrice: 430000,
     annualMileage: 100000,
-    fuelCostPerUnit: 0.13,
-    maintenanceCostAnnual: 8800,
-    insuranceCostAnnual: 12000,
-    expectedLifespanYears: 12,
-    fuelEfficiency: 178, // kWh per 100 miles
+    fuelCostPerUnit: 0.35,
+    maintenanceCostAnnual: 8200,
+    insuranceCostAnnual: 10200,
+    expectedLifespanYears: 15,
+    fuelEfficiency: 115,
+  },
+  "renault-e-tech-t": {
+    name: "Renault E-Tech T",
+    type: "electric",
+    purchasePrice: 360000,
+    annualMileage: 90000,
+    fuelCostPerUnit: 0.35,
+    maintenanceCostAnnual: 7200,
+    insuranceCostAnnual: 9200,
+    expectedLifespanYears: 15,
+    fuelEfficiency: 135,
   },
 };
 
-// Database table: Saved scenarios
 export const scenarios = pgTable("scenarios", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
@@ -253,7 +276,6 @@ export const scenarios = pgTable("scenarios", {
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
-// Insert and select schemas for scenarios
 export const insertScenarioSchema = createInsertSchema(scenarios).omit({
   id: true,
   createdAt: true,

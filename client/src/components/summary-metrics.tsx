@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { TrendingDown, Calendar, DollarSign, Award } from "lucide-react";
+import { TrendingDown, Calendar, Euro, Award } from "lucide-react";
 import type { ComparisonResult } from "@shared/schema";
 
 interface SummaryMetricsProps {
@@ -20,9 +20,9 @@ export function SummaryMetrics({ result }: SummaryMetricsProps) {
     : result.dieselVsElectric2;
 
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat("en-US", {
+    return new Intl.NumberFormat("de-DE", {
       style: "currency",
-      currency: "USD",
+      currency: "EUR",
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(value);
@@ -30,12 +30,12 @@ export function SummaryMetrics({ result }: SummaryMetricsProps) {
 
   const formatBreakEven = () => {
     if (!bestBreakEven || bestBreakEven.breakEvenYear === null) {
-      return "Not within timeframe";
+      return "Nicht im Zeitraum";
     }
     if (bestBreakEven.breakEvenMonth) {
-      return `${bestBreakEven.breakEvenYear}y ${bestBreakEven.breakEvenMonth}m`;
+      return `${bestBreakEven.breakEvenYear}J ${bestBreakEven.breakEvenMonth}M`;
     }
-    return `${bestBreakEven.breakEvenYear} years`;
+    return `${bestBreakEven.breakEvenYear} Jahre`;
   };
 
   return (
@@ -43,7 +43,7 @@ export function SummaryMetrics({ result }: SummaryMetricsProps) {
       <Card className="overflow-hidden border-card-border/50 shadow-sm hover:shadow-md transition-all duration-300 group">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 gap-2">
           <CardTitle className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-            Max Savings
+            Max. Ersparnis
           </CardTitle>
           <div className="p-2 rounded-xl bg-chart-2/10 group-hover:bg-chart-2/15 transition-colors">
             <TrendingDown className="h-4 w-4 text-chart-2" />
@@ -54,7 +54,7 @@ export function SummaryMetrics({ result }: SummaryMetricsProps) {
             {formatCurrency(result.maxSavings)}
           </div>
           <p className="text-sm text-muted-foreground mt-2">
-            vs Diesel over {result.timeframeYears} years
+            vs Diesel über {result.timeframeYears} Jahre
           </p>
         </CardContent>
       </Card>
@@ -62,7 +62,7 @@ export function SummaryMetrics({ result }: SummaryMetricsProps) {
       <Card className="overflow-hidden border-card-border/50 shadow-sm hover:shadow-md transition-all duration-300 group">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 gap-2">
           <CardTitle className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-            Break-Even Point
+            Amortisation
           </CardTitle>
           <div className="p-2 rounded-xl bg-chart-1/10 group-hover:bg-chart-1/15 transition-colors">
             <Calendar className="h-4 w-4 text-chart-1" />
@@ -84,7 +84,7 @@ export function SummaryMetrics({ result }: SummaryMetricsProps) {
             Diesel TCO
           </CardTitle>
           <div className="p-2 rounded-xl bg-chart-4/10 group-hover:bg-chart-4/15 transition-colors">
-            <DollarSign className="h-4 w-4 text-chart-4" />
+            <Euro className="h-4 w-4 text-chart-4" />
           </div>
         </CardHeader>
         <CardContent>
@@ -92,7 +92,7 @@ export function SummaryMetrics({ result }: SummaryMetricsProps) {
             {formatCurrency(result.dieselAnalysis.totalCostOfOwnership)}
           </div>
           <p className="text-sm text-muted-foreground mt-2">
-            {result.timeframeYears}-year total cost
+            {result.timeframeYears}-Jahres Gesamtkosten
           </p>
         </CardContent>
       </Card>
@@ -100,7 +100,7 @@ export function SummaryMetrics({ result }: SummaryMetricsProps) {
       <Card className="overflow-hidden border-card-border/50 shadow-sm hover:shadow-md transition-all duration-300 group">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 gap-2">
           <CardTitle className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-            Best Electric TCO
+            Bester Elektro TCO
           </CardTitle>
           <div className="p-2 rounded-xl bg-chart-2/10 group-hover:bg-chart-2/15 transition-colors">
             <Award className="h-4 w-4 text-chart-2" />

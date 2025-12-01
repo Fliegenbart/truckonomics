@@ -21,7 +21,7 @@ export function TimeframeSelector({ value, onChange }: TimeframeSelectorProps) {
           `}
           data-testid={`button-timeframe-${years}`}
         >
-          {years} {years === 1 ? "Year" : "Years"}
+          {years} {years === 1 ? "Jahr" : "Jahre"}
         </button>
       ))}
     </div>

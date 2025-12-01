@@ -16,39 +16,39 @@ import { useToast } from "@/hooks/use-toast";
 import truckHeaderImage from "@assets/stock_images/modern_class_8_semi-_a48fa740.jpg";
 
 const defaultDieselTruck: TruckParameters = {
-  name: "Diesel Semi-Truck",
+  name: "Diesel-Sattelzug",
   type: "diesel",
-  purchasePrice: 165000,
+  purchasePrice: 155000,
   annualMileage: 120000,
-  fuelCostPerUnit: 3.8,
-  maintenanceCostAnnual: 15000,
-  insuranceCostAnnual: 12000,
+  fuelCostPerUnit: 1.65,
+  maintenanceCostAnnual: 14000,
+  insuranceCostAnnual: 11000,
   expectedLifespanYears: 12,
-  fuelEfficiency: 6.5,
+  fuelEfficiency: 32,
 };
 
 const defaultElectricTruck1: TruckParameters = {
-  name: "Electric Semi-Truck 1",
+  name: "Elektro-Sattelzug 1",
   type: "electric",
-  purchasePrice: 180000,
+  purchasePrice: 170000,
   annualMileage: 120000,
-  fuelCostPerUnit: 0.13,
-  maintenanceCostAnnual: 8000,
-  insuranceCostAnnual: 11000,
+  fuelCostPerUnit: 0.35,
+  maintenanceCostAnnual: 7500,
+  insuranceCostAnnual: 10000,
   expectedLifespanYears: 15,
-  fuelEfficiency: 170,
+  fuelEfficiency: 120,
 };
 
 const defaultElectricTruck2: TruckParameters = {
-  name: "Electric Semi-Truck 2",
+  name: "Elektro-Sattelzug 2",
   type: "electric",
-  purchasePrice: 350000,
+  purchasePrice: 320000,
   annualMileage: 100000,
-  fuelCostPerUnit: 0.13,
-  maintenanceCostAnnual: 9000,
-  insuranceCostAnnual: 12000,
+  fuelCostPerUnit: 0.35,
+  maintenanceCostAnnual: 8500,
+  insuranceCostAnnual: 11000,
   expectedLifespanYears: 12,
-  fuelEfficiency: 180,
+  fuelEfficiency: 130,
 };
 
 export default function Home() {
@@ -56,7 +56,7 @@ export default function Home() {
   const [electricTruck1, setElectricTruck1] = useState<TruckParameters>(defaultElectricTruck1);
   const [electricTruck2, setElectricTruck2] = useState<TruckParameters>(defaultElectricTruck2);
   const [timeframeYears, setTimeframeYears] = useState(10);
-  const [taxIncentiveRegion, setTaxIncentiveRegion] = useState<TaxIncentiveRegion>("federal");
+  const [taxIncentiveRegion, setTaxIncentiveRegion] = useState<TaxIncentiveRegion>("bundesfoerderung");
   const [result, setResult] = useState<ComparisonResult | null>(null);
   const { toast } = useToast();
 
@@ -75,8 +75,8 @@ export default function Home() {
     onSuccess: (data) => {
       setResult(data);
       toast({
-        title: "Calculation Complete",
-        description: "Total cost of ownership analysis has been generated.",
+        title: "Berechnung abgeschlossen",
+        description: "Die Gesamtbetriebskosten-Analyse wurde erstellt.",
       });
       
       // Smooth scroll to results
@@ -86,8 +86,8 @@ export default function Home() {
     },
     onError: () => {
       toast({
-        title: "Calculation Failed",
-        description: "Please check your inputs and try again.",
+        title: "Berechnung fehlgeschlagen",
+        description: "Bitte überprüfen Sie Ihre Eingaben und versuchen Sie es erneut.",
         variant: "destructive",
       });
     },
@@ -102,7 +102,7 @@ export default function Home() {
     setElectricTruck1(defaultElectricTruck1);
     setElectricTruck2(defaultElectricTruck2);
     setTimeframeYears(10);
-    setTaxIncentiveRegion("federal");
+    setTaxIncentiveRegion("bundesfoerderung");
     setResult(null);
   };
 
@@ -133,12 +133,12 @@ export default function Home() {
                 Truckonomics
               </h1>
               <p className="text-xl sm:text-2xl text-muted-foreground mt-2 font-light">
-                Total Cost of Ownership Calculator
+                Gesamtbetriebskosten-Rechner
               </p>
             </div>
           </div>
           <p className="text-lg text-foreground/70 max-w-2xl leading-relaxed fade-in stagger-1">
-            Compare Class 8 diesel and electric semi-trucks with comprehensive TCO analysis including purchase price, fuel costs, maintenance, insurance, and environmental impact.
+            Vergleichen Sie Diesel- und Elektro-Sattelzüge mit umfassender TCO-Analyse inklusive Kaufpreis, Kraftstoffkosten, Wartung, Versicherung und Umweltauswirkungen.
           </p>
         </div>
       </header>
@@ -149,10 +149,10 @@ export default function Home() {
         <section className="space-y-8 fade-in stagger-2">
           <div className="text-center sm:text-left">
             <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-3">
-              Truck Specifications
+              Fahrzeugspezifikationen
             </h2>
             <p className="text-muted-foreground text-base sm:text-lg">
-              Configure your Class 8 heavy-duty trucks for comparison
+              Konfigurieren Sie Ihre Schwerlast-LKWs für den Vergleich
             </p>
           </div>
 
@@ -186,9 +186,9 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div className="bg-card border border-card-border rounded-2xl p-8 shadow-sm card-hover">
               <div>
-                <h3 className="text-xl font-semibold mb-3">Analysis Timeframe</h3>
+                <h3 className="text-xl font-semibold mb-3">Analysezeitraum</h3>
                 <p className="text-sm text-muted-foreground mb-6">
-                  Select the period for total cost of ownership analysis
+                  Wählen Sie den Zeitraum für die Gesamtbetriebskosten-Analyse
                 </p>
                 <TimeframeSelector
                   value={timeframeYears}
@@ -215,7 +215,7 @@ export default function Home() {
                 data-testid="button-calculate"
               >
                 <Calculator className="mr-3 h-5 w-5" />
-                {calculateMutation.isPending ? "Calculating..." : "Calculate TCO"}
+                {calculateMutation.isPending ? "Berechnung läuft..." : "TCO berechnen"}
               </Button>
               <Button
                 onClick={handleReset}
@@ -225,7 +225,7 @@ export default function Home() {
                 data-testid="button-reset"
               >
                 <RotateCcw className="mr-2 h-5 w-5" />
-                Reset
+                Zurücksetzen
               </Button>
             </div>
           </div>
@@ -236,10 +236,10 @@ export default function Home() {
           <section id="results-section" className="space-y-10 scroll-mt-20 fade-in">
             <div className="text-center sm:text-left">
               <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-3">
-                Analysis Results
+                Analyseergebnisse
               </h2>
               <p className="text-muted-foreground text-base sm:text-lg">
-                Comprehensive cost comparison over {result.timeframeYears} years
+                Umfassender Kostenvergleich über {result.timeframeYears} Jahre
               </p>
             </div>
 
@@ -271,7 +271,7 @@ export default function Home() {
               <span className="text-muted-foreground/60">v1.0</span>
             </div>
             <p className="text-center sm:text-right text-muted-foreground/80">
-              All calculations are estimates based on provided parameters
+              Alle Berechnungen sind Schätzungen basierend auf den angegebenen Parametern
             </p>
           </div>
         </footer>
