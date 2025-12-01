@@ -2,6 +2,32 @@ import { z } from "zod";
 import { pgTable, serial, integer, text, jsonb, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 
+export const axleConfigurations = ["4x2", "6x2", "6x4", "8x4"] as const;
+export type AxleConfiguration = typeof axleConfigurations[number];
+
+export const cabinTypes = ["Fernverkehr", "Verteiler", "Nahverkehr", "Kipper"] as const;
+export type CabinType = typeof cabinTypes[number];
+
+export const technicalSpecsSchema = z.object({
+  zulaessigesGesamtgewicht: z.number().min(0).optional(),
+  zugGesamtgewicht: z.number().min(0).optional(),
+  achskonfiguration: z.enum(axleConfigurations).optional(),
+  nutzlast: z.number().min(0).optional(),
+  leistungKW: z.number().min(0).optional(),
+  leistungPS: z.number().min(0).optional(),
+  drehmoment: z.number().min(0).optional(),
+  batterieKapazitaet: z.number().min(0).optional(),
+  tankKapazitaet: z.number().min(0).optional(),
+  reichweite: z.number().min(0).optional(),
+  ladeLeistungAC: z.number().min(0).optional(),
+  ladeLeistungDC: z.number().min(0).optional(),
+  fahrerhaus: z.enum(cabinTypes).optional(),
+  laenge: z.number().min(0).optional(),
+  hoehe: z.number().min(0).optional(),
+});
+
+export type TechnicalSpecs = z.infer<typeof technicalSpecsSchema>;
+
 export const truckParametersSchema = z.object({
   name: z.string().min(1, "Name ist erforderlich"),
   type: z.enum(["diesel", "electric"]),
@@ -12,6 +38,7 @@ export const truckParametersSchema = z.object({
   insuranceCostAnnual: z.number().min(0, "Versicherungskosten müssen positiv sein"),
   expectedLifespanYears: z.number().min(1).max(30, "Lebensdauer muss zwischen 1 und 30 Jahren liegen"),
   fuelEfficiency: z.number().min(0, "Kraftstoffeffizienz muss positiv sein"),
+  technicalSpecs: technicalSpecsSchema.optional(),
 });
 
 export type TruckParameters = z.infer<typeof truckParametersSchema>;
@@ -56,6 +83,7 @@ export const truckAnalysisSchema = z.object({
     totalFuelConsumed: z.number(),
     fuelUnit: z.enum(["liters", "kWh"]),
   }),
+  technicalSpecs: technicalSpecsSchema.optional(),
 });
 
 export type TruckAnalysis = z.infer<typeof truckAnalysisSchema>;
@@ -151,6 +179,20 @@ export const presetTruckModels: Record<string, TruckParameters> = {
     insuranceCostAnnual: 11000,
     expectedLifespanYears: 12,
     fuelEfficiency: 32,
+    technicalSpecs: {
+      zulaessigesGesamtgewicht: 18000,
+      zugGesamtgewicht: 40000,
+      achskonfiguration: "4x2",
+      nutzlast: 26000,
+      leistungKW: 350,
+      leistungPS: 476,
+      drehmoment: 2300,
+      tankKapazitaet: 400,
+      reichweite: 1200,
+      fahrerhaus: "Fernverkehr",
+      laenge: 6200,
+      hoehe: 3950,
+    },
   },
   "man-tgx": {
     name: "MAN TGX",
@@ -162,6 +204,20 @@ export const presetTruckModels: Record<string, TruckParameters> = {
     insuranceCostAnnual: 10500,
     expectedLifespanYears: 12,
     fuelEfficiency: 33,
+    technicalSpecs: {
+      zulaessigesGesamtgewicht: 18000,
+      zugGesamtgewicht: 40000,
+      achskonfiguration: "4x2",
+      nutzlast: 25000,
+      leistungKW: 340,
+      leistungPS: 460,
+      drehmoment: 2300,
+      tankKapazitaet: 390,
+      reichweite: 1150,
+      fahrerhaus: "Fernverkehr",
+      laenge: 6100,
+      hoehe: 3900,
+    },
   },
   "scania-r-series": {
     name: "Scania R-Serie",
@@ -173,6 +229,20 @@ export const presetTruckModels: Record<string, TruckParameters> = {
     insuranceCostAnnual: 11500,
     expectedLifespanYears: 12,
     fuelEfficiency: 31,
+    technicalSpecs: {
+      zulaessigesGesamtgewicht: 18000,
+      zugGesamtgewicht: 40000,
+      achskonfiguration: "4x2",
+      nutzlast: 26000,
+      leistungKW: 370,
+      leistungPS: 500,
+      drehmoment: 2550,
+      tankKapazitaet: 420,
+      reichweite: 1300,
+      fahrerhaus: "Fernverkehr",
+      laenge: 6300,
+      hoehe: 4000,
+    },
   },
   "volvo-fh": {
     name: "Volvo FH",
@@ -184,6 +254,20 @@ export const presetTruckModels: Record<string, TruckParameters> = {
     insuranceCostAnnual: 11200,
     expectedLifespanYears: 12,
     fuelEfficiency: 32,
+    technicalSpecs: {
+      zulaessigesGesamtgewicht: 18000,
+      zugGesamtgewicht: 40000,
+      achskonfiguration: "4x2",
+      nutzlast: 25500,
+      leistungKW: 355,
+      leistungPS: 483,
+      drehmoment: 2400,
+      tankKapazitaet: 410,
+      reichweite: 1250,
+      fahrerhaus: "Fernverkehr",
+      laenge: 6200,
+      hoehe: 3980,
+    },
   },
   "daf-xg": {
     name: "DAF XG+",
@@ -195,6 +279,20 @@ export const presetTruckModels: Record<string, TruckParameters> = {
     insuranceCostAnnual: 11000,
     expectedLifespanYears: 12,
     fuelEfficiency: 30,
+    technicalSpecs: {
+      zulaessigesGesamtgewicht: 18000,
+      zugGesamtgewicht: 40000,
+      achskonfiguration: "4x2",
+      nutzlast: 26000,
+      leistungKW: 390,
+      leistungPS: 530,
+      drehmoment: 2600,
+      tankKapazitaet: 430,
+      reichweite: 1350,
+      fahrerhaus: "Fernverkehr",
+      laenge: 6400,
+      hoehe: 4050,
+    },
   },
   "mercedes-eactros": {
     name: "Mercedes-Benz eActros",
@@ -206,6 +304,22 @@ export const presetTruckModels: Record<string, TruckParameters> = {
     insuranceCostAnnual: 10000,
     expectedLifespanYears: 15,
     fuelEfficiency: 120,
+    technicalSpecs: {
+      zulaessigesGesamtgewicht: 27000,
+      zugGesamtgewicht: 40000,
+      achskonfiguration: "6x2",
+      nutzlast: 22000,
+      leistungKW: 400,
+      leistungPS: 544,
+      drehmoment: 2100,
+      batterieKapazitaet: 600,
+      reichweite: 500,
+      ladeLeistungAC: 22,
+      ladeLeistungDC: 400,
+      fahrerhaus: "Fernverkehr",
+      laenge: 6400,
+      hoehe: 3950,
+    },
   },
   "man-etgx": {
     name: "MAN eTGX",
@@ -217,6 +331,22 @@ export const presetTruckModels: Record<string, TruckParameters> = {
     insuranceCostAnnual: 9500,
     expectedLifespanYears: 15,
     fuelEfficiency: 125,
+    technicalSpecs: {
+      zulaessigesGesamtgewicht: 27000,
+      zugGesamtgewicht: 40000,
+      achskonfiguration: "6x2",
+      nutzlast: 21500,
+      leistungKW: 360,
+      leistungPS: 490,
+      drehmoment: 1800,
+      batterieKapazitaet: 480,
+      reichweite: 400,
+      ladeLeistungAC: 22,
+      ladeLeistungDC: 375,
+      fahrerhaus: "Fernverkehr",
+      laenge: 6300,
+      hoehe: 3900,
+    },
   },
   "volvo-fh-electric": {
     name: "Volvo FH Electric",
@@ -228,6 +358,22 @@ export const presetTruckModels: Record<string, TruckParameters> = {
     insuranceCostAnnual: 9800,
     expectedLifespanYears: 15,
     fuelEfficiency: 118,
+    technicalSpecs: {
+      zulaessigesGesamtgewicht: 27000,
+      zugGesamtgewicht: 44000,
+      achskonfiguration: "6x2",
+      nutzlast: 22500,
+      leistungKW: 490,
+      leistungPS: 666,
+      drehmoment: 2400,
+      batterieKapazitaet: 540,
+      reichweite: 450,
+      ladeLeistungAC: 43,
+      ladeLeistungDC: 250,
+      fahrerhaus: "Fernverkehr",
+      laenge: 6350,
+      hoehe: 3970,
+    },
   },
   "daf-xf-electric": {
     name: "DAF XF Electric",
@@ -239,6 +385,22 @@ export const presetTruckModels: Record<string, TruckParameters> = {
     insuranceCostAnnual: 9600,
     expectedLifespanYears: 15,
     fuelEfficiency: 130,
+    technicalSpecs: {
+      zulaessigesGesamtgewicht: 27000,
+      zugGesamtgewicht: 40000,
+      achskonfiguration: "6x2",
+      nutzlast: 21000,
+      leistungKW: 350,
+      leistungPS: 476,
+      drehmoment: 1700,
+      batterieKapazitaet: 525,
+      reichweite: 400,
+      ladeLeistungAC: 22,
+      ladeLeistungDC: 350,
+      fahrerhaus: "Fernverkehr",
+      laenge: 6250,
+      hoehe: 3920,
+    },
   },
   "scania-electric": {
     name: "Scania 45 R Electric",
@@ -250,6 +412,22 @@ export const presetTruckModels: Record<string, TruckParameters> = {
     insuranceCostAnnual: 10200,
     expectedLifespanYears: 15,
     fuelEfficiency: 115,
+    technicalSpecs: {
+      zulaessigesGesamtgewicht: 27000,
+      zugGesamtgewicht: 44000,
+      achskonfiguration: "6x4",
+      nutzlast: 23000,
+      leistungKW: 450,
+      leistungPS: 612,
+      drehmoment: 2200,
+      batterieKapazitaet: 624,
+      reichweite: 530,
+      ladeLeistungAC: 43,
+      ladeLeistungDC: 375,
+      fahrerhaus: "Fernverkehr",
+      laenge: 6450,
+      hoehe: 4000,
+    },
   },
   "renault-e-tech-t": {
     name: "Renault E-Tech T",
@@ -261,6 +439,22 @@ export const presetTruckModels: Record<string, TruckParameters> = {
     insuranceCostAnnual: 9200,
     expectedLifespanYears: 15,
     fuelEfficiency: 135,
+    technicalSpecs: {
+      zulaessigesGesamtgewicht: 26000,
+      zugGesamtgewicht: 40000,
+      achskonfiguration: "6x2",
+      nutzlast: 20000,
+      leistungKW: 330,
+      leistungPS: 449,
+      drehmoment: 1600,
+      batterieKapazitaet: 540,
+      reichweite: 400,
+      ladeLeistungAC: 22,
+      ladeLeistungDC: 250,
+      fahrerhaus: "Verteiler",
+      laenge: 6100,
+      hoehe: 3850,
+    },
   },
 };
 
