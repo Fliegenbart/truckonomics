@@ -104,6 +104,32 @@ Bevorzugter Kommunikationsstil: Einfache, alltägliche Sprache.
 - Niedersachsen
 - Keine Förderung
 
+### Technische Spezifikationen
+
+Jedes Fahrzeug kann optionale technische Spezifikationen haben, die in aufklappbaren Bereichen angezeigt werden:
+
+**Gewicht & Konfiguration**:
+- Zulässiges Gesamtgewicht (kg)
+- Zuggesamtgewicht (kg)
+- Achskonfiguration (4x2, 6x2, 6x4, 8x4)
+- Nutzlast (kg)
+
+**Antrieb & Leistung**:
+- Leistung (kW und PS)
+- Drehmoment (Nm)
+- Reichweite (km)
+
+**Energie**:
+- Diesel: Tankkapazität (L)
+- Elektro: Batteriekapazität (kWh), Ladeleistung AC/DC (kW)
+
+**Abmessungen**:
+- Länge (mm)
+- Höhe (mm)
+- Fahrerhaus-Typ (Fernverkehr, Verteiler, Nahverkehr, Kipper)
+
+Die technischen Spezifikationen werden in einer Vergleichstabelle in den Ergebnissen angezeigt, sind aber derzeit rein informativ und beeinflussen nicht die TCO-Berechnung.
+
 ### Einheiten
 
 **Kraftstoffeffizienz**:
