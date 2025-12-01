@@ -107,82 +107,87 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
+      {/* Animated Gradient Mesh Background */}
+      <div className="gradient-mesh" />
+      
       {/* Hero Header with Truck Image */}
-      <header className="relative overflow-hidden border-b border-card-border">
+      <header className="relative overflow-hidden">
         <div className="absolute inset-0">
           <img 
             src={truckHeaderImage} 
             alt="Class 8 Semi-Truck" 
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-center"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/90 to-background/70" />
+          {/* Premium gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/95 to-background/60" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
         </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-          <div className="flex items-center gap-4 mb-4">
-            <div className="p-3 bg-primary/10 rounded-xl backdrop-blur-sm border border-primary/20">
-              <Truck className="h-10 w-10 text-primary" />
+        <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-16 sm:py-24">
+          <div className="flex items-center gap-5 mb-6 fade-in">
+            <div className="p-4 glass rounded-2xl border border-primary/20 shadow-lg">
+              <Truck className="h-12 w-12 text-primary" />
             </div>
             <div>
-              <h1 className="text-4xl sm:text-5xl font-bold tracking-tight" data-testid="text-app-title">
+              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-gradient" data-testid="text-app-title">
                 Truckonomics
               </h1>
-              <p className="text-lg sm:text-xl text-muted-foreground mt-1">
+              <p className="text-xl sm:text-2xl text-muted-foreground mt-2 font-light">
                 Total Cost of Ownership Calculator
               </p>
             </div>
           </div>
-          <p className="text-base text-foreground/80 max-w-2xl">
+          <p className="text-lg text-foreground/70 max-w-2xl leading-relaxed fade-in stagger-1">
             Compare Class 8 diesel and electric semi-trucks with comprehensive TCO analysis including purchase price, fuel costs, maintenance, insurance, and environmental impact.
           </p>
         </div>
       </header>
 
-      {/* Sticky Navigation Bar */}
-      <div className="sticky top-0 z-50 bg-card/95 backdrop-blur-lg border-b border-card-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
-        </div>
-      </div>
-
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <main className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12 space-y-12 relative">
         {/* Input Section */}
-        <section className="space-y-6">
-          <div>
-            <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight mb-2">
+        <section className="space-y-8 fade-in stagger-2">
+          <div className="text-center sm:text-left">
+            <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-3">
               Truck Specifications
             </h2>
-            <p className="text-muted-foreground text-sm sm:text-base">
+            <p className="text-muted-foreground text-base sm:text-lg">
               Configure your Class 8 heavy-duty trucks for comparison
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <TruckParametersCard
-              truck={dieselTruck}
-              onChange={setDieselTruck}
-              truckIndex={0}
-            />
-            <TruckParametersCard
-              truck={electricTruck1}
-              onChange={setElectricTruck1}
-              truckIndex={1}
-            />
-            <TruckParametersCard
-              truck={electricTruck2}
-              onChange={setElectricTruck2}
-              truckIndex={2}
-            />
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="card-hover">
+              <TruckParametersCard
+                truck={dieselTruck}
+                onChange={setDieselTruck}
+                truckIndex={0}
+              />
+            </div>
+            <div className="card-hover">
+              <TruckParametersCard
+                truck={electricTruck1}
+                onChange={setElectricTruck1}
+                truckIndex={1}
+              />
+            </div>
+            <div className="card-hover">
+              <TruckParametersCard
+                truck={electricTruck2}
+                onChange={setElectricTruck2}
+                truckIndex={2}
+              />
+            </div>
           </div>
         </section>
 
         {/* Calculation Controls */}
-        <section className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="bg-card border border-card-border rounded-md p-6 space-y-4">
+        <section className="space-y-8 fade-in stagger-3">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="bg-card border border-card-border rounded-2xl p-8 shadow-sm card-hover">
               <div>
-                <h3 className="text-lg font-medium mb-2">Analysis Timeframe</h3>
-                <p className="text-sm text-muted-foreground mb-4">
+                <h3 className="text-xl font-semibold mb-3">Analysis Timeframe</h3>
+                <p className="text-sm text-muted-foreground mb-6">
                   Select the period for total cost of ownership analysis
                 </p>
                 <TimeframeSelector
@@ -192,29 +197,31 @@ export default function Home() {
               </div>
             </div>
 
-            <TaxIncentiveSelector
-              value={taxIncentiveRegion}
-              onChange={setTaxIncentiveRegion}
-            />
+            <div className="card-hover">
+              <TaxIncentiveSelector
+                value={taxIncentiveRegion}
+                onChange={setTaxIncentiveRegion}
+              />
+            </div>
           </div>
 
-          <div className="bg-card border border-card-border rounded-md p-6">
-            <div className="flex flex-col sm:flex-row gap-3">
+          <div className="bg-card border border-card-border rounded-2xl p-8 shadow-sm">
+            <div className="flex flex-col sm:flex-row gap-4">
               <Button
                 onClick={handleCalculate}
                 disabled={calculateMutation.isPending}
                 size="lg"
-                className="flex-1 min-h-12"
+                className="flex-1 min-h-14 text-lg font-medium rounded-xl shadow-md transition-all duration-300 hover:shadow-lg hover:scale-[1.02]"
                 data-testid="button-calculate"
               >
-                <Calculator className="mr-2 h-5 w-5" />
+                <Calculator className="mr-3 h-5 w-5" />
                 {calculateMutation.isPending ? "Calculating..." : "Calculate TCO"}
               </Button>
               <Button
                 onClick={handleReset}
                 variant="outline"
                 size="lg"
-                className="sm:w-auto min-h-12"
+                className="sm:w-auto min-h-14 rounded-xl transition-all duration-300"
                 data-testid="button-reset"
               >
                 <RotateCcw className="mr-2 h-5 w-5" />
@@ -226,34 +233,44 @@ export default function Home() {
 
         {/* Results Section */}
         {result && (
-          <section id="results-section" className="space-y-8 scroll-mt-20">
-            <div>
-              <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight mb-2">
+          <section id="results-section" className="space-y-10 scroll-mt-20 fade-in">
+            <div className="text-center sm:text-left">
+              <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-3">
                 Analysis Results
               </h2>
-              <p className="text-muted-foreground text-sm sm:text-base">
+              <p className="text-muted-foreground text-base sm:text-lg">
                 Comprehensive cost comparison over {result.timeframeYears} years
               </p>
             </div>
 
             <SummaryMetrics result={result} />
 
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-              <AmortizationChart result={result} />
-              <CostBreakdownChart result={result} />
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+              <div className="card-hover">
+                <AmortizationChart result={result} />
+              </div>
+              <div className="card-hover">
+                <CostBreakdownChart result={result} />
+              </div>
             </div>
 
-            <EnvironmentalImpactCard result={result} />
+            <div className="card-hover">
+              <EnvironmentalImpactCard result={result} />
+            </div>
 
             <DetailedTCOTable result={result} />
           </section>
         )}
 
         {/* Footer */}
-        <footer className="pt-12 pb-6 border-t border-border mt-16">
+        <footer className="pt-16 pb-8 border-t border-border/50 mt-20">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-            <p>Truck TCO Calculator v1.0</p>
-            <p className="text-center sm:text-right">
+            <div className="flex items-center gap-2">
+              <Truck className="h-4 w-4 text-primary" />
+              <span className="font-medium">Truckonomics</span>
+              <span className="text-muted-foreground/60">v1.0</span>
+            </div>
+            <p className="text-center sm:text-right text-muted-foreground/80">
               All calculations are estimates based on provided parameters
             </p>
           </div>

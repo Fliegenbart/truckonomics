@@ -2,94 +2,112 @@
 @tailwind components;
 @tailwind utilities;
 
+/* APPLE/JONY IVE INSPIRED DESIGN SYSTEM */
 /* LIGHT MODE */
 :root {
-  --button-outline: rgba(0,0,0, .10);
-  --badge-outline: rgba(0,0,0, .05);
+  --button-outline: rgba(0,0,0, .08);
+  --badge-outline: rgba(0,0,0, .04);
 
   /* Automatic computation of border around primary / danger buttons */
   --opaque-button-border-intensity: -8; /* In terms of percentages */
 
   /* Backgrounds applied on top of other backgrounds when hovered/active */
-  --elevate-1: rgba(0,0,0, .03);
-  --elevate-2: rgba(0,0,0, .08);
+  --elevate-1: rgba(0,0,0, .025);
+  --elevate-2: rgba(0,0,0, .06);
 
-  --background: 220 15% 97%;
+  /* Premium off-white with subtle warmth */
+  --background: 240 20% 98%;
 
-  --foreground: 220 15% 15%;
+  /* Deep charcoal for text - not pure black */
+  --foreground: 240 10% 12%;
 
-  --border: 220 10% 90%;
+  /* Subtle cool gray borders */
+  --border: 240 10% 92%;
 
+  /* Pure white cards with subtle depth */
   --card: 0 0% 100%;
 
-  --card-foreground: 220 15% 15%;
+  --card-foreground: 240 10% 12%;
 
-  --card-border: 220 8% 94%;
+  --card-border: 240 8% 94%;
 
-  --sidebar: 0 0% 96%;
+  --sidebar: 240 15% 97%;
 
-  --sidebar-foreground: 0 0% 13%;
+  --sidebar-foreground: 240 10% 15%;
 
-  --sidebar-border: 0 0% 90%;
+  --sidebar-border: 240 10% 92%;
 
-  --sidebar-primary: 210 100% 40%;
+  /* Apple Blue - signature accent */
+  --sidebar-primary: 211 100% 50%;
 
   --sidebar-primary-foreground: 0 0% 100%;
 
-  --sidebar-accent: 0 0% 92%;
+  --sidebar-accent: 240 10% 95%;
 
-  --sidebar-accent-foreground: 0 0% 13%;
+  --sidebar-accent-foreground: 240 10% 15%;
 
-  --sidebar-ring: 210 100% 40%;
+  --sidebar-ring: 211 100% 50%;
 
   --popover: 0 0% 100%;
 
-  --popover-foreground: 0 0% 13%;
+  --popover-foreground: 240 10% 12%;
 
-  --popover-border: 0 0% 88%;
+  --popover-border: 240 8% 92%;
 
-  --primary: 210 100% 48%;
+  /* Apple Blue primary - vibrant and confident */
+  --primary: 211 100% 50%;
 
   --primary-foreground: 0 0% 100%;
 
-  --secondary: 220 10% 96%;
+  --secondary: 240 10% 96%;
 
-  --secondary-foreground: 220 15% 15%;
+  --secondary-foreground: 240 10% 15%;
 
-  --muted: 220 10% 96%;
+  --muted: 240 10% 96%;
 
-  --muted-foreground: 220 10% 45%;
+  --muted-foreground: 240 5% 46%;
 
-  --accent: 0 0% 93%;
+  --accent: 240 10% 95%;
 
-  --accent-foreground: 0 0% 13%;
+  --accent-foreground: 240 10% 15%;
 
-  --destructive: 0 84% 48%;
+  /* Apple Red for destructive */
+  --destructive: 0 100% 59%;
 
   --destructive-foreground: 0 0% 100%;
 
-  --input: 0 0% 78%;
-  --ring: 210 100% 40%;
-  --chart-1: 210 100% 40%;
-  --chart-2: 142 71% 35%;
-  --chart-3: 180 65% 38%;
-  --chart-4: 25 95% 53%;
-  --chart-5: 270 60% 45%;
+  --input: 240 5% 84%;
+  --ring: 211 100% 50%;
+  
+  /* Chart colors - Apple-inspired palette */
+  --chart-1: 211 100% 50%;
+  --chart-2: 160 84% 39%;
+  --chart-3: 32 95% 44%;
+  --chart-4: 280 85% 55%;
+  --chart-5: 340 82% 52%;
 
-  --font-sans: 'Inter', system-ui, sans-serif;
-  --font-serif: Georgia, serif;
-  --font-mono: Menlo, monospace;
-  --radius: .5rem; /* 8px */
-  --shadow-2xs: 0px 1px 2px 0px hsl(0 0% 0% / 0.05);
-  --shadow-xs: 0px 1px 3px 0px hsl(0 0% 0% / 0.08);
-  --shadow-sm: 0px 2px 8px -1px hsl(220 20% 0% / 0.04), 0px 1px 3px -1px hsl(220 20% 0% / 0.02);
-  --shadow: 0px 4px 12px -1px hsl(220 20% 0% / 0.06), 0px 2px 6px -2px hsl(220 20% 0% / 0.03);
-  --shadow-md: 0px 8px 20px -2px hsl(220 20% 0% / 0.08), 0px 3px 8px -3px hsl(220 20% 0% / 0.04);
-  --shadow-lg: 0px 16px 32px -4px hsl(220 20% 0% / 0.10), 0px 6px 16px -6px hsl(220 20% 0% / 0.05);
-  --shadow-xl: 0px 24px 48px -8px hsl(220 20% 0% / 0.12), 0px 10px 24px -10px hsl(220 20% 0% / 0.06);
-  --shadow-2xl: 0px 32px 64px -12px hsl(220 20% 0% / 0.14);
-  --tracking-normal: -0.02em;
+  /* SF Pro inspired typography */
+  --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', system-ui, sans-serif;
+  --font-serif: 'New York', Georgia, serif;
+  --font-mono: 'SF Mono', Menlo, monospace;
+  --radius: .75rem; /* 12px - slightly more rounded like Apple */
+  
+  /* Refined shadows with subtle blue tint */
+  --shadow-2xs: 0px 1px 2px 0px hsl(220 60% 50% / 0.03);
+  --shadow-xs: 0px 1px 3px 0px hsl(220 60% 50% / 0.05);
+  --shadow-sm: 0px 2px 8px -2px hsl(220 60% 40% / 0.06), 0px 1px 2px -1px hsl(220 60% 40% / 0.02);
+  --shadow: 0px 4px 16px -2px hsl(220 60% 40% / 0.08), 0px 2px 4px -2px hsl(220 60% 40% / 0.03);
+  --shadow-md: 0px 8px 24px -4px hsl(220 60% 35% / 0.10), 0px 4px 8px -4px hsl(220 60% 35% / 0.04);
+  --shadow-lg: 0px 16px 40px -8px hsl(220 60% 30% / 0.12), 0px 8px 16px -8px hsl(220 60% 30% / 0.05);
+  --shadow-xl: 0px 24px 56px -12px hsl(220 60% 25% / 0.14), 0px 12px 24px -12px hsl(220 60% 25% / 0.06);
+  --shadow-2xl: 0px 32px 72px -16px hsl(220 60% 20% / 0.16);
+  --tracking-normal: -0.025em;
   --spacing: 0.25rem;
+  
+  /* Apple-style gradient mesh colors */
+  --gradient-1: 211 100% 50%;
+  --gradient-2: 280 85% 55%;
+  --gradient-3: 160 84% 39%;
 
   /* Automatically computed borders - intensity can be controlled by the user by the --opaque-button-border-intensity setting */
 
@@ -122,87 +140,102 @@
   --destructive-border: hsl(from hsl(var(--destructive)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
 }
 
+/* DARK MODE - Premium Apple Dark Aesthetic */
 .dark {
-  --button-outline: rgba(255,255,255, .10);
-  --badge-outline: rgba(255,255,255, .05);
+  --button-outline: rgba(255,255,255, .08);
+  --badge-outline: rgba(255,255,255, .04);
 
   --opaque-button-border-intensity: 9;  /* In terms of percentages */
 
   /* Backgrounds applied on top of other backgrounds when hovered/active */
-  --elevate-1: rgba(255,255,255, .04);
-  --elevate-2: rgba(255,255,255, .09);
+  --elevate-1: rgba(255,255,255, .03);
+  --elevate-2: rgba(255,255,255, .07);
 
-  --background: 220 20% 8%;
+  /* Deep space black with subtle blue undertone */
+  --background: 240 15% 6%;
 
-  --foreground: 220 15% 95%;
+  /* Crisp white text */
+  --foreground: 0 0% 98%;
 
-  --border: 220 15% 20%;
+  /* Subtle divider lines */
+  --border: 240 10% 18%;
 
-  --card: 220 15% 13%;
+  /* Elevated card surfaces */
+  --card: 240 12% 10%;
 
-  --card-foreground: 220 15% 95%;
+  --card-foreground: 0 0% 98%;
 
-  --card-border: 220 15% 18%;
+  --card-border: 240 10% 16%;
 
-  --sidebar: 0 0% 11%;
+  --sidebar: 240 12% 8%;
 
-  --sidebar-foreground: 0 0% 95%;
+  --sidebar-foreground: 0 0% 98%;
 
-  --sidebar-border: 0 0% 16%;
+  --sidebar-border: 240 10% 16%;
 
-  --sidebar-primary: 210 100% 60%;
+  /* Brighter Apple Blue for dark mode */
+  --sidebar-primary: 211 100% 58%;
 
   --sidebar-primary-foreground: 0 0% 100%;
 
-  --sidebar-accent: 0 0% 16%;
+  --sidebar-accent: 240 10% 14%;
 
-  --sidebar-accent-foreground: 0 0% 95%;
+  --sidebar-accent-foreground: 0 0% 98%;
 
-  --sidebar-ring: 210 100% 60%;
+  --sidebar-ring: 211 100% 58%;
 
-  --popover: 0 0% 13%;
+  --popover: 240 12% 10%;
 
-  --popover-foreground: 0 0% 95%;
+  --popover-foreground: 0 0% 98%;
 
-  --popover-border: 0 0% 18%;
+  --popover-border: 240 10% 18%;
 
-  --primary: 210 100% 58%;
+  /* Vibrant Apple Blue */
+  --primary: 211 100% 58%;
 
   --primary-foreground: 0 0% 100%;
 
-  --secondary: 220 15% 18%;
+  --secondary: 240 10% 16%;
 
-  --secondary-foreground: 220 15% 95%;
+  --secondary-foreground: 0 0% 98%;
 
-  --muted: 220 15% 15%;
+  --muted: 240 10% 14%;
 
-  --muted-foreground: 220 10% 70%;
+  --muted-foreground: 240 5% 60%;
 
-  --accent: 0 0% 17%;
+  --accent: 240 10% 16%;
 
-  --accent-foreground: 0 0% 95%;
+  --accent-foreground: 0 0% 98%;
 
-  --destructive: 0 84% 58%;
+  /* Apple Red - slightly brighter for dark */
+  --destructive: 0 100% 62%;
 
   --destructive-foreground: 0 0% 100%;
 
-  --input: 0 0% 30%;
-  --ring: 210 100% 60%;
-  --chart-1: 210 100% 60%;
-  --chart-2: 142 71% 45%;
-  --chart-3: 180 65% 50%;
-  --chart-4: 25 95% 60%;
-  --chart-5: 270 60% 60%;
+  --input: 240 10% 26%;
+  --ring: 211 100% 58%;
+  
+  /* Vibrant chart colors for dark mode */
+  --chart-1: 211 100% 58%;
+  --chart-2: 160 84% 45%;
+  --chart-3: 32 95% 52%;
+  --chart-4: 280 85% 62%;
+  --chart-5: 340 82% 58%;
+  
+  /* Gradient mesh colors for dark mode */
+  --gradient-1: 211 100% 58%;
+  --gradient-2: 280 85% 62%;
+  --gradient-3: 160 84% 45%;
 
-  --shadow-2xs: 0px 1px 2px 0px hsl(0 0% 0% / 0.20);
-  --shadow-xs: 0px 1px 3px 0px hsl(0 0% 0% / 0.25);
-  --shadow-sm: 0px 2px 4px -1px hsl(0 0% 0% / 0.30), 0px 1px 2px -1px hsl(0 0% 0% / 0.20);
-  --shadow: 0px 4px 6px -1px hsl(0 0% 0% / 0.35), 0px 2px 4px -2px hsl(0 0% 0% / 0.25);
-  --shadow-md: 0px 6px 12px -2px hsl(0 0% 0% / 0.40), 0px 3px 6px -3px hsl(0 0% 0% / 0.30);
-  --shadow-lg: 0px 12px 24px -4px hsl(0 0% 0% / 0.45), 0px 6px 12px -6px hsl(0 0% 0% / 0.35);
-  --shadow-xl: 0px 20px 40px -8px hsl(0 0% 0% / 0.50), 0px 10px 20px -10px hsl(0 0% 0% / 0.40);
-  --shadow-2xl: 0px 30px 60px -12px hsl(0 0% 0% / 0.55);
-
+  /* Deep shadows with subtle glow effect */
+  --shadow-2xs: 0px 1px 2px 0px hsl(0 0% 0% / 0.25), 0 0 0 1px hsl(0 0% 100% / 0.02);
+  --shadow-xs: 0px 1px 3px 0px hsl(0 0% 0% / 0.30), 0 0 0 1px hsl(0 0% 100% / 0.02);
+  --shadow-sm: 0px 2px 6px -1px hsl(0 0% 0% / 0.35), 0 0 0 1px hsl(0 0% 100% / 0.02);
+  --shadow: 0px 4px 12px -2px hsl(0 0% 0% / 0.40), 0 0 0 1px hsl(0 0% 100% / 0.02);
+  --shadow-md: 0px 8px 20px -4px hsl(0 0% 0% / 0.45), 0 0 0 1px hsl(0 0% 100% / 0.02);
+  --shadow-lg: 0px 16px 36px -8px hsl(0 0% 0% / 0.50), 0 0 0 1px hsl(0 0% 100% / 0.02);
+  --shadow-xl: 0px 24px 48px -12px hsl(0 0% 0% / 0.55), 0 0 0 1px hsl(0 0% 100% / 0.02);
+  --shadow-2xl: 0px 32px 64px -16px hsl(0 0% 0% / 0.60), 0 0 0 1px hsl(0 0% 100% / 0.02);
 }
 
 @layer base {
@@ -212,7 +245,212 @@
 
   body {
     @apply font-sans antialiased bg-background text-foreground;
+    font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
+  
+  /* Premium letter spacing for headings */
+  h1, h2, h3, h4, h5, h6 {
+    letter-spacing: -0.025em;
+  }
+}
+
+/* Apple-style gradient mesh background */
+.gradient-mesh {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.gradient-mesh::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse 80% 80% at 70% 20%,
+    hsl(var(--gradient-1) / 0.08) 0%,
+    transparent 50%
+  );
+  animation: float 20s ease-in-out infinite;
+}
+
+.gradient-mesh::after {
+  content: '';
+  position: absolute;
+  bottom: -50%;
+  left: -50%;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse 80% 80% at 30% 80%,
+    hsl(var(--gradient-2) / 0.06) 0%,
+    transparent 50%
+  );
+  animation: float 25s ease-in-out infinite reverse;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(2%, 2%) rotate(1deg); }
+  50% { transform: translate(-1%, 3%) rotate(-1deg); }
+  75% { transform: translate(1%, -2%) rotate(0.5deg); }
+}
+
+/* Secondary gradient blob */
+.gradient-blob {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.5;
+  pointer-events: none;
+  animation: blob 30s ease-in-out infinite;
+}
+
+.gradient-blob.blob-1 {
+  top: -200px;
+  right: -100px;
+  background: hsl(var(--gradient-1) / 0.15);
+}
+
+.gradient-blob.blob-2 {
+  bottom: -200px;
+  left: -100px;
+  background: hsl(var(--gradient-2) / 0.12);
+}
+
+.gradient-blob.blob-3 {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 400px;
+  background: hsl(var(--gradient-3) / 0.08);
+  animation-delay: -10s;
+}
+
+@keyframes blob {
+  0%, 100% { transform: scale(1) translate(0, 0); }
+  33% { transform: scale(1.05) translate(20px, -30px); }
+  66% { transform: scale(0.95) translate(-20px, 20px); }
+}
+
+/* Subtle dot pattern overlay */
+.pattern-dots {
+  background-image: radial-gradient(
+    hsl(var(--foreground) / 0.03) 1px,
+    transparent 1px
+  );
+  background-size: 24px 24px;
+}
+
+/* Glass morphism utility */
+.glass {
+  background: hsl(var(--card) / 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid hsl(var(--border) / 0.5);
+}
+
+.glass-subtle {
+  background: hsl(var(--card) / 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Premium card hover effect */
+.card-hover {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+              box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Smooth fade-in animation */
+.fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(10px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+/* Staggered animation delays */
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+
+/* Apple-style focus ring */
+input:focus-visible,
+button:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px hsl(var(--primary) / 0.15);
+}
+
+/* Premium input styling */
+.input-premium {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-premium:focus {
+  border-color: hsl(var(--primary) / 0.5);
+  box-shadow: 0 0 0 4px hsl(var(--primary) / 0.1);
+}
+
+/* Accent gradient text */
+.text-gradient {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--gradient-1)) 0%,
+    hsl(var(--gradient-2)) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Accent border gradient */
+.border-gradient {
+  position: relative;
+  background: hsl(var(--card));
+  border-radius: var(--radius);
+}
+
+.border-gradient::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    hsl(var(--gradient-1) / 0.3),
+    hsl(var(--gradient-2) / 0.3)
+  );
+  z-index: -1;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: xor;
+  -webkit-mask-composite: xor;
+  padding: 1px;
 }
 
 /**

@@ -56,26 +56,31 @@ export function TruckParametersCard({ truck, onChange, truckIndex }: TruckParame
   const availablePresets = isDiesel ? dieselPresets : electricPresets;
 
   return (
-    <Card>
-      <CardHeader className="space-y-3 pb-4">
-        <div className="flex items-start justify-between gap-2">
-          <div className="flex items-center gap-2">
-            {isDiesel ? (
-              <Truck className="h-5 w-5 text-chart-1" />
-            ) : (
-              <Zap className="h-5 w-5 text-chart-2" />
-            )}
-            <CardTitle className="text-lg">
+    <Card className="overflow-hidden border-card-border/50 shadow-sm hover:shadow-md transition-shadow duration-300">
+      <CardHeader className="space-y-4 pb-5 bg-gradient-to-b from-muted/30 to-transparent">
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className={`p-2.5 rounded-xl ${isDiesel ? 'bg-chart-1/10' : 'bg-chart-2/10'}`}>
+              {isDiesel ? (
+                <Truck className="h-5 w-5 text-chart-1" />
+              ) : (
+                <Zap className="h-5 w-5 text-chart-2" />
+              )}
+            </div>
+            <CardTitle className="text-xl font-semibold">
               {isDiesel ? "Diesel Truck" : `Electric Truck ${truckIndex}`}
             </CardTitle>
           </div>
-          <Badge variant={isDiesel ? "secondary" : "default"} className="shrink-0">
+          <Badge 
+            variant={isDiesel ? "secondary" : "default"} 
+            className={`shrink-0 px-3 py-1 rounded-full font-medium ${isDiesel ? '' : 'bg-chart-2 hover:bg-chart-2/90'}`}
+          >
             {isDiesel ? "Diesel" : "Electric"}
           </Badge>
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-5 pt-2">
         <div className="space-y-2">
           <Label htmlFor={`preset-${truckIndex}`} className="text-xs uppercase tracking-wider font-medium">
             Preset Model

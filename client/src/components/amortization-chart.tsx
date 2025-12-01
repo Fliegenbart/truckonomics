@@ -29,15 +29,15 @@ export function AmortizationChart({ result }: AmortizationChartProps) {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Amortization Timeline</CardTitle>
+    <Card className="overflow-hidden border-card-border/50 shadow-sm">
+      <CardHeader className="pb-4">
+        <CardTitle className="text-xl font-semibold">Amortization Timeline</CardTitle>
         <p className="text-sm text-muted-foreground">
           Cumulative cost comparison over time
         </p>
       </CardHeader>
       <CardContent>
-        <div className="h-80" data-testid="chart-amortization">
+        <div className="h-80 sm:h-96" data-testid="chart-amortization">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={chartData} margin={{ top: 5, right: 10, left: 10, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
