@@ -1,6 +1,7 @@
+import { Fragment } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Truck, Zap, Weight, Gauge, Battery, Fuel, Ruler, Settings } from "lucide-react";
+import { Truck, Zap, Weight, Gauge, Battery, Ruler, Settings } from "lucide-react";
 import type { TruckAnalysis } from "@shared/schema";
 
 interface TechnicalSpecsComparisonProps {
@@ -111,8 +112,8 @@ export function TechnicalSpecsComparison({
             </thead>
             <tbody>
               {specRows.map((category) => (
-                <>
-                  <tr key={category.category} className="bg-muted/20">
+                <Fragment key={category.category}>
+                  <tr className="bg-muted/20">
                     <td colSpan={4} className="py-2 px-4">
                       <div className="flex items-center gap-2">
                         <category.icon className="h-4 w-4 text-muted-foreground" />
@@ -163,7 +164,7 @@ export function TechnicalSpecsComparison({
                       </tr>
                     );
                   })}
-                </>
+                </Fragment>
               ))}
             </tbody>
           </table>
