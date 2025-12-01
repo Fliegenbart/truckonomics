@@ -80,20 +80,28 @@ Bevorzugter Kommunikationsstil: Einfache, alltägliche Sprache.
 
 ### LKW-Voreinstellungen (Europäische Modelle)
 
-**Diesel-LKWs**:
+**Diesel-LKWs** (5 Modelle):
 - Mercedes-Benz Actros
 - MAN TGX
 - Scania R-Serie
 - Volvo FH
 - DAF XG+
 
-**Elektro-LKWs**:
-- Mercedes-Benz eActros
-- MAN eTGX
-- Volvo FH Electric
-- DAF XF Electric
-- Scania 45 R Electric
-- Renault E-Tech T
+**Elektro-LKWs** (14 Modelle):
+- Mercedes-Benz eActros 600 (Fernverkehr, 621 kWh, 500 km)
+- Mercedes-Benz eActros 400 (Verteiler, 414 kWh, 480 km)
+- Mercedes-Benz eActros 300 (Nahverkehr, 336 kWh, 330 km)
+- MAN eTGX (6 Batterien, 560 kWh, 500 km)
+- Volvo FH Electric (540 kWh, 345 km)
+- Volvo FH Aero Electric 600 km (780 kWh, 600 km)
+- Volvo FM Electric (Verteiler, 540 kWh, 380 km)
+- DAF XF Electric (525 kWh, 500 km)
+- DAF XD Electric (Verteiler, 420 kWh, 350 km)
+- Scania 40 R BEV (6 Batterien, 624 kWh, 350 km)
+- Renault E-Tech T 585 (585 kWh, 460 km)
+- Renault E-Tech T 780 (780 kWh, 600 km)
+- Iveco S-eWay BEV (738 kWh, 530 km)
+- BYD ETH8 (Nahverkehr, 255 kWh, 200 km)
 
 ### Förderungsregionen (Deutschland)
 
