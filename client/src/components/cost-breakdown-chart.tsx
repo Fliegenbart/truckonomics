@@ -68,45 +68,46 @@ export function CostBreakdownChart({ result }: CostBreakdownChartProps) {
   };
 
   return (
-    <Card>
+    <Card className="overflow-hidden border border-border bg-card shadow-none">
       <CardHeader>
-        <CardTitle>Kostenaufschlüsselung</CardTitle>
-        <p className="text-sm text-muted-foreground">
-          Gesamtkosten nach Kategorie über {result.timeframeYears} Jahre
-        </p>
+        <p className="label-editorial mb-2">Aufschlüsselung</p>
+        <CardTitle className="font-serif text-xl font-medium">Kostenverteilung</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="h-80" data-testid="chart-breakdown">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={chartData} margin={{ top: 5, right: 10, left: 10, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
-              <XAxis 
-                dataKey="name" 
-                className="text-xs"
+              <CartesianGrid strokeDasharray="1 4" stroke="hsl(var(--border))" />
+              <XAxis
+                dataKey="name"
+                tick={{ fontSize: 12 }}
                 angle={-15}
                 textAnchor="end"
                 height={80}
+                stroke="hsl(var(--muted-foreground))"
               />
-              <YAxis 
+              <YAxis
                 tickFormatter={(value) => `€${(value / 1000).toFixed(0)}k`}
                 label={{ value: "Kosten (€)", angle: -90, position: "insideLeft" }}
-                className="text-xs"
+                tick={{ fontSize: 12 }}
+                stroke="hsl(var(--muted-foreground))"
               />
               <Tooltip
                 formatter={(value: number) => formatCurrency(value)}
                 contentStyle={{
                   backgroundColor: "hsl(var(--popover))",
-                  border: "1px solid hsl(var(--popover-border))",
-                  borderRadius: "var(--radius)",
+                  border: "1px solid hsl(var(--border))",
+                  borderRadius: "2px",
                   color: "hsl(var(--popover-foreground))",
+                  fontSize: "13px",
                 }}
               />
-              <Legend wrapperStyle={{ paddingTop: "10px" }} />
-              <Bar dataKey="Kaufpreis" stackId="a" fill="hsl(var(--chart-1))" />
-              <Bar dataKey="Kraftstoff" stackId="a" fill="hsl(var(--chart-2))" />
-              <Bar dataKey="Wartung" stackId="a" fill="hsl(var(--chart-4))" />
-              <Bar dataKey="Versicherung" stackId="a" fill="hsl(var(--chart-5))" />
-              <Bar dataKey="Abschreibung" stackId="a" fill="hsl(var(--chart-3))" />
+              <Legend wrapperStyle={{ paddingTop: "10px", fontSize: "13px" }} />
+              <Bar dataKey="Kaufpreis" stackId="a" fill="hsl(var(--primary))" />
+              <Bar dataKey="Kraftstoff" stackId="a" fill="hsl(var(--foreground))" />
+              <Bar dataKey="Wartung" stackId="a" fill="hsl(var(--muted-foreground))" />
+              <Bar dataKey="Versicherung" stackId="a" fill="hsl(var(--border))" />
+              <Bar dataKey="Abschreibung" stackId="a" fill="hsl(var(--muted))" />
             </BarChart>
           </ResponsiveContainer>
         </div>

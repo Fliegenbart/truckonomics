@@ -75,44 +75,42 @@ export function TruckParametersCard({ truck, onChange, truckIndex }: TruckParame
   const availablePresets = isDiesel ? dieselPresets : electricPresets;
 
   return (
-    <Card className="overflow-hidden border-card-border/50 shadow-sm hover:shadow-md transition-shadow duration-300">
-      <CardHeader className="space-y-4 pb-5 bg-gradient-to-b from-muted/30 to-transparent">
+    <Card className="overflow-hidden border border-border bg-card shadow-none">
+      <CardHeader className="space-y-4 pb-4">
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className={`p-2.5 rounded-xl ${isDiesel ? 'bg-chart-1/10' : 'bg-chart-2/10'}`}>
-              {isDiesel ? (
-                <Truck className="h-5 w-5 text-chart-1" />
-              ) : (
-                <Zap className="h-5 w-5 text-chart-2" />
-              )}
-            </div>
-            <CardTitle className="text-xl font-semibold">
+            {isDiesel ? (
+              <Truck className="h-5 w-5 text-muted-foreground" />
+            ) : (
+              <Zap className="h-5 w-5 text-primary" />
+            )}
+            <CardTitle className="font-serif text-xl font-medium">
               {isDiesel ? "Diesel-LKW" : `Elektro-LKW ${truckIndex}`}
             </CardTitle>
           </div>
           <Badge
-            variant={isDiesel ? "secondary" : "default"}
-            className={`shrink-0 px-3 py-1 rounded-full font-medium ${isDiesel ? '' : 'bg-chart-2 hover:bg-chart-2/90'}`}
+            variant="outline"
+            className={`shrink-0 px-2.5 py-0.5 text-xs font-medium border ${isDiesel ? 'border-muted-foreground/30 text-muted-foreground' : 'border-primary/30 text-primary'}`}
           >
             {isDiesel ? "Diesel" : "Elektro"}
           </Badge>
         </div>
 
-        {/* Truck Image */}
-        <div className="relative h-32 -mx-6 overflow-hidden rounded-lg">
+        {/* Truck Image - minimal */}
+        <div className="relative h-28 -mx-6 overflow-hidden border-y border-border">
           <img
             src={getTruckImage(selectedPresetKey, truck.type)}
             alt={truck.name}
-            className="w-full h-full object-cover transition-all duration-500"
+            className="w-full h-full object-cover grayscale-[30%] opacity-90"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
-          <div className="absolute bottom-2 left-3 right-3">
+          <div className="absolute inset-0 bg-gradient-to-t from-card/90 to-transparent" />
+          <div className="absolute bottom-3 left-6 right-6">
             <p className="text-sm font-medium text-foreground truncate">{truck.name}</p>
           </div>
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-5 pt-2">
+      <CardContent className="space-y-4 pt-0">
         <div className="space-y-2">
           <Label htmlFor={`preset-${truckIndex}`} className="text-xs uppercase tracking-wider font-medium">
             Voreinstellung
@@ -305,20 +303,20 @@ export function TruckParametersCard({ truck, onChange, truckIndex }: TruckParame
 
         <Collapsible open={specsOpen} onOpenChange={setSpecsOpen}>
           <CollapsibleTrigger asChild>
-            <Button 
-              variant="ghost" 
-              className="w-full justify-between px-3 py-2 h-auto text-sm font-medium"
+            <Button
+              variant="ghost"
+              className="w-full justify-between px-0 py-2 h-auto text-sm font-medium hover:bg-transparent"
               data-testid={`toggle-specs-${truckIndex}`}
             >
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 text-muted-foreground">
                 <Settings2 className="h-4 w-4" />
                 <span>Technische Spezifikationen</span>
               </div>
-              <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${specsOpen ? 'rotate-180' : ''}`} />
+              <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform duration-200 ${specsOpen ? 'rotate-180' : ''}`} />
             </Button>
           </CollapsibleTrigger>
           <CollapsibleContent className="pt-4 space-y-4">
-            <div className="p-4 rounded-lg bg-muted/30 border border-border/50 space-y-4">
+            <div className="p-4 border border-border space-y-4">
               <h4 className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">Gewicht & Konfiguration</h4>
               
               <div className="grid grid-cols-2 gap-4">
@@ -392,7 +390,7 @@ export function TruckParametersCard({ truck, onChange, truckIndex }: TruckParame
               </div>
             </div>
 
-            <div className="p-4 rounded-lg bg-muted/30 border border-border/50 space-y-4">
+            <div className="p-4 border border-border space-y-4">
               <h4 className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">Antrieb & Leistung</h4>
               
               <div className="grid grid-cols-2 gap-4">
@@ -460,7 +458,7 @@ export function TruckParametersCard({ truck, onChange, truckIndex }: TruckParame
               </div>
             </div>
 
-            <div className="p-4 rounded-lg bg-muted/30 border border-border/50 space-y-4">
+            <div className="p-4 border border-border space-y-4">
               <h4 className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">
                 {isDiesel ? "Tank & Kabine" : "Batterie & Laden"}
               </h4>
@@ -557,7 +555,7 @@ export function TruckParametersCard({ truck, onChange, truckIndex }: TruckParame
               )}
             </div>
 
-            <div className="p-4 rounded-lg bg-muted/30 border border-border/50 space-y-4">
+            <div className="p-4 border border-border space-y-4">
               <h4 className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">Abmessungen</h4>
               
               <div className="grid grid-cols-2 gap-4">

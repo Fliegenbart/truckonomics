@@ -19,7 +19,6 @@ import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import type { TruckParameters, ComparisonResult, TaxIncentiveRegion } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
-import truckHeaderImage from "@assets/stock_images/modern_class_8_semi-_a48fa740.jpg";
 
 const defaultDieselTruck: TruckParameters = {
   name: "Diesel-Sattelzug",
@@ -165,52 +164,41 @@ export default function Home() {
       {/* Animated Gradient Mesh Background */}
       <div className="gradient-mesh" />
 
-      {/* Hero Header with Truck Image */}
-      <header className="relative overflow-hidden">
-        <div className="absolute inset-0">
-          <img
-            src={truckHeaderImage}
-            alt="Class 8 Semi-Truck"
-            className="w-full h-full object-cover object-center"
-          />
-          {/* Premium gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/95 to-background/60" />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
-        </div>
-        <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-16 sm:py-24">
+      {/* Editorial Premium Hero */}
+      <header className="relative border-b border-border">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-20 sm:py-28 lg:py-32">
           {/* Powered by E.ON Drive - Top Right */}
-          <div className="absolute top-6 right-6 sm:right-8 lg:right-12 fade-in">
-            <div className="flex flex-col items-end gap-1 p-3 glass rounded-xl border border-primary/20 shadow-lg">
-              <span className="text-xs text-muted-foreground font-medium">powered by</span>
-              <EonDriveLogo className="h-6 w-auto" />
+          <div className="absolute top-6 right-6 sm:right-8 lg:right-12">
+            <div className="flex flex-col items-end gap-1">
+              <span className="label-editorial">powered by</span>
+              <EonDriveLogo className="h-5 w-auto" />
             </div>
           </div>
 
-          <div className="flex flex-col mb-6 fade-in">
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-gradient" data-testid="text-app-title">
+          <div className="max-w-3xl">
+            <p className="label-editorial mb-6">TCO-Analyse für Flottenmanager</p>
+            <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl font-semibold tracking-tight text-foreground leading-[1.1] mb-8" data-testid="text-app-title">
               Truckonomics
             </h1>
-            <p className="text-xl sm:text-2xl text-muted-foreground mt-2 font-light">
-              Gesamtbetriebskosten-Rechner
+            <div className="h-px w-16 bg-primary mb-8" />
+            <p className="text-xl sm:text-2xl text-muted-foreground font-light leading-relaxed max-w-xl">
+              Der präzise Kostenvergleich zwischen Diesel- und Elektro-Sattelzügen.
+              Fundierte Entscheidungen auf Basis realer Daten.
             </p>
           </div>
-          <p className="text-lg text-foreground/70 max-w-2xl leading-relaxed fade-in stagger-1">
-            Vergleichen Sie Diesel- und Elektro-Sattelzüge mit umfassender TCO-Analyse inklusive Kaufpreis, Kraftstoffkosten, Wartung, Versicherung und Umweltauswirkungen.
-          </p>
         </div>
       </header>
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12 space-y-12 relative">
         {/* Input Section */}
-        <section className="space-y-8 fade-in stagger-2">
-          <div className="text-center sm:text-left">
-            <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-3">
+        <section className="space-y-10">
+          <div>
+            <p className="label-editorial mb-3">Konfiguration</p>
+            <h2 className="font-serif text-3xl sm:text-4xl font-medium tracking-tight mb-2">
               Fahrzeugspezifikationen
             </h2>
-            <p className="text-muted-foreground text-base sm:text-lg">
-              Konfigurieren Sie Ihre Schwerlast-LKWs für den Vergleich
-            </p>
+            <div className="h-px w-12 bg-primary mt-4" />
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -239,7 +227,7 @@ export default function Home() {
         </section>
 
         {/* Fleet & Calculation Controls */}
-        <section className="space-y-8 fade-in stagger-3">
+        <section className="space-y-8">
           {/* Fleet Size Selector */}
           <div className="card-hover">
             <FleetSizeSelector value={fleetSize} onChange={setFleetSize} />
@@ -300,16 +288,17 @@ export default function Home() {
 
         {/* Results Section */}
         {result && (
-          <section id="results-section" className="space-y-10 scroll-mt-20 fade-in">
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <section id="results-section" className="space-y-12 scroll-mt-20 pt-8 border-t border-border">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
               <div>
-                <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-3">
+                <p className="label-editorial mb-3">Ergebnisse</p>
+                <h2 className="font-serif text-3xl sm:text-4xl font-medium tracking-tight mb-2">
                   Analyseergebnisse
                 </h2>
-                <p className="text-muted-foreground text-base sm:text-lg">
-                  Umfassender Kostenvergleich über {result.timeframeYears} Jahre
-                  {fleetSize > 1 && ` für ${fleetSize} Fahrzeuge`}
+                <p className="text-muted-foreground mt-3">
+                  {result.timeframeYears}-Jahres Kostenvergleich{fleetSize > 1 && ` · ${fleetSize} Fahrzeuge`}
                 </p>
+                <div className="h-px w-12 bg-primary mt-4" />
               </div>
               <PdfExportButton result={result} fleetSize={fleetSize} />
             </div>
@@ -345,17 +334,16 @@ export default function Home() {
         )}
 
         {/* Footer */}
-        <footer className="pt-16 pb-8 border-t border-border/50 mt-20">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-            <div className="flex items-center gap-3">
-              <span className="font-medium">Truckonomics</span>
-              <span className="text-muted-foreground/60">v1.0</span>
-              <span className="text-muted-foreground/40">|</span>
-              <span className="text-xs text-muted-foreground/60">powered by</span>
+        <footer className="pt-20 pb-10 border-t border-border mt-24">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div className="flex items-center gap-4">
+              <span className="font-serif text-lg font-medium text-foreground">Truckonomics</span>
+              <span className="text-muted-foreground/50">·</span>
+              <span className="label-editorial">powered by</span>
               <EonDriveLogo className="h-4 w-auto" />
             </div>
-            <p className="text-center sm:text-right text-muted-foreground/80">
-              Alle Berechnungen sind Schätzungen basierend auf den angegebenen Parametern
+            <p className="text-sm text-muted-foreground text-center sm:text-right max-w-md">
+              Alle Berechnungen sind Schätzungen basierend auf den angegebenen Parametern.
             </p>
           </div>
         </footer>

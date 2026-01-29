@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -88,11 +89,11 @@
   --chart-4: 25 95% 53%;
   --chart-5: 280 70% 50%;
 
-  /* E.ON Typography - Outfit */
+  /* E.ON Typography - Editorial Premium */
   --font-sans: 'Outfit', system-ui, -apple-system, sans-serif;
-  --font-serif: Georgia, serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
-  --radius: .5rem; /* 8px - E.ON style */
+  --radius: .25rem; /* 4px - Editorial Premium: subtle corners */
 
   /* Neutral shadows */
   --shadow-2xs: 0px 1px 2px 0px hsl(0 0% 0% / 0.03);
@@ -565,4 +566,146 @@ textarea:focus-visible {
   .border.hover-elevate:not(.no-hover-interaction-elevate)::after {
     inset: -1px;
   }
+}
+
+/* ==========================================
+   EDITORIAL PREMIUM DESIGN SYSTEM
+   ========================================== */
+
+/* Serif Headlines - Playfair Display */
+.font-editorial {
+  font-family: var(--font-serif);
+  letter-spacing: -0.02em;
+}
+
+/* Oversized display numbers */
+.text-display {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+/* Editorial section headers */
+.editorial-header {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  letter-spacing: -0.015em;
+}
+
+/* Thin elegant borders */
+.border-editorial {
+  border-width: 1px;
+  border-color: hsl(var(--border));
+}
+
+/* Editorial card - minimal, elegant */
+.card-editorial {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  transition: border-color 0.2s ease;
+}
+
+.card-editorial:hover {
+  border-color: hsl(var(--foreground) / 0.2);
+}
+
+/* Uppercase labels with tracking */
+.label-editorial {
+  font-size: 0.6875rem; /* 11px */
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: hsl(var(--muted-foreground));
+}
+
+/* Minimal section divider */
+.divider-editorial {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    hsl(var(--border)) 20%,
+    hsl(var(--border)) 80%,
+    transparent 100%
+  );
+}
+
+/* Editorial accent - subtle red underline */
+.accent-underline {
+  position: relative;
+}
+
+.accent-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  background: hsl(var(--primary));
+}
+
+/* Premium stat display */
+.stat-editorial {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.stat-editorial .value {
+  font-family: var(--font-serif);
+  font-size: 3rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: hsl(var(--foreground));
+}
+
+.stat-editorial .value.accent {
+  color: hsl(var(--primary));
+}
+
+.stat-editorial .label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: hsl(var(--muted-foreground));
+}
+
+/* Editorial grid - magazine style */
+.grid-editorial {
+  display: grid;
+  gap: 1px;
+  background: hsl(var(--border));
+}
+
+.grid-editorial > * {
+  background: hsl(var(--background));
+  padding: 2rem;
+}
+
+/* Subtle hover state */
+.hover-subtle {
+  transition: background-color 0.2s ease;
+}
+
+.hover-subtle:hover {
+  background-color: hsl(var(--foreground) / 0.02);
+}
+
+/* No shadow variant - cleaner look */
+.shadow-none {
+  box-shadow: none !important;
+}
+
+/* Monochrome chart colors for editorial style */
+.chart-editorial {
+  --chart-1: 0 0% 20%;
+  --chart-2: 0 0% 35%;
+  --chart-3: 0 0% 50%;
+  --chart-4: 5 95% 48%; /* E.ON Red accent only */
+  --chart-5: 0 0% 65%;
 }

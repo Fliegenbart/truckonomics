@@ -29,57 +29,58 @@ export function AmortizationChart({ result }: AmortizationChartProps) {
   };
 
   return (
-    <Card className="overflow-hidden border-card-border/50 shadow-sm">
+    <Card className="overflow-hidden border border-border bg-card shadow-none">
       <CardHeader className="pb-4">
-        <CardTitle className="text-xl font-semibold">Amortisationszeitraum</CardTitle>
-        <p className="text-sm text-muted-foreground">
-          Kumulativer Kostenvergleich über die Zeit
-        </p>
+        <p className="label-editorial mb-2">Kostenentwicklung</p>
+        <CardTitle className="font-serif text-xl font-medium">Amortisationszeitraum</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="h-80 sm:h-96" data-testid="chart-amortization">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={chartData} margin={{ top: 5, right: 10, left: 10, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
-              <XAxis 
-                dataKey="year" 
+              <CartesianGrid strokeDasharray="1 4" stroke="hsl(var(--border))" />
+              <XAxis
+                dataKey="year"
                 label={{ value: "Jahre", position: "insideBottom", offset: -5 }}
-                className="text-xs"
+                tick={{ fontSize: 12 }}
+                stroke="hsl(var(--muted-foreground))"
               />
-              <YAxis 
+              <YAxis
                 tickFormatter={(value) => `€${(value / 1000).toFixed(0)}k`}
                 label={{ value: "Gesamtkosten (€)", angle: -90, position: "insideLeft" }}
-                className="text-xs"
+                tick={{ fontSize: 12 }}
+                stroke="hsl(var(--muted-foreground))"
               />
               <Tooltip
                 formatter={(value: number) => formatCurrency(value)}
                 contentStyle={{
                   backgroundColor: "hsl(var(--popover))",
-                  border: "1px solid hsl(var(--popover-border))",
-                  borderRadius: "var(--radius)",
+                  border: "1px solid hsl(var(--border))",
+                  borderRadius: "2px",
                   color: "hsl(var(--popover-foreground))",
+                  fontSize: "13px",
                 }}
               />
-              <Legend wrapperStyle={{ paddingTop: "20px" }} />
+              <Legend wrapperStyle={{ paddingTop: "20px", fontSize: "13px" }} />
               <Line
                 type="monotone"
                 dataKey={result.dieselAnalysis.name}
-                stroke="hsl(var(--chart-1))"
-                strokeWidth={2}
+                stroke="hsl(var(--muted-foreground))"
+                strokeWidth={1.5}
                 dot={false}
               />
               <Line
                 type="monotone"
                 dataKey={result.electric1Analysis.name}
-                stroke="hsl(var(--chart-2))"
+                stroke="hsl(var(--primary))"
                 strokeWidth={2}
                 dot={false}
               />
               <Line
                 type="monotone"
                 dataKey={result.electric2Analysis.name}
-                stroke="hsl(var(--chart-3))"
-                strokeWidth={2}
+                stroke="hsl(var(--foreground))"
+                strokeWidth={1.5}
                 dot={false}
               />
             </LineChart>
