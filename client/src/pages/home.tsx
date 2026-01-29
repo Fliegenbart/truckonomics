@@ -2,6 +2,7 @@ import { useState } from "react";
 import { TruckParametersCard } from "@/components/truck-parameters-card";
 import { TimeframeSelector } from "@/components/timeframe-selector";
 import { TaxIncentiveSelector } from "@/components/tax-incentive-selector";
+import { FleetSizeSelector } from "@/components/fleet-size-selector";
 import { Button } from "@/components/ui/button";
 import { SummaryMetrics } from "@/components/summary-metrics";
 import { AmortizationChart } from "@/components/amortization-chart";
@@ -9,6 +10,9 @@ import { CostBreakdownChart } from "@/components/cost-breakdown-chart";
 import { DetailedTCOTable } from "@/components/detailed-tco-table";
 import { EnvironmentalImpactCard } from "@/components/environmental-impact-card";
 import { TechnicalSpecsComparison } from "@/components/technical-specs-comparison";
+import { EonDriveBenefits } from "@/components/eon-drive-benefits";
+import { ConsultationCTA } from "@/components/consultation-cta";
+import { PdfExportButton } from "@/components/pdf-export-button";
 import { Calculator, RotateCcw } from "lucide-react";
 import { EonDriveLogo } from "@/components/eon-drive-logo";
 import { useMutation } from "@tanstack/react-query";
@@ -105,6 +109,7 @@ export default function Home() {
   const [electricTruck2, setElectricTruck2] = useState<TruckParameters>(defaultElectricTruck2);
   const [timeframeYears, setTimeframeYears] = useState(10);
   const [taxIncentiveRegion, setTaxIncentiveRegion] = useState<TaxIncentiveRegion>("bundesfoerderung");
+  const [fleetSize, setFleetSize] = useState(1);
   const [result, setResult] = useState<ComparisonResult | null>(null);
   const { toast } = useToast();
 
@@ -126,7 +131,7 @@ export default function Home() {
         title: "Berechnung abgeschlossen",
         description: "Die Gesamtbetriebskosten-Analyse wurde erstellt.",
       });
-      
+
       // Smooth scroll to results
       setTimeout(() => {
         document.getElementById("results-section")?.scrollIntoView({ behavior: "smooth" });
@@ -151,6 +156,7 @@ export default function Home() {
     setElectricTruck2(defaultElectricTruck2);
     setTimeframeYears(10);
     setTaxIncentiveRegion("bundesfoerderung");
+    setFleetSize(1);
     setResult(null);
   };
 
@@ -158,13 +164,13 @@ export default function Home() {
     <div className="min-h-screen bg-background relative">
       {/* Animated Gradient Mesh Background */}
       <div className="gradient-mesh" />
-      
+
       {/* Hero Header with Truck Image */}
       <header className="relative overflow-hidden">
         <div className="absolute inset-0">
-          <img 
-            src={truckHeaderImage} 
-            alt="Class 8 Semi-Truck" 
+          <img
+            src={truckHeaderImage}
+            alt="Class 8 Semi-Truck"
             className="w-full h-full object-cover object-center"
           />
           {/* Premium gradient overlay */}
@@ -232,8 +238,13 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Calculation Controls */}
+        {/* Fleet & Calculation Controls */}
         <section className="space-y-8 fade-in stagger-3">
+          {/* Fleet Size Selector */}
+          <div className="card-hover">
+            <FleetSizeSelector value={fleetSize} onChange={setFleetSize} />
+          </div>
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div className="bg-card border border-card-border rounded-2xl p-8 shadow-sm card-hover">
               <div>
@@ -254,6 +265,11 @@ export default function Home() {
                 onChange={setTaxIncentiveRegion}
               />
             </div>
+          </div>
+
+          {/* E.ON Drive Benefits */}
+          <div className="card-hover">
+            <EonDriveBenefits />
           </div>
 
           <div className="bg-card border border-card-border rounded-2xl p-8 shadow-sm">
@@ -285,16 +301,20 @@ export default function Home() {
         {/* Results Section */}
         {result && (
           <section id="results-section" className="space-y-10 scroll-mt-20 fade-in">
-            <div className="text-center sm:text-left">
-              <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-3">
-                Analyseergebnisse
-              </h2>
-              <p className="text-muted-foreground text-base sm:text-lg">
-                Umfassender Kostenvergleich über {result.timeframeYears} Jahre
-              </p>
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+              <div>
+                <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-3">
+                  Analyseergebnisse
+                </h2>
+                <p className="text-muted-foreground text-base sm:text-lg">
+                  Umfassender Kostenvergleich über {result.timeframeYears} Jahre
+                  {fleetSize > 1 && ` für ${fleetSize} Fahrzeuge`}
+                </p>
+              </div>
+              <PdfExportButton result={result} fleetSize={fleetSize} />
             </div>
 
-            <SummaryMetrics result={result} />
+            <SummaryMetrics result={result} fleetSize={fleetSize} />
 
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
               <div className="card-hover">
@@ -318,6 +338,9 @@ export default function Home() {
             </div>
 
             <DetailedTCOTable result={result} />
+
+            {/* Consultation CTA */}
+            <ConsultationCTA />
           </section>
         )}
 
