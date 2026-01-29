@@ -1,8 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* APPLE/JONY IVE INSPIRED DESIGN SYSTEM */
+/* E.ON DESIGN SYSTEM */
 /* LIGHT MODE */
 :root {
   --button-outline: rgba(0,0,0, .08);
@@ -15,99 +17,99 @@
   --elevate-1: rgba(0,0,0, .025);
   --elevate-2: rgba(0,0,0, .06);
 
-  /* Premium off-white with subtle warmth */
-  --background: 240 20% 98%;
+  /* E.ON Light Grey Background */
+  --background: 0 0% 96%;
 
-  /* Deep charcoal for text - not pure black */
-  --foreground: 240 10% 12%;
+  /* E.ON Dark Grey Text */
+  --foreground: 0 0% 25%;
 
-  /* Subtle cool gray borders */
-  --border: 240 10% 92%;
+  /* E.ON Border Grey */
+  --border: 0 0% 91%;
 
-  /* Pure white cards with subtle depth */
+  /* Pure white cards */
   --card: 0 0% 100%;
 
-  --card-foreground: 240 10% 12%;
+  --card-foreground: 0 0% 25%;
 
-  --card-border: 240 8% 94%;
+  --card-border: 0 0% 91%;
 
-  --sidebar: 240 15% 97%;
+  --sidebar: 0 0% 10%;
 
-  --sidebar-foreground: 240 10% 15%;
+  --sidebar-foreground: 0 0% 98%;
 
-  --sidebar-border: 240 10% 92%;
+  --sidebar-border: 0 0% 16%;
 
-  /* Apple Blue - signature accent */
-  --sidebar-primary: 211 100% 50%;
+  /* E.ON Red - signature accent */
+  --sidebar-primary: 5 95% 48%;
 
   --sidebar-primary-foreground: 0 0% 100%;
 
-  --sidebar-accent: 240 10% 95%;
+  --sidebar-accent: 0 0% 16%;
 
-  --sidebar-accent-foreground: 240 10% 15%;
+  --sidebar-accent-foreground: 0 0% 98%;
 
-  --sidebar-ring: 211 100% 50%;
+  --sidebar-ring: 5 95% 48%;
 
   --popover: 0 0% 100%;
 
-  --popover-foreground: 240 10% 12%;
+  --popover-foreground: 0 0% 25%;
 
-  --popover-border: 240 8% 92%;
+  --popover-border: 0 0% 91%;
 
-  /* Apple Blue primary - vibrant and confident */
-  --primary: 211 100% 50%;
+  /* E.ON Red Primary - energetic and confident */
+  --primary: 5 95% 48%;
 
   --primary-foreground: 0 0% 100%;
 
-  --secondary: 240 10% 96%;
+  --secondary: 0 0% 96%;
 
-  --secondary-foreground: 240 10% 15%;
+  --secondary-foreground: 0 0% 25%;
 
-  --muted: 240 10% 96%;
+  --muted: 0 0% 96%;
 
-  --muted-foreground: 240 5% 46%;
+  --muted-foreground: 0 0% 45%;
 
-  --accent: 240 10% 95%;
+  --accent: 0 0% 95%;
 
-  --accent-foreground: 240 10% 15%;
+  --accent-foreground: 0 0% 25%;
 
-  /* Apple Red for destructive */
-  --destructive: 0 100% 59%;
+  /* E.ON Red for destructive actions */
+  --destructive: 5 95% 48%;
 
   --destructive-foreground: 0 0% 100%;
 
-  --input: 240 5% 84%;
-  --ring: 211 100% 50%;
-  
-  /* Chart colors - Apple-inspired palette */
-  --chart-1: 211 100% 50%;
-  --chart-2: 160 84% 39%;
-  --chart-3: 32 95% 44%;
-  --chart-4: 280 85% 55%;
-  --chart-5: 340 82% 52%;
+  --input: 0 0% 84%;
+  --ring: 5 95% 48%;
 
-  /* SF Pro inspired typography */
-  --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', system-ui, sans-serif;
-  --font-serif: 'New York', Georgia, serif;
-  --font-mono: 'SF Mono', Menlo, monospace;
-  --radius: .75rem; /* 12px - slightly more rounded like Apple */
-  
-  /* Refined shadows with subtle blue tint */
-  --shadow-2xs: 0px 1px 2px 0px hsl(220 60% 50% / 0.03);
-  --shadow-xs: 0px 1px 3px 0px hsl(220 60% 50% / 0.05);
-  --shadow-sm: 0px 2px 8px -2px hsl(220 60% 40% / 0.06), 0px 1px 2px -1px hsl(220 60% 40% / 0.02);
-  --shadow: 0px 4px 16px -2px hsl(220 60% 40% / 0.08), 0px 2px 4px -2px hsl(220 60% 40% / 0.03);
-  --shadow-md: 0px 8px 24px -4px hsl(220 60% 35% / 0.10), 0px 4px 8px -4px hsl(220 60% 35% / 0.04);
-  --shadow-lg: 0px 16px 40px -8px hsl(220 60% 30% / 0.12), 0px 8px 16px -8px hsl(220 60% 30% / 0.05);
-  --shadow-xl: 0px 24px 56px -12px hsl(220 60% 25% / 0.14), 0px 12px 24px -12px hsl(220 60% 25% / 0.06);
-  --shadow-2xl: 0px 32px 72px -16px hsl(220 60% 20% / 0.16);
-  --tracking-normal: -0.025em;
+  /* Chart colors - E.ON compatible palette */
+  --chart-1: 5 95% 48%;
+  --chart-2: 142 76% 36%;
+  --chart-3: 211 100% 50%;
+  --chart-4: 25 95% 53%;
+  --chart-5: 280 70% 50%;
+
+  /* E.ON Typography - Outfit */
+  --font-sans: 'Outfit', system-ui, -apple-system, sans-serif;
+  --font-serif: Georgia, serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --radius: .5rem; /* 8px - E.ON style */
+
+  /* Neutral shadows */
+  --shadow-2xs: 0px 1px 2px 0px hsl(0 0% 0% / 0.03);
+  --shadow-xs: 0px 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-sm: 0px 2px 8px -2px hsl(0 0% 0% / 0.06), 0px 1px 2px -1px hsl(0 0% 0% / 0.02);
+  --shadow: 0px 4px 16px -2px hsl(0 0% 0% / 0.08), 0px 2px 4px -2px hsl(0 0% 0% / 0.03);
+  --shadow-md: 0px 8px 24px -4px hsl(0 0% 0% / 0.10), 0px 4px 8px -4px hsl(0 0% 0% / 0.04);
+  --shadow-lg: 0px 16px 40px -8px hsl(0 0% 0% / 0.12), 0px 8px 16px -8px hsl(0 0% 0% / 0.05);
+  --shadow-xl: 0px 24px 56px -12px hsl(0 0% 0% / 0.14), 0px 12px 24px -12px hsl(0 0% 0% / 0.06);
+  --shadow-2xl: 0px 32px 72px -16px hsl(0 0% 0% / 0.16);
+  --tracking-normal: -0.015em;
   --spacing: 0.25rem;
-  
-  /* Apple-style gradient mesh colors */
-  --gradient-1: 211 100% 50%;
-  --gradient-2: 280 85% 55%;
-  --gradient-3: 160 84% 39%;
+
+  /* E.ON gradient mesh colors */
+  --gradient-1: 5 95% 48%;
+  --gradient-2: 5 80% 38%;
+  --gradient-3: 330 70% 45%;
 
   /* Automatically computed borders - intensity can be controlled by the user by the --opaque-button-border-intensity setting */
 
@@ -140,7 +142,7 @@
   --destructive-border: hsl(from hsl(var(--destructive)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
 }
 
-/* DARK MODE - Premium Apple Dark Aesthetic */
+/* DARK MODE - E.ON Dark Aesthetic */
 .dark {
   --button-outline: rgba(255,255,255, .08);
   --badge-outline: rgba(255,255,255, .04);
@@ -151,83 +153,83 @@
   --elevate-1: rgba(255,255,255, .03);
   --elevate-2: rgba(255,255,255, .07);
 
-  /* Deep space black with subtle blue undertone */
-  --background: 240 15% 6%;
+  /* E.ON Dark Background */
+  --background: 0 0% 8%;
 
   /* Crisp white text */
   --foreground: 0 0% 98%;
 
   /* Subtle divider lines */
-  --border: 240 10% 18%;
+  --border: 0 0% 18%;
 
   /* Elevated card surfaces */
-  --card: 240 12% 10%;
+  --card: 0 0% 12%;
 
   --card-foreground: 0 0% 98%;
 
-  --card-border: 240 10% 16%;
+  --card-border: 0 0% 16%;
 
-  --sidebar: 240 12% 8%;
+  --sidebar: 0 0% 7%;
 
   --sidebar-foreground: 0 0% 98%;
 
-  --sidebar-border: 240 10% 16%;
+  --sidebar-border: 0 0% 16%;
 
-  /* Brighter Apple Blue for dark mode */
-  --sidebar-primary: 211 100% 58%;
+  /* Brighter E.ON Red for dark mode */
+  --sidebar-primary: 5 100% 55%;
 
   --sidebar-primary-foreground: 0 0% 100%;
 
-  --sidebar-accent: 240 10% 14%;
+  --sidebar-accent: 0 0% 14%;
 
   --sidebar-accent-foreground: 0 0% 98%;
 
-  --sidebar-ring: 211 100% 58%;
+  --sidebar-ring: 5 100% 55%;
 
-  --popover: 240 12% 10%;
+  --popover: 0 0% 12%;
 
   --popover-foreground: 0 0% 98%;
 
-  --popover-border: 240 10% 18%;
+  --popover-border: 0 0% 18%;
 
-  /* Vibrant Apple Blue */
-  --primary: 211 100% 58%;
+  /* Vibrant E.ON Red */
+  --primary: 5 100% 55%;
 
   --primary-foreground: 0 0% 100%;
 
-  --secondary: 240 10% 16%;
+  --secondary: 0 0% 16%;
 
   --secondary-foreground: 0 0% 98%;
 
-  --muted: 240 10% 14%;
+  --muted: 0 0% 14%;
 
-  --muted-foreground: 240 5% 60%;
+  --muted-foreground: 0 0% 60%;
 
-  --accent: 240 10% 16%;
+  --accent: 0 0% 16%;
 
   --accent-foreground: 0 0% 98%;
 
-  /* Apple Red - slightly brighter for dark */
-  --destructive: 0 100% 62%;
+  /* E.ON Red - brighter for dark mode */
+  --destructive: 5 100% 58%;
 
   --destructive-foreground: 0 0% 100%;
 
-  --input: 240 10% 26%;
-  --ring: 211 100% 58%;
-  
-  /* Vibrant chart colors for dark mode */
-  --chart-1: 211 100% 58%;
-  --chart-2: 160 84% 45%;
-  --chart-3: 32 95% 52%;
-  --chart-4: 280 85% 62%;
-  --chart-5: 340 82% 58%;
-  
-  /* Gradient mesh colors for dark mode */
-  --gradient-1: 211 100% 58%;
-  --gradient-2: 280 85% 62%;
-  --gradient-3: 160 84% 45%;
+  --input: 0 0% 26%;
+  --ring: 5 100% 55%;
 
-  /* Deep shadows with subtle glow effect */
+  /* Vibrant chart colors for dark mode */
+  --chart-1: 5 100% 55%;
+  --chart-2: 142 76% 45%;
+  --chart-3: 211 100% 58%;
+  --chart-4: 25 95% 55%;
+  --chart-5: 280 70% 58%;
+
+  /* E.ON gradient mesh colors for dark mode */
+  --gradient-1: 5 100% 55%;
+  --gradient-2: 5 80% 42%;
+  --gradient-3: 330 70% 50%;
+
+  /* Deep shadows */
   --shadow-2xs: 0px 1px 2px 0px hsl(0 0% 0% / 0.25), 0 0 0 1px hsl(0 0% 100% / 0.02);
   --shadow-xs: 0px 1px 3px 0px hsl(0 0% 0% / 0.30), 0 0 0 1px hsl(0 0% 100% / 0.02);
   --shadow-sm: 0px 2px 6px -1px hsl(0 0% 0% / 0.35), 0 0 0 1px hsl(0 0% 100% / 0.02);
