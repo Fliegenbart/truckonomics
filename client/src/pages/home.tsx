@@ -9,8 +9,8 @@ import { CostBreakdownChart } from "@/components/cost-breakdown-chart";
 import { DetailedTCOTable } from "@/components/detailed-tco-table";
 import { EnvironmentalImpactCard } from "@/components/environmental-impact-card";
 import { TechnicalSpecsComparison } from "@/components/technical-specs-comparison";
-import { Calculator, RotateCcw, Truck } from "lucide-react";
-import { EonLogo } from "@/components/eon-logo";
+import { Calculator, RotateCcw } from "lucide-react";
+import { EonDriveLogo } from "@/components/eon-drive-logo";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import type { TruckParameters, ComparisonResult, TaxIncentiveRegion } from "@shared/schema";
@@ -172,18 +172,21 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
         </div>
         <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-16 sm:py-24">
-          <div className="flex items-center gap-5 mb-6 fade-in">
-            <div className="p-4 glass rounded-2xl border border-primary/20 shadow-lg">
-              <EonLogo className="h-10 w-auto" />
+          {/* Powered by E.ON Drive - Top Right */}
+          <div className="absolute top-6 right-6 sm:right-8 lg:right-12 fade-in">
+            <div className="flex flex-col items-end gap-1 p-3 glass rounded-xl border border-primary/20 shadow-lg">
+              <span className="text-xs text-muted-foreground font-medium">powered by</span>
+              <EonDriveLogo className="h-6 w-auto" />
             </div>
-            <div>
-              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-gradient" data-testid="text-app-title">
-                Truckonomics
-              </h1>
-              <p className="text-xl sm:text-2xl text-muted-foreground mt-2 font-light">
-                Gesamtbetriebskosten-Rechner
-              </p>
-            </div>
+          </div>
+
+          <div className="flex flex-col mb-6 fade-in">
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-gradient" data-testid="text-app-title">
+              Truckonomics
+            </h1>
+            <p className="text-xl sm:text-2xl text-muted-foreground mt-2 font-light">
+              Gesamtbetriebskosten-Rechner
+            </p>
           </div>
           <p className="text-lg text-foreground/70 max-w-2xl leading-relaxed fade-in stagger-1">
             Vergleichen Sie Diesel- und Elektro-Sattelzüge mit umfassender TCO-Analyse inklusive Kaufpreis, Kraftstoffkosten, Wartung, Versicherung und Umweltauswirkungen.
@@ -322,9 +325,11 @@ export default function Home() {
         <footer className="pt-16 pb-8 border-t border-border/50 mt-20">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
             <div className="flex items-center gap-3">
-              <EonLogo className="h-5 w-auto" />
               <span className="font-medium">Truckonomics</span>
               <span className="text-muted-foreground/60">v1.0</span>
+              <span className="text-muted-foreground/40">|</span>
+              <span className="text-xs text-muted-foreground/60">powered by</span>
+              <EonDriveLogo className="h-4 w-auto" />
             </div>
             <p className="text-center sm:text-right text-muted-foreground/80">
               Alle Berechnungen sind Schätzungen basierend auf den angegebenen Parametern
