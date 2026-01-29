@@ -603,10 +603,16 @@ textarea:focus-visible {
    E.ON EDITORIAL DESIGN SYSTEM
    ========================================== */
 
-/* Headlines - E.ON Head */
+/* Headlines - E.ON Head in E.ON Red */
 .font-editorial {
   font-family: var(--font-serif);
   letter-spacing: 0;
+  color: hsl(var(--primary));
+}
+
+/* Apply E.ON Red to all E.ON Head (font-serif) text */
+.font-serif {
+  color: hsl(var(--primary));
 }
 
 /* Oversized display numbers - E.ON Head */

@@ -85,8 +85,8 @@ export function ConsultationCTA({ onExportPdf, isPdfExporting }: ConsultationCTA
         {/* Right - Brand Panel */}
         <div className="bg-foreground/[0.03] p-8 lg:p-12 flex flex-col justify-center items-center border-t lg:border-t-0 lg:border-l border-border">
           <div className="text-center">
-            <p className="label-editorial mb-4">Powered by</p>
-            <EonDriveLogo className="h-8 w-auto mx-auto mb-6" />
+            <p className="text-sm font-medium uppercase tracking-widest text-muted-foreground mb-4">Powered by</p>
+            <EonDriveLogo className="h-12 w-auto mx-auto mb-6" />
             <p className="text-sm text-muted-foreground max-w-xs mx-auto">
               Ihr Partner für die Elektrifizierung von Nutzfahrzeugflotten
             </p>

@@ -170,8 +170,8 @@ export default function Home() {
           {/* Powered by E.ON Drive - Top Right */}
           <div className="absolute top-6 right-6 sm:right-8 lg:right-12">
             <div className="flex flex-col items-end gap-1">
-              <span className="label-editorial">powered by</span>
-              <EonDriveLogo className="h-5 w-auto" />
+              <span className="text-xs font-medium uppercase tracking-widest text-muted-foreground">powered by</span>
+              <EonDriveLogo className="h-8 w-auto" />
             </div>
           </div>
 
@@ -339,8 +339,8 @@ export default function Home() {
             <div className="flex items-center gap-4">
               <span className="font-serif text-lg font-medium text-foreground">Truckonomics</span>
               <span className="text-muted-foreground/50">·</span>
-              <span className="label-editorial">powered by</span>
-              <EonDriveLogo className="h-4 w-auto" />
+              <span className="text-xs font-medium uppercase tracking-widest text-muted-foreground">powered by</span>
+              <EonDriveLogo className="h-6 w-auto" />
             </div>
             <p className="text-sm text-muted-foreground text-center sm:text-right max-w-md">
               Alle Berechnungen sind Schätzungen basierend auf den angegebenen Parametern.
