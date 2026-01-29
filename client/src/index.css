@@ -1,5 +1,36 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap');
+/* E.ON Corporate Fonts */
+@font-face {
+  font-family: 'EON Head';
+  src: url('./assets/fonts/EONScreen-Head.woff2') format('woff2'),
+       url('./assets/fonts/EONScreen-Head.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'EON Brix Sans';
+  src: url('./assets/fonts/Schrift_EON_BrixSans-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'EON Brix Sans';
+  src: url('./assets/fonts/EON_BrixSans-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'EON Brix Sans';
+  src: url('./assets/fonts/EON_BrixSans-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
 
 @tailwind base;
 @tailwind components;
@@ -89,9 +120,9 @@
   --chart-4: 25 95% 53%;
   --chart-5: 280 70% 50%;
 
-  /* E.ON Typography - Editorial Premium */
-  --font-sans: 'Outfit', system-ui, -apple-system, sans-serif;
-  --font-serif: 'Playfair Display', Georgia, serif;
+  /* E.ON Typography */
+  --font-sans: 'EON Brix Sans', system-ui, -apple-system, sans-serif;
+  --font-serif: 'EON Head', Georgia, serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
   --radius: .25rem; /* 4px - Editorial Premium: subtle corners */
 
@@ -569,20 +600,20 @@ textarea:focus-visible {
 }
 
 /* ==========================================
-   EDITORIAL PREMIUM DESIGN SYSTEM
+   E.ON EDITORIAL DESIGN SYSTEM
    ========================================== */
 
-/* Serif Headlines - Playfair Display */
+/* Headlines - E.ON Head */
 .font-editorial {
   font-family: var(--font-serif);
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
 }
 
-/* Oversized display numbers */
+/* Oversized display numbers - E.ON Head */
 .text-display {
   font-family: var(--font-serif);
-  font-weight: 600;
-  letter-spacing: -0.03em;
+  font-weight: 400;
+  letter-spacing: 0;
   line-height: 1;
 }
 
