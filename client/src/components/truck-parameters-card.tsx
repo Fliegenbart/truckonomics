@@ -9,6 +9,7 @@ import { Truck, Zap, ChevronDown, Settings2 } from "lucide-react";
 import type { TruckParameters, TechnicalSpecs, AxleConfiguration, CabinType } from "@shared/schema";
 import { presetTruckModels, axleConfigurations, cabinTypes } from "@shared/schema";
 import { useState } from "react";
+import { getTruckImage } from "@/lib/truck-images";
 
 interface TruckParametersCardProps {
   truck: TruckParameters;
@@ -19,6 +20,7 @@ interface TruckParametersCardProps {
 export function TruckParametersCard({ truck, onChange, truckIndex }: TruckParametersCardProps) {
   const [errors, setErrors] = useState<Partial<Record<keyof TruckParameters, string>>>({});
   const [specsOpen, setSpecsOpen] = useState(false);
+  const [selectedPresetKey, setSelectedPresetKey] = useState<string | undefined>(undefined);
 
   const updateField = <K extends keyof TruckParameters>(field: K, value: TruckParameters[K]) => {
     setErrors(prev => ({ ...prev, [field]: undefined }));
@@ -56,9 +58,13 @@ export function TruckParametersCard({ truck, onChange, truckIndex }: TruckParame
   const specs = truck.technicalSpecs || {};
 
   const handlePresetSelect = (presetId: string) => {
-    if (presetId === "custom") return;
+    if (presetId === "custom") {
+      setSelectedPresetKey(undefined);
+      return;
+    }
     const preset = presetTruckModels[presetId];
     if (preset) {
+      setSelectedPresetKey(presetId);
       onChange(preset);
       setErrors({});
     }
@@ -84,12 +90,25 @@ export function TruckParametersCard({ truck, onChange, truckIndex }: TruckParame
               {isDiesel ? "Diesel-LKW" : `Elektro-LKW ${truckIndex}`}
             </CardTitle>
           </div>
-          <Badge 
-            variant={isDiesel ? "secondary" : "default"} 
+          <Badge
+            variant={isDiesel ? "secondary" : "default"}
             className={`shrink-0 px-3 py-1 rounded-full font-medium ${isDiesel ? '' : 'bg-chart-2 hover:bg-chart-2/90'}`}
           >
             {isDiesel ? "Diesel" : "Elektro"}
           </Badge>
+        </div>
+
+        {/* Truck Image */}
+        <div className="relative h-32 -mx-6 overflow-hidden rounded-lg">
+          <img
+            src={getTruckImage(selectedPresetKey, truck.type)}
+            alt={truck.name}
+            className="w-full h-full object-cover transition-all duration-500"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
+          <div className="absolute bottom-2 left-3 right-3">
+            <p className="text-sm font-medium text-foreground truncate">{truck.name}</p>
+          </div>
         </div>
       </CardHeader>
 
