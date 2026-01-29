@@ -10,6 +10,7 @@ import { DetailedTCOTable } from "@/components/detailed-tco-table";
 import { EnvironmentalImpactCard } from "@/components/environmental-impact-card";
 import { TechnicalSpecsComparison } from "@/components/technical-specs-comparison";
 import { Calculator, RotateCcw, Truck } from "lucide-react";
+import { EonLogo } from "@/components/eon-logo";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import type { TruckParameters, ComparisonResult, TaxIncentiveRegion } from "@shared/schema";
@@ -173,7 +174,7 @@ export default function Home() {
         <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-16 sm:py-24">
           <div className="flex items-center gap-5 mb-6 fade-in">
             <div className="p-4 glass rounded-2xl border border-primary/20 shadow-lg">
-              <Truck className="h-12 w-12 text-primary" />
+              <EonLogo className="h-10 w-auto" />
             </div>
             <div>
               <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-gradient" data-testid="text-app-title">
@@ -320,8 +321,8 @@ export default function Home() {
         {/* Footer */}
         <footer className="pt-16 pb-8 border-t border-border/50 mt-20">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <Truck className="h-4 w-4 text-primary" />
+            <div className="flex items-center gap-3">
+              <EonLogo className="h-5 w-auto" />
               <span className="font-medium">Truckonomics</span>
               <span className="text-muted-foreground/60">v1.0</span>
             </div>
