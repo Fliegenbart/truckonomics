@@ -9,7 +9,6 @@ import { Truck, Zap, ChevronDown, Settings2 } from "lucide-react";
 import type { TruckParameters, TechnicalSpecs, AxleConfiguration, CabinType } from "@shared/schema";
 import { presetTruckModels, axleConfigurations, cabinTypes } from "@shared/schema";
 import { useState } from "react";
-import { getTruckImage } from "@/lib/truck-images";
 
 interface TruckParametersCardProps {
   truck: TruckParameters;
@@ -20,7 +19,6 @@ interface TruckParametersCardProps {
 export function TruckParametersCard({ truck, onChange, truckIndex }: TruckParametersCardProps) {
   const [errors, setErrors] = useState<Partial<Record<keyof TruckParameters, string>>>({});
   const [specsOpen, setSpecsOpen] = useState(false);
-  const [selectedPresetKey, setSelectedPresetKey] = useState<string | undefined>(undefined);
 
   const updateField = <K extends keyof TruckParameters>(field: K, value: TruckParameters[K]) => {
     setErrors(prev => ({ ...prev, [field]: undefined }));
@@ -59,12 +57,10 @@ export function TruckParametersCard({ truck, onChange, truckIndex }: TruckParame
 
   const handlePresetSelect = (presetId: string) => {
     if (presetId === "custom") {
-      setSelectedPresetKey(undefined);
       return;
     }
     const preset = presetTruckModels[presetId];
     if (preset) {
-      setSelectedPresetKey(presetId);
       onChange(preset);
       setErrors({});
     }
@@ -96,18 +92,7 @@ export function TruckParametersCard({ truck, onChange, truckIndex }: TruckParame
           </Badge>
         </div>
 
-        {/* Truck Image - minimal */}
-        <div className="relative h-28 -mx-6 overflow-hidden border-y border-border">
-          <img
-            src={getTruckImage(selectedPresetKey, truck.type)}
-            alt={truck.name}
-            className="w-full h-full object-cover grayscale-[30%] opacity-90"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-card/90 to-transparent" />
-          <div className="absolute bottom-3 left-6 right-6">
-            <p className="text-sm font-medium text-foreground truncate">{truck.name}</p>
-          </div>
-        </div>
+        {/* Image removed to avoid external request errors */}
       </CardHeader>
 
       <CardContent className="space-y-4 pt-0">

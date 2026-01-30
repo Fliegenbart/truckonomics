@@ -1,5 +1,23 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
+import { ZodError } from 'zod';
 import { comparisonRequestSchema, type ComparisonResult, type TruckAnalysis, type YearCostBreakdown, regionalIncentives } from '../shared/schema';
+
+function parseRequestBody(req: VercelRequest) {
+  const body = req.body;
+  if (body === undefined || body === null) {
+    return body;
+  }
+
+  if (typeof body === 'string') {
+    return JSON.parse(body);
+  }
+
+  if (Buffer.isBuffer(body)) {
+    return JSON.parse(body.toString('utf-8'));
+  }
+
+  return body;
+}
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Enable CORS
@@ -16,7 +34,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const data = comparisonRequestSchema.parse(req.body);
+    let parsedBody: unknown;
+    try {
+      parsedBody = parseRequestBody(req);
+    } catch (parseError) {
+      console.error("Invalid JSON payload:", parseError);
+      return res.status(400).json({ error: "Invalid JSON payload" });
+    }
+
+    const data = comparisonRequestSchema.parse(parsedBody);
 
     const { dieselTruck, electricTruck1, electricTruck2, timeframeYears, taxIncentiveRegion } = data;
 
@@ -76,8 +102,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     res.json(result);
   } catch (error) {
+    if (error instanceof ZodError) {
+      console.error("TCO validation error:", error.issues);
+      return res.status(400).json({ error: "Invalid request data" });
+    }
+
     console.error("TCO calculation error:", error);
-    res.status(400).json({ error: "Invalid request data" });
+    return res.status(500).json({ error: "Internal server error" });
   }
 }
 
