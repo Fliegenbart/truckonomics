@@ -15,8 +15,10 @@ export function CostBreakdownChart({ result }: CostBreakdownChartProps) {
         maintenance: acc.maintenance + year.maintenanceCost,
         insurance: acc.insurance + year.insuranceCost,
         depreciation: acc.depreciation + year.depreciationCost,
+        infrastructure: acc.infrastructure + (year.infrastructureCost ?? 0),
+        downtime: acc.downtime + (year.downtimeCost ?? 0),
       }),
-      { purchase: 0, fuel: 0, maintenance: 0, insurance: 0, depreciation: 0 }
+      { purchase: 0, fuel: 0, maintenance: 0, insurance: 0, depreciation: 0, infrastructure: 0, downtime: 0 }
     );
     return totals;
   };
@@ -35,6 +37,8 @@ export function CostBreakdownChart({ result }: CostBreakdownChartProps) {
       Wartung: Math.round(dieselTotals.maintenance),
       Versicherung: Math.round(dieselTotals.insurance),
       Abschreibung: Math.round(dieselTotals.depreciation),
+      Infrastruktur: Math.round(dieselTotals.infrastructure),
+      Ausfallzeit: Math.round(dieselTotals.downtime),
     },
     {
       name: result.electric1Analysis.name.length > 15 
@@ -45,6 +49,8 @@ export function CostBreakdownChart({ result }: CostBreakdownChartProps) {
       Wartung: Math.round(electric1Totals.maintenance),
       Versicherung: Math.round(electric1Totals.insurance),
       Abschreibung: Math.round(electric1Totals.depreciation),
+      Infrastruktur: Math.round(electric1Totals.infrastructure),
+      Ausfallzeit: Math.round(electric1Totals.downtime),
     },
     {
       name: result.electric2Analysis.name.length > 15 
@@ -55,6 +61,8 @@ export function CostBreakdownChart({ result }: CostBreakdownChartProps) {
       Wartung: Math.round(electric2Totals.maintenance),
       Versicherung: Math.round(electric2Totals.insurance),
       Abschreibung: Math.round(electric2Totals.depreciation),
+      Infrastruktur: Math.round(electric2Totals.infrastructure),
+      Ausfallzeit: Math.round(electric2Totals.downtime),
     },
   ];
 
@@ -108,6 +116,8 @@ export function CostBreakdownChart({ result }: CostBreakdownChartProps) {
               <Bar dataKey="Wartung" stackId="a" fill="hsl(var(--muted-foreground))" />
               <Bar dataKey="Versicherung" stackId="a" fill="hsl(var(--border))" />
               <Bar dataKey="Abschreibung" stackId="a" fill="hsl(var(--muted))" />
+              <Bar dataKey="Infrastruktur" stackId="a" fill="hsl(var(--chart-3))" />
+              <Bar dataKey="Ausfallzeit" stackId="a" fill="hsl(var(--chart-4))" />
             </BarChart>
           </ResponsiveContainer>
         </div>

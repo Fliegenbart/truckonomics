@@ -46,12 +46,33 @@ export type TruckParameters = z.infer<typeof truckParametersSchema>;
 export const taxIncentiveRegions = ["bundesfoerderung", "bayern", "baden-wuerttemberg", "nordrhein-westfalen", "niedersachsen", "keine"] as const;
 export type TaxIncentiveRegion = typeof taxIncentiveRegions[number];
 
+export const operationProfileSchema = z.object({
+  dailyKm: z.number().min(0),
+  dailyKmP90: z.number().min(0),
+  stopsPerDay: z.number().min(0),
+  stopMinutes: z.number().min(0),
+  workDaysPerYear: z.number().min(0),
+  opportunityCharging: z.boolean().optional().default(false),
+  opportunityChargeMinutes: z.number().min(0).optional().default(0),
+  opportunityChargePowerKw: z.number().min(0).optional().default(150),
+  publicChargeShare: z.number().min(0).max(100).optional().default(0),
+  publicChargeCostPerKwh: z.number().min(0).optional().default(0),
+  p90SharePercent: z.number().min(0).max(100).optional().default(10),
+  downtimeCostPerDay: z.number().min(0).optional().default(0),
+  infrastructureCapex: z.number().min(0).optional().default(0),
+  infrastructureOpexAnnual: z.number().min(0).optional().default(0),
+  infrastructureLifetimeYears: z.number().min(1).max(30).optional().default(10),
+});
+
+export type OperationProfile = z.infer<typeof operationProfileSchema>;
+
 export const comparisonRequestSchema = z.object({
   dieselTruck: truckParametersSchema,
   electricTruck1: truckParametersSchema,
   electricTruck2: truckParametersSchema,
   timeframeYears: z.number().min(1).max(30),
   taxIncentiveRegion: z.enum(taxIncentiveRegions).optional().default("bundesfoerderung"),
+  operationProfile: operationProfileSchema.optional(),
 });
 
 export type ComparisonRequest = z.infer<typeof comparisonRequestSchema>;
@@ -63,6 +84,8 @@ export const yearCostBreakdownSchema = z.object({
   maintenanceCost: z.number(),
   insuranceCost: z.number(),
   depreciationCost: z.number(),
+  infrastructureCost: z.number(),
+  downtimeCost: z.number(),
   totalCost: z.number(),
   cumulativeCost: z.number(),
 });
@@ -78,6 +101,8 @@ export const truckAnalysisSchema = z.object({
   totalMaintenanceCost: z.number(),
   totalInsuranceCost: z.number(),
   depreciation: z.number(),
+  totalInfrastructureCost: z.number(),
+  totalDowntimeCost: z.number(),
   environmentalImpact: z.object({
     totalCO2Emissions: z.number(),
     totalFuelConsumed: z.number(),

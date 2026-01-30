@@ -20,8 +20,14 @@ const presetCopy: Record<
       stopMinutes: 8,
       opportunityCharging: false,
       opportunityChargeMinutes: 0,
+      opportunityChargePowerKw: 0,
       publicChargeShare: 0,
       publicChargeCostPerKwh: 0.55,
+      p90SharePercent: 10,
+      downtimeCostPerDay: 800,
+      infrastructureCapex: 35000,
+      infrastructureOpexAnnual: 1200,
+      infrastructureLifetimeYears: 10,
       useP90ForCalc: false,
     },
   },
@@ -35,8 +41,14 @@ const presetCopy: Record<
       stopMinutes: 20,
       opportunityCharging: true,
       opportunityChargeMinutes: 30,
+      opportunityChargePowerKw: 150,
       publicChargeShare: 20,
       publicChargeCostPerKwh: 0.55,
+      p90SharePercent: 10,
+      downtimeCostPerDay: 1200,
+      infrastructureCapex: 50000,
+      infrastructureOpexAnnual: 1800,
+      infrastructureLifetimeYears: 10,
       useP90ForCalc: false,
     },
   },
@@ -50,8 +62,14 @@ const presetCopy: Record<
       stopMinutes: 20,
       opportunityCharging: true,
       opportunityChargeMinutes: 30,
+      opportunityChargePowerKw: 150,
       publicChargeShare: 15,
       publicChargeCostPerKwh: 0.55,
+      p90SharePercent: 10,
+      downtimeCostPerDay: 1200,
+      infrastructureCapex: 55000,
+      infrastructureOpexAnnual: 2000,
+      infrastructureLifetimeYears: 10,
       useP90ForCalc: false,
     },
   },
@@ -242,7 +260,7 @@ export function OperationProfileCard({
           </div>
 
           {value.opportunityCharging && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="opportunity-minutes" className="text-xs uppercase tracking-wider font-medium">
                   Ladezeit tagsüber (min)
@@ -253,6 +271,18 @@ export function OperationProfileCard({
                   min="0"
                   value={value.opportunityChargeMinutes}
                   onChange={(e) => setField("opportunityChargeMinutes", Number(e.target.value) || 0)}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="opportunity-power" className="text-xs uppercase tracking-wider font-medium">
+                  Ladeleistung (kW)
+                </Label>
+                <Input
+                  id="opportunity-power"
+                  type="number"
+                  min="0"
+                  value={value.opportunityChargePowerKw}
+                  onChange={(e) => setField("opportunityChargePowerKw", Number(e.target.value) || 0)}
                 />
               </div>
               <div className="space-y-2">
@@ -286,6 +316,97 @@ export function OperationProfileCard({
               </div>
             </div>
           )}
+        </div>
+
+        <div className="border-t border-border pt-4 space-y-3">
+          <div>
+            <p className="text-sm font-medium">Infrastruktur (Depot)</p>
+            <p className="text-xs text-muted-foreground">
+              Kosten pro Fahrzeug für Ladehardware und Netzanschluss
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="infra-capex" className="text-xs uppercase tracking-wider font-medium">
+                CAPEX (€/Fahrzeug)
+              </Label>
+              <Input
+                id="infra-capex"
+                type="number"
+                min="0"
+                value={value.infrastructureCapex}
+                onChange={(e) => setField("infrastructureCapex", Number(e.target.value) || 0)}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="infra-opex" className="text-xs uppercase tracking-wider font-medium">
+                Opex pro Jahr (€/Fahrzeug)
+              </Label>
+              <Input
+                id="infra-opex"
+                type="number"
+                min="0"
+                value={value.infrastructureOpexAnnual}
+                onChange={(e) => setField("infrastructureOpexAnnual", Number(e.target.value) || 0)}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="infra-life" className="text-xs uppercase tracking-wider font-medium">
+                Abschreibung (Jahre)
+              </Label>
+              <Input
+                id="infra-life"
+                type="number"
+                min="1"
+                value={value.infrastructureLifetimeYears}
+                onChange={(e) => setField("infrastructureLifetimeYears", Number(e.target.value) || 1)}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="border-t border-border pt-4 space-y-3">
+          <div>
+            <p className="text-sm font-medium">Ausfallkosten (P90-Tage)</p>
+            <p className="text-xs text-muted-foreground">
+              Monetarisiert Risiko an den schwierigsten Tagen
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="p90-share" className="text-xs uppercase tracking-wider font-medium">
+                P90-Anteil der Tage (%)
+              </Label>
+              <Input
+                id="p90-share"
+                type="number"
+                min="0"
+                max="100"
+                value={value.p90SharePercent}
+                onChange={(e) => setField("p90SharePercent", Number(e.target.value) || 0)}
+              />
+              <p className="text-xs text-muted-foreground">
+                ~{Math.round((value.workDaysPerYear * value.p90SharePercent) / 100)} Tage/Jahr
+              </p>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="downtime-cost" className="text-xs uppercase tracking-wider font-medium">
+                Ausfallkosten pro Tag (€)
+              </Label>
+              <Input
+                id="downtime-cost"
+                type="number"
+                min="0"
+                value={value.downtimeCostPerDay}
+                onChange={(e) => setField("downtimeCostPerDay", Number(e.target.value) || 0)}
+              />
+            </div>
+            <div className="flex items-end">
+              <p className="text-xs text-muted-foreground">
+                Wird nur angesetzt, wenn die E-Reichweite die P90-Tage nicht abdeckt.
+              </p>
+            </div>
+          </div>
         </div>
       </CardContent>
     </Card>

@@ -114,8 +114,14 @@ const defaultOperationProfile: OperationProfile = {
   workDaysPerYear: 250,
   opportunityCharging: true,
   opportunityChargeMinutes: 30,
+  opportunityChargePowerKw: 150,
   publicChargeShare: 20,
   publicChargeCostPerKwh: 0.55,
+  p90SharePercent: 10,
+  downtimeCostPerDay: 1200,
+  infrastructureCapex: 50000,
+  infrastructureOpexAnnual: 1800,
+  infrastructureLifetimeYears: 10,
   useP90ForCalc: false,
 };
 
@@ -176,20 +182,17 @@ export default function Home() {
 
   const calculateMutation = useMutation({
     mutationFn: async () => {
-      const payloadElectric1 = {
-        ...electricTruck1,
-        fuelCostPerUnit: effectiveElectric1Cost,
-      };
-      const payloadElectric2 = {
-        ...electricTruck2,
-        fuelCostPerUnit: effectiveElectric2Cost,
-      };
       const response = await apiRequest("POST", "/api/calculate-tco", {
         dieselTruck,
-        electricTruck1: payloadElectric1,
-        electricTruck2: payloadElectric2,
+        electricTruck1,
+        electricTruck2,
         timeframeYears,
         taxIncentiveRegion,
+        operationProfile: {
+          ...operationProfile,
+          publicChargeShare: operationProfile.opportunityCharging ? operationProfile.publicChargeShare : 0,
+          publicChargeCostPerKwh: operationProfile.publicChargeCostPerKwh,
+        },
       });
       const data = await response.json();
       return data as ComparisonResult;
