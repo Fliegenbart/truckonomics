@@ -1,6 +1,91 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { ZodError } from 'zod';
-import { comparisonRequestSchema, type ComparisonResult, type TruckAnalysis, type YearCostBreakdown, regionalIncentives } from '../shared/schema';
+import { z, ZodError } from 'zod';
+import type { ComparisonResult, TruckAnalysis, YearCostBreakdown } from '../shared/schema';
+
+const technicalSpecsSchema = z.object({
+  zulaessigesGesamtgewicht: z.number().min(0).optional(),
+  zugGesamtgewicht: z.number().min(0).optional(),
+  achskonfiguration: z.enum(["4x2", "6x2", "6x4", "8x4"]).optional(),
+  nutzlast: z.number().min(0).optional(),
+  leistungKW: z.number().min(0).optional(),
+  leistungPS: z.number().min(0).optional(),
+  drehmoment: z.number().min(0).optional(),
+  batterieKapazitaet: z.number().min(0).optional(),
+  tankKapazitaet: z.number().min(0).optional(),
+  reichweite: z.number().min(0).optional(),
+  ladeLeistungAC: z.number().min(0).optional(),
+  ladeLeistungDC: z.number().min(0).optional(),
+  fahrerhaus: z.enum(["Fernverkehr", "Verteiler", "Nahverkehr", "Kipper"]).optional(),
+  laenge: z.number().min(0).optional(),
+  hoehe: z.number().min(0).optional(),
+});
+
+const truckParametersSchema = z.object({
+  name: z.string().min(1, "Name ist erforderlich"),
+  type: z.enum(["diesel", "electric"]),
+  purchasePrice: z.number().min(0, "Kaufpreis muss positiv sein"),
+  annualMileage: z.number().min(0, "Jahreskilometer muss positiv sein"),
+  fuelCostPerUnit: z.number().min(0, "Kraftstoff-/Stromkosten müssen positiv sein"),
+  maintenanceCostAnnual: z.number().min(0, "Wartungskosten müssen positiv sein"),
+  insuranceCostAnnual: z.number().min(0, "Versicherungskosten müssen positiv sein"),
+  expectedLifespanYears: z.number().min(1).max(30, "Lebensdauer muss zwischen 1 und 30 Jahren liegen"),
+  fuelEfficiency: z.number().min(0, "Kraftstoffeffizienz muss positiv sein"),
+  technicalSpecs: technicalSpecsSchema.optional(),
+});
+
+const taxIncentiveRegions = ["bundesfoerderung", "bayern", "baden-wuerttemberg", "nordrhein-westfalen", "niedersachsen", "keine"] as const;
+const comparisonRequestSchema = z.object({
+  dieselTruck: truckParametersSchema,
+  electricTruck1: truckParametersSchema,
+  electricTruck2: truckParametersSchema,
+  timeframeYears: z.number().min(1).max(30),
+  taxIncentiveRegion: z.enum(taxIncentiveRegions).optional().default("bundesfoerderung"),
+});
+
+const regionalIncentives = {
+  "bundesfoerderung": {
+    region: "Nur Bundesförderung",
+    federalCredit: 80000,
+    stateCredit: 0,
+    totalIncentive: 80000,
+    description: "KsNI-Förderung für klimaschonende Nutzfahrzeuge (bis zu 80% der Mehrkosten)",
+  },
+  "bayern": {
+    region: "Bayern",
+    federalCredit: 80000,
+    stateCredit: 10000,
+    totalIncentive: 90000,
+    description: "Bundesförderung + Bayerische Förderung für E-Nutzfahrzeuge",
+  },
+  "baden-wuerttemberg": {
+    region: "Baden-Württemberg",
+    federalCredit: 80000,
+    stateCredit: 15000,
+    totalIncentive: 95000,
+    description: "Bundesförderung + BW-e-Gutschein für E-Nutzfahrzeuge",
+  },
+  "nordrhein-westfalen": {
+    region: "Nordrhein-Westfalen",
+    federalCredit: 80000,
+    stateCredit: 8000,
+    totalIncentive: 88000,
+    description: "Bundesförderung + NRW progres.nrw Emissionsarme Mobilität",
+  },
+  "niedersachsen": {
+    region: "Niedersachsen",
+    federalCredit: 80000,
+    stateCredit: 5000,
+    totalIncentive: 85000,
+    description: "Bundesförderung + Niedersächsische Klimaschutzförderung",
+  },
+  "keine": {
+    region: "Keine Förderung",
+    federalCredit: 0,
+    stateCredit: 0,
+    totalIncentive: 0,
+    description: "Berechnung ohne Förderungen",
+  },
+} as const;
 
 function parseRequestBody(req: VercelRequest) {
   const body = req.body;
