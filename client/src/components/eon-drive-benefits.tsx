@@ -1,30 +1,11 @@
-import { Zap, Leaf, FileText, Wrench, ArrowRight } from "lucide-react";
-import { EonDriveLogo } from "./eon-drive-logo";
-
-const benefits = [
-  {
-    icon: Zap,
-    title: "Ladeinfrastruktur",
-    description: "Komplette Depot-Charging Lösung aus einer Hand",
-  },
-  {
-    icon: Leaf,
-    title: "Grüner Strom",
-    description: "100% Ökostrom-Tarif für Ihre Flotte",
-  },
-  {
-    icon: FileText,
-    title: "Fördermittel",
-    description: "Unterstützung bei der Beantragung von Förderungen",
-  },
-  {
-    icon: Wrench,
-    title: "Full Service",
-    description: "24/7 Wartung & technischer Support",
-  },
-];
+import { ArrowRight } from "lucide-react";
+import { useTenant } from "@/lib/tenant";
 
 export function EonDriveBenefits() {
+  const { tenant } = useTenant();
+  const benefits = tenant.benefits;
+  const PartnerLogo = tenant.PartnerLogo;
+
   return (
     <div className="relative overflow-hidden bg-gradient-to-br from-card via-card to-primary/5 border border-card-border rounded-2xl p-8 shadow-sm">
       {/* Decorative elements */}
@@ -39,11 +20,11 @@ export function EonDriveBenefits() {
               Ihr Partner für E-Mobilität
             </p>
             <h3 className="text-2xl font-semibold">
-              Elektrifizierung mit <span className="text-primary">E.ON Drive</span>
+              Elektrifizierung mit <span className="text-primary">{tenant.partnerName}</span>
             </h3>
           </div>
           <div className="hidden sm:block">
-            <EonDriveLogo className="h-8 w-auto opacity-80" />
+            <PartnerLogo className="h-8 w-auto opacity-80" />
           </div>
         </div>
 
@@ -70,12 +51,12 @@ export function EonDriveBenefits() {
 
         {/* CTA Link */}
         <a
-          href="https://www.eon.de/de/geschaeftskunden/e-mobilitaet.html"
+          href={tenant.links.learnMore}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors group"
         >
-          Mehr über E.ON Drive erfahren
+          Mehr über {tenant.partnerName} erfahren
           <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
         </a>
       </div>

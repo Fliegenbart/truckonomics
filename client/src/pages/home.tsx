@@ -14,11 +14,12 @@ import { EonDriveBenefits } from "@/components/eon-drive-benefits";
 import { ConsultationCTA } from "@/components/consultation-cta";
 import { PdfExportButton } from "@/components/pdf-export-button";
 import { Calculator, RotateCcw } from "lucide-react";
-import { EonDriveLogo } from "@/components/eon-drive-logo";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import type { TruckParameters, ComparisonResult, TaxIncentiveRegion } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
+import { useTenant } from "@/lib/tenant";
+import { EmbedAutoResize } from "@/components/embed-auto-resize";
 
 const defaultDieselTruck: TruckParameters = {
   name: "Diesel-Sattelzug",
@@ -111,6 +112,7 @@ export default function Home() {
   const [fleetSize, setFleetSize] = useState(1);
   const [result, setResult] = useState<ComparisonResult | null>(null);
   const { toast } = useToast();
+  const { tenant, embed } = useTenant();
 
   const calculateMutation = useMutation({
     mutationFn: async () => {
@@ -159,38 +161,68 @@ export default function Home() {
     setResult(null);
   };
 
+  const PartnerLogo = tenant.PartnerLogo;
+
   return (
     <div className="min-h-screen bg-background relative">
       {/* Animated Gradient Mesh Background */}
       <div className="gradient-mesh" />
+      {embed && <EmbedAutoResize />}
 
-      {/* Editorial Premium Hero */}
-      <header className="relative border-b border-border">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-20 sm:py-28 lg:py-32">
-          {/* Powered by E.ON Drive - Top Right */}
-          <div className="absolute top-6 right-6 sm:right-8 lg:right-12">
+      {/* Header */}
+      {embed ? (
+        <header className="relative border-b border-border bg-background/70 backdrop-blur">
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-8 sm:py-10 flex items-center justify-between gap-6">
+            <div>
+              <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
+                {tenant.appName}
+              </p>
+              <h1 className="font-serif text-2xl sm:text-3xl font-medium tracking-tight text-foreground">
+                TCO-Rechner
+              </h1>
+            </div>
             <div className="flex flex-col items-end gap-1">
-              <span className="text-xs font-medium uppercase tracking-widest text-muted-foreground">powered by</span>
-              <EonDriveLogo className="h-8 w-auto" />
+              <span className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
+                {tenant.poweredByLabel}
+              </span>
+              <PartnerLogo className="h-7 w-auto" />
             </div>
           </div>
+        </header>
+      ) : (
+        <header className="relative border-b border-border">
+          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-20 sm:py-28 lg:py-32">
+            {/* Powered by partner - Top Right */}
+            <div className="absolute top-6 right-6 sm:right-8 lg:right-12">
+              <div className="flex flex-col items-end gap-1">
+                <span className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
+                  {tenant.poweredByLabel}
+                </span>
+                <PartnerLogo className="h-8 w-auto" />
+              </div>
+            </div>
 
-          <div className="max-w-3xl">
-            <p className="label-editorial mb-6">TCO-Analyse für Flottenmanager</p>
-            <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl font-semibold tracking-tight text-foreground leading-[1.1] mb-8" data-testid="text-app-title">
-              Truckonomics
-            </h1>
-            <div className="h-px w-16 bg-primary mb-8" />
-            <p className="text-xl sm:text-2xl text-muted-foreground font-light leading-relaxed max-w-xl">
-              Der präzise Kostenvergleich zwischen Diesel- und Elektro-Sattelzügen.
-              Fundierte Entscheidungen auf Basis realer Daten.
-            </p>
+            <div className="max-w-3xl">
+              <p className="label-editorial mb-6">TCO-Analyse für Flottenmanager</p>
+              <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl font-semibold tracking-tight text-foreground leading-[1.1] mb-8" data-testid="text-app-title">
+                {tenant.appName}
+              </h1>
+              <div className="h-px w-16 bg-primary mb-8" />
+              <p className="text-xl sm:text-2xl text-muted-foreground font-light leading-relaxed max-w-xl">
+                Der präzise Kostenvergleich zwischen Diesel- und Elektro-Sattelzügen.
+                Fundierte Entscheidungen auf Basis realer Daten.
+              </p>
+            </div>
           </div>
-        </div>
-      </header>
+        </header>
+      )}
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12 space-y-12 relative">
+      <main
+        className={`max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 ${
+          embed ? "py-8" : "py-12"
+        } space-y-12 relative`}
+      >
         {/* Input Section */}
         <section className="space-y-10">
           <div>
@@ -328,25 +360,39 @@ export default function Home() {
 
             <DetailedTCOTable result={result} />
 
-            {/* Consultation CTA */}
-            <ConsultationCTA />
+            {/* Consultation CTA (lead capture) */}
+            <ConsultationCTA
+              result={result}
+              inputs={{
+                dieselTruck,
+                electricTruck1,
+                electricTruck2,
+                timeframeYears,
+                taxIncentiveRegion,
+                fleetSize,
+              }}
+            />
           </section>
         )}
 
         {/* Footer */}
-        <footer className="pt-20 pb-10 border-t border-border mt-24">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-4">
-              <span className="font-serif text-lg font-medium text-foreground">Truckonomics</span>
-              <span className="text-muted-foreground/50">·</span>
-              <span className="text-xs font-medium uppercase tracking-widest text-muted-foreground">powered by</span>
-              <EonDriveLogo className="h-6 w-auto" />
+        {!embed && (
+          <footer className="pt-20 pb-10 border-t border-border mt-24">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+              <div className="flex items-center gap-4">
+                <span className="font-serif text-lg font-medium text-foreground">{tenant.appName}</span>
+                <span className="text-muted-foreground/50">·</span>
+                <span className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
+                  {tenant.poweredByLabel}
+                </span>
+                <PartnerLogo className="h-6 w-auto" />
+              </div>
+              <p className="text-sm text-muted-foreground text-center sm:text-right max-w-md">
+                Alle Berechnungen sind Schätzungen basierend auf den angegebenen Parametern.
+              </p>
             </div>
-            <p className="text-sm text-muted-foreground text-center sm:text-right max-w-md">
-              Alle Berechnungen sind Schätzungen basierend auf den angegebenen Parametern.
-            </p>
-          </div>
-        </footer>
+          </footer>
+        )}
       </main>
     </div>
   );

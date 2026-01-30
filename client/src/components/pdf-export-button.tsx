@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import { FileDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useTenant } from "@/lib/tenant";
 import type { ComparisonResult } from "@shared/schema";
 
 interface PdfExportButtonProps {
@@ -10,6 +11,7 @@ interface PdfExportButtonProps {
 
 export function PdfExportButton({ result, fleetSize }: PdfExportButtonProps) {
   const [isExporting, setIsExporting] = useState(false);
+  const { tenant } = useTenant();
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat("de-DE", {
@@ -65,15 +67,15 @@ export function PdfExportButton({ result, fleetSize }: PdfExportButtonProps) {
           <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 40px; padding-bottom: 24px; border-bottom: 2px solid #EA1B0A;">
             <div>
               <h1 style="font-size: 32px; font-weight: 700; color: #EA1B0A; margin: 0 0 8px 0; letter-spacing: -0.02em;">
-                Truckonomics
+                ${tenant.appName}
               </h1>
               <p style="font-size: 14px; color: #666; margin: 0;">
                 TCO-Analyse | ${new Date().toLocaleDateString("de-DE", { day: "2-digit", month: "long", year: "numeric" })}
               </p>
             </div>
             <div style="text-align: right;">
-              <p style="font-size: 10px; color: #999; margin: 0 0 4px 0;">powered by</p>
-              <div style="font-size: 18px; font-weight: 600; color: #EA1B0A;">E.ON Drive</div>
+              <p style="font-size: 10px; color: #999; margin: 0 0 4px 0;">${tenant.poweredByLabel}</p>
+              <div style="font-size: 18px; font-weight: 600; color: #EA1B0A;">${tenant.partnerName}</div>
             </div>
           </div>
 
@@ -205,7 +207,7 @@ export function PdfExportButton({ result, fleetSize }: PdfExportButtonProps) {
           <!-- Disclaimer -->
           <p style="font-size: 10px; color: #999; margin-top: 24px; text-align: center;">
             Diese Analyse dient nur zu Informationszwecken. Alle Berechnungen sind Schätzungen basierend auf den angegebenen Parametern.
-            Erstellt mit Truckonomics by E.ON Drive | ${window.location.href}
+            Erstellt mit ${tenant.appName} | ${tenant.poweredByLabel} ${tenant.partnerName} | ${window.location.href}
           </p>
         </div>
       `;
@@ -224,7 +226,7 @@ export function PdfExportButton({ result, fleetSize }: PdfExportButtonProps) {
     } finally {
       setIsExporting(false);
     }
-  }, [result, fleetSize]);
+  }, [result, fleetSize, tenant.appName, tenant.partnerName, tenant.poweredByLabel]);
 
   return (
     <Button
