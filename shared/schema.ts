@@ -686,7 +686,13 @@ export const scenarios = pgTable("scenarios", {
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
-export const insertScenarioSchema = createInsertSchema(scenarios).omit({
+export const insertScenarioSchema = createInsertSchema(scenarios, {
+  dieselTruck: truckParametersSchema,
+  electricTruck1: truckParametersSchema,
+  electricTruck2: truckParametersSchema,
+  taxIncentiveRegion: z.enum(taxIncentiveRegions),
+  timeframeYears: z.number().min(1).max(30),
+}).omit({
   id: true,
   createdAt: true,
   updatedAt: true,
