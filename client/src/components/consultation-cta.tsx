@@ -29,6 +29,8 @@ interface ConsultationCTAProps {
     operationProfile: OperationProfile;
     computedAnnualMileage: number;
     syncMileage: boolean;
+    effectiveElectricFuelCost1: number;
+    effectiveElectricFuelCost2: number;
   };
 }
 

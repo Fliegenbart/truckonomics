@@ -9,6 +9,7 @@ export interface OperationProfile {
   workDaysPerYear: number;
   opportunityCharging: boolean;
   opportunityChargeMinutes: number;
+  publicChargeShare: number;
+  publicChargeCostPerKwh: number;
   useP90ForCalc: boolean;
 }
-

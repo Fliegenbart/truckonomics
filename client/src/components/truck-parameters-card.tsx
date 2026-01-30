@@ -15,9 +15,18 @@ interface TruckParametersCardProps {
   onChange: (truck: TruckParameters) => void;
   truckIndex: number;
   lockAnnualMileage?: boolean;
+  effectiveFuelCostPerUnit?: number;
+  publicChargeSharePercent?: number;
 }
 
-export function TruckParametersCard({ truck, onChange, truckIndex, lockAnnualMileage = false }: TruckParametersCardProps) {
+export function TruckParametersCard({
+  truck,
+  onChange,
+  truckIndex,
+  lockAnnualMileage = false,
+  effectiveFuelCostPerUnit,
+  publicChargeSharePercent,
+}: TruckParametersCardProps) {
   const [errors, setErrors] = useState<Partial<Record<keyof TruckParameters, string>>>({});
   const [specsOpen, setSpecsOpen] = useState(false);
 
@@ -55,6 +64,12 @@ export function TruckParametersCard({ truck, onChange, truckIndex, lockAnnualMil
 
   const isDiesel = truck.type === "diesel";
   const specs = truck.technicalSpecs || {};
+  const showEffectiveFuel =
+    !isDiesel &&
+    typeof effectiveFuelCostPerUnit === "number" &&
+    effectiveFuelCostPerUnit !== truck.fuelCostPerUnit;
+  const formatCurrency = (value: number) =>
+    new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", maximumFractionDigits: 2 }).format(value);
 
   const handlePresetSelect = (presetId: string) => {
     if (presetId === "custom") {
@@ -201,6 +216,12 @@ export function TruckParametersCard({ truck, onChange, truckIndex, lockAnnualMil
                 data-testid={`input-fuel-${truckIndex}`}
               />
             </div>
+            {showEffectiveFuel && (
+              <p className="text-xs text-muted-foreground">
+                Mischpreis für Berechnung: {formatCurrency(effectiveFuelCostPerUnit)}
+                {typeof publicChargeSharePercent === "number" ? ` · ${publicChargeSharePercent}% öffentlich` : ""}
+              </p>
+            )}
             {errors.fuelCostPerUnit && (
               <p className="text-xs text-destructive">{errors.fuelCostPerUnit}</p>
             )}

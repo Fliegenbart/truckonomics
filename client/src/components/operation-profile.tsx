@@ -20,6 +20,8 @@ const presetCopy: Record<
       stopMinutes: 8,
       opportunityCharging: false,
       opportunityChargeMinutes: 0,
+      publicChargeShare: 0,
+      publicChargeCostPerKwh: 0.55,
       useP90ForCalc: false,
     },
   },
@@ -33,6 +35,8 @@ const presetCopy: Record<
       stopMinutes: 20,
       opportunityCharging: true,
       opportunityChargeMinutes: 30,
+      publicChargeShare: 20,
+      publicChargeCostPerKwh: 0.55,
       useP90ForCalc: false,
     },
   },
@@ -46,6 +50,8 @@ const presetCopy: Record<
       stopMinutes: 20,
       opportunityCharging: true,
       opportunityChargeMinutes: 30,
+      publicChargeShare: 15,
+      publicChargeCostPerKwh: 0.55,
       useP90ForCalc: false,
     },
   },
@@ -236,7 +242,7 @@ export function OperationProfileCard({
           </div>
 
           {value.opportunityCharging && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="opportunity-minutes" className="text-xs uppercase tracking-wider font-medium">
                   Ladezeit tagsüber (min)
@@ -249,9 +255,33 @@ export function OperationProfileCard({
                   onChange={(e) => setField("opportunityChargeMinutes", Number(e.target.value) || 0)}
                 />
               </div>
-              <div className="flex items-end">
+              <div className="space-y-2">
+                <Label htmlFor="public-share" className="text-xs uppercase tracking-wider font-medium">
+                  Anteil öffentliches Laden (%)
+                </Label>
+                <Input
+                  id="public-share"
+                  type="number"
+                  min="0"
+                  max="100"
+                  value={value.publicChargeShare}
+                  onChange={(e) => setField("publicChargeShare", Number(e.target.value) || 0)}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="public-cost" className="text-xs uppercase tracking-wider font-medium">
+                  Preis öffentlich (€/kWh)
+                </Label>
+                <Input
+                  id="public-cost"
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  value={value.publicChargeCostPerKwh}
+                  onChange={(e) => setField("publicChargeCostPerKwh", Number(e.target.value) || 0)}
+                />
                 <p className="text-xs text-muted-foreground">
-                  Wird als Hinweis genutzt (Reichweite / Risiko).
+                  Wird als Mischpreis in der Berechnung verwendet.
                 </p>
               </div>
             </div>
@@ -261,4 +291,3 @@ export function OperationProfileCard({
     </Card>
   );
 }
-

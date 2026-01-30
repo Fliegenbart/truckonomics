@@ -114,6 +114,8 @@ const defaultOperationProfile: OperationProfile = {
   workDaysPerYear: 250,
   opportunityCharging: true,
   opportunityChargeMinutes: 30,
+  publicChargeShare: 20,
+  publicChargeCostPerKwh: 0.55,
   useP90ForCalc: false,
 };
 
@@ -137,6 +139,21 @@ export default function Home() {
     0,
     Math.round(baseDailyKm * operationProfile.workDaysPerYear),
   );
+
+  const publicChargeShare = operationProfile.opportunityCharging
+    ? Math.min(Math.max(operationProfile.publicChargeShare, 0), 100) / 100
+    : 0;
+  const publicChargeCost = operationProfile.publicChargeCostPerKwh;
+
+  const getEffectiveElectricCost = (baseCost: number) => {
+    if (!operationProfile.opportunityCharging || publicChargeShare <= 0) {
+      return baseCost;
+    }
+    return baseCost * (1 - publicChargeShare) + publicChargeCost * publicChargeShare;
+  };
+
+  const effectiveElectric1Cost = getEffectiveElectricCost(electricTruck1.fuelCostPerUnit);
+  const effectiveElectric2Cost = getEffectiveElectricCost(electricTruck2.fuelCostPerUnit);
   useEffect(() => {
     if (!syncMileage) return;
 
@@ -159,10 +176,18 @@ export default function Home() {
 
   const calculateMutation = useMutation({
     mutationFn: async () => {
+      const payloadElectric1 = {
+        ...electricTruck1,
+        fuelCostPerUnit: effectiveElectric1Cost,
+      };
+      const payloadElectric2 = {
+        ...electricTruck2,
+        fuelCostPerUnit: effectiveElectric2Cost,
+      };
       const response = await apiRequest("POST", "/api/calculate-tco", {
         dieselTruck,
-        electricTruck1,
-        electricTruck2,
+        electricTruck1: payloadElectric1,
+        electricTruck2: payloadElectric2,
         timeframeYears,
         taxIncentiveRegion,
       });
@@ -301,6 +326,8 @@ export default function Home() {
                 onChange={setElectricTruck1}
                 truckIndex={1}
                 lockAnnualMileage={syncMileage}
+                effectiveFuelCostPerUnit={effectiveElectric1Cost}
+                publicChargeSharePercent={operationProfile.publicChargeShare}
               />
             </div>
             <div className="card-hover">
@@ -309,6 +336,8 @@ export default function Home() {
                 onChange={setElectricTruck2}
                 truckIndex={2}
                 lockAnnualMileage={syncMileage}
+                effectiveFuelCostPerUnit={effectiveElectric2Cost}
+                publicChargeSharePercent={operationProfile.publicChargeShare}
               />
             </div>
           </div>
@@ -429,6 +458,8 @@ export default function Home() {
                 operationProfile,
                 computedAnnualMileage,
                 syncMileage,
+                effectiveElectricFuelCost1: effectiveElectric1Cost,
+                effectiveElectricFuelCost2: effectiveElectric2Cost,
               }}
             />
           </section>
