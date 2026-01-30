@@ -60,7 +60,7 @@ export function SummaryMetrics({ result, fleetSize = 1 }: SummaryMetricsProps) {
           <p className="label-editorial mb-4">
             {isFleet ? "Flottenersparnis" : "Max. Ersparnis"}
           </p>
-          <p className="font-sans text-4xl sm:text-5xl lg:text-6xl font-bold tabular-nums tracking-tight text-primary leading-none" data-testid="text-max-savings">
+          <p className="font-sans text-[1.6rem] sm:text-[2.1rem] lg:text-[2.625rem] font-bold tabular-nums tracking-tight text-primary leading-none" data-testid="text-max-savings">
             {formatCurrency(result.maxSavings * fleetSize)}
           </p>
           <p className="text-sm text-muted-foreground mt-3">
@@ -71,7 +71,7 @@ export function SummaryMetrics({ result, fleetSize = 1 }: SummaryMetricsProps) {
         {/* Break Even */}
         <div className="p-6 lg:p-8 border-b lg:border-b-0 lg:border-r border-border">
           <p className="label-editorial mb-4">Amortisation</p>
-          <p className="font-sans text-4xl sm:text-5xl lg:text-6xl font-bold tabular-nums tracking-tight text-foreground leading-none" data-testid="text-break-even">
+          <p className="font-sans text-[1.6rem] sm:text-[2.1rem] lg:text-[2.625rem] font-bold tabular-nums tracking-tight text-foreground leading-none" data-testid="text-break-even">
             {formatBreakEven()}
           </p>
           <p className="text-sm text-muted-foreground mt-3">
@@ -84,7 +84,7 @@ export function SummaryMetrics({ result, fleetSize = 1 }: SummaryMetricsProps) {
           <p className="label-editorial mb-4">
             {isFleet ? "TCO Diesel" : "Diesel TCO"}
           </p>
-          <p className="font-sans text-4xl sm:text-5xl lg:text-6xl font-bold tabular-nums tracking-tight text-foreground/70 leading-none" data-testid="text-diesel-tco">
+          <p className="font-sans text-[1.6rem] sm:text-[2.1rem] lg:text-[2.625rem] font-bold tabular-nums tracking-tight text-foreground/70 leading-none" data-testid="text-diesel-tco">
             {formatCurrency(result.dieselAnalysis.totalCostOfOwnership * fleetSize)}
           </p>
           <p className="text-sm text-muted-foreground mt-3">
@@ -97,7 +97,7 @@ export function SummaryMetrics({ result, fleetSize = 1 }: SummaryMetricsProps) {
           <p className="label-editorial mb-4">
             {isFleet ? "TCO Elektro" : "Bester Elektro"}
           </p>
-          <p className="font-sans text-4xl sm:text-5xl lg:text-6xl font-bold tabular-nums tracking-tight text-primary leading-none" data-testid="text-best-electric-tco">
+          <p className="font-sans text-[1.6rem] sm:text-[2.1rem] lg:text-[2.625rem] font-bold tabular-nums tracking-tight text-primary leading-none" data-testid="text-best-electric-tco">
             {formatCurrency(bestElectric.totalCostOfOwnership * fleetSize)}
           </p>
           <p className="text-sm text-muted-foreground mt-3">
