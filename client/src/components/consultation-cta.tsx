@@ -95,7 +95,7 @@ export function ConsultationCTA({ result, inputs }: ConsultationCTAProps) {
         }
       });
 
-      await apiRequest("POST", "/api/leads", {
+      const resp = await apiRequest("POST", "/api/leads", {
         tenant: tenant.id,
         embed,
         url: window.location.href,
@@ -120,10 +120,26 @@ export function ConsultationCTA({ result, inputs }: ConsultationCTAProps) {
         inputs,
       });
 
-      toast({
-        title: "Danke!",
-        description: "Ihre Anfrage wurde übermittelt. Wir melden uns zeitnah.",
-      });
+      let delivered: boolean | undefined;
+      try {
+        const json = (await resp.json()) as any;
+        delivered = typeof json?.delivered === "boolean" ? json.delivered : undefined;
+      } catch {
+        // noop (e.g. 204 without body)
+      }
+
+      if (delivered === false) {
+        toast({
+          title: "Hinweis",
+          description:
+            "Lead erfasst, aber E-Mail-Versand ist noch nicht konfiguriert (LEAD_TO_EMAIL / RESEND_API_KEY).",
+        });
+      } else {
+        toast({
+          title: "Danke!",
+          description: "Ihre Anfrage wurde übermittelt. Wir melden uns zeitnah.",
+        });
+      }
       setOpen(false);
       setCompany("");
       setName("");
