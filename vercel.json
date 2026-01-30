@@ -1,14 +1,6 @@
 {
   "buildCommand": "npm run build:client",
   "outputDirectory": "dist/public",
-  "functions": {
-    "api/**/*.ts": {
-      "includeFiles": ["shared/**"]
-    },
-    "api/**/*.js": {
-      "includeFiles": ["shared/**"]
-    }
-  },
   "rewrites": [
     { "source": "/api/calculate-tco", "destination": "/api/calculate-tco" },
     { "source": "/((?!api/).*)", "destination": "/" }
