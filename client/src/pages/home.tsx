@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TruckParametersCard } from "@/components/truck-parameters-card";
 import { TimeframeSelector } from "@/components/timeframe-selector";
 import { TaxIncentiveSelector } from "@/components/tax-incentive-selector";
@@ -13,6 +13,7 @@ import { TechnicalSpecsComparison } from "@/components/technical-specs-compariso
 import { EonDriveBenefits } from "@/components/eon-drive-benefits";
 import { ConsultationCTA } from "@/components/consultation-cta";
 import { PdfExportButton } from "@/components/pdf-export-button";
+import { OperationProfileCard } from "@/components/operation-profile";
 import { Calculator, RotateCcw } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
@@ -20,6 +21,7 @@ import type { TruckParameters, ComparisonResult, TaxIncentiveRegion } from "@sha
 import { useToast } from "@/hooks/use-toast";
 import { useTenant } from "@/lib/tenant";
 import { EmbedAutoResize } from "@/components/embed-auto-resize";
+import type { OperationProfile } from "@/types/operation-profile";
 
 const defaultDieselTruck: TruckParameters = {
   name: "Diesel-Sattelzug",
@@ -103,16 +105,57 @@ const defaultElectricTruck2: TruckParameters = {
   },
 };
 
+const defaultOperationProfile: OperationProfile = {
+  presetId: "stueckgut",
+  dailyKm: 200,
+  dailyKmP90: 250,
+  stopsPerDay: 12,
+  stopMinutes: 20,
+  workDaysPerYear: 250,
+  opportunityCharging: true,
+  opportunityChargeMinutes: 30,
+  useP90ForCalc: false,
+};
+
 export default function Home() {
   const [dieselTruck, setDieselTruck] = useState<TruckParameters>(defaultDieselTruck);
   const [electricTruck1, setElectricTruck1] = useState<TruckParameters>(defaultElectricTruck1);
   const [electricTruck2, setElectricTruck2] = useState<TruckParameters>(defaultElectricTruck2);
+  const [operationProfile, setOperationProfile] = useState<OperationProfile>(defaultOperationProfile);
+  const [syncMileage, setSyncMileage] = useState(true);
   const [timeframeYears, setTimeframeYears] = useState(10);
   const [taxIncentiveRegion, setTaxIncentiveRegion] = useState<TaxIncentiveRegion>("bundesfoerderung");
   const [fleetSize, setFleetSize] = useState(1);
   const [result, setResult] = useState<ComparisonResult | null>(null);
   const { toast } = useToast();
   const { tenant, embed } = useTenant();
+
+  const baseDailyKm = operationProfile.useP90ForCalc
+    ? operationProfile.dailyKmP90
+    : operationProfile.dailyKm;
+  const computedAnnualMileage = Math.max(
+    0,
+    Math.round(baseDailyKm * operationProfile.workDaysPerYear),
+  );
+  useEffect(() => {
+    if (!syncMileage) return;
+
+    setDieselTruck((prev) =>
+      prev.annualMileage === computedAnnualMileage
+        ? prev
+        : { ...prev, annualMileage: computedAnnualMileage },
+    );
+    setElectricTruck1((prev) =>
+      prev.annualMileage === computedAnnualMileage
+        ? prev
+        : { ...prev, annualMileage: computedAnnualMileage },
+    );
+    setElectricTruck2((prev) =>
+      prev.annualMileage === computedAnnualMileage
+        ? prev
+        : { ...prev, annualMileage: computedAnnualMileage },
+    );
+  }, [computedAnnualMileage, syncMileage]);
 
   const calculateMutation = useMutation({
     mutationFn: async () => {
@@ -155,6 +198,8 @@ export default function Home() {
     setDieselTruck(defaultDieselTruck);
     setElectricTruck1(defaultElectricTruck1);
     setElectricTruck2(defaultElectricTruck2);
+    setOperationProfile(defaultOperationProfile);
+    setSyncMileage(true);
     setTimeframeYears(10);
     setTaxIncentiveRegion("bundesfoerderung");
     setFleetSize(1);
@@ -233,12 +278,21 @@ export default function Home() {
             <div className="h-px w-12 bg-primary mt-4" />
           </div>
 
+          <OperationProfileCard
+            value={operationProfile}
+            onChange={setOperationProfile}
+            syncMileage={syncMileage}
+            onSyncMileageChange={setSyncMileage}
+            computedAnnualMileage={computedAnnualMileage}
+          />
+
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="card-hover">
               <TruckParametersCard
                 truck={dieselTruck}
                 onChange={setDieselTruck}
                 truckIndex={0}
+                lockAnnualMileage={syncMileage}
               />
             </div>
             <div className="card-hover">
@@ -246,6 +300,7 @@ export default function Home() {
                 truck={electricTruck1}
                 onChange={setElectricTruck1}
                 truckIndex={1}
+                lockAnnualMileage={syncMileage}
               />
             </div>
             <div className="card-hover">
@@ -253,6 +308,7 @@ export default function Home() {
                 truck={electricTruck2}
                 onChange={setElectricTruck2}
                 truckIndex={2}
+                lockAnnualMileage={syncMileage}
               />
             </div>
           </div>
@@ -370,6 +426,9 @@ export default function Home() {
                 timeframeYears,
                 taxIncentiveRegion,
                 fleetSize,
+                operationProfile,
+                computedAnnualMileage,
+                syncMileage,
               }}
             />
           </section>

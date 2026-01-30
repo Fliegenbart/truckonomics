@@ -14,9 +14,10 @@ interface TruckParametersCardProps {
   truck: TruckParameters;
   onChange: (truck: TruckParameters) => void;
   truckIndex: number;
+  lockAnnualMileage?: boolean;
 }
 
-export function TruckParametersCard({ truck, onChange, truckIndex }: TruckParametersCardProps) {
+export function TruckParametersCard({ truck, onChange, truckIndex, lockAnnualMileage = false }: TruckParametersCardProps) {
   const [errors, setErrors] = useState<Partial<Record<keyof TruckParameters, string>>>({});
   const [specsOpen, setSpecsOpen] = useState(false);
 
@@ -159,19 +160,25 @@ export function TruckParametersCard({ truck, onChange, truckIndex }: TruckParame
             <Label htmlFor={`mileage-${truckIndex}`} className="text-xs uppercase tracking-wider font-medium">
               Jahreskilometer
             </Label>
-            <Input
-              id={`mileage-${truckIndex}`}
-              type="number"
-              value={truck.annualMileage || ''}
-              onChange={(e) => updateField("annualMileage", parseFloat(e.target.value) || 0)}
-              placeholder="120000"
-              min="0"
-              data-testid={`input-mileage-${truckIndex}`}
-            />
-            {errors.annualMileage && (
-              <p className="text-xs text-destructive">{errors.annualMileage}</p>
-            )}
-          </div>
+          <Input
+            id={`mileage-${truckIndex}`}
+            type="number"
+            value={truck.annualMileage || ''}
+            onChange={(e) => updateField("annualMileage", parseFloat(e.target.value) || 0)}
+            placeholder="120000"
+            min="0"
+            data-testid={`input-mileage-${truckIndex}`}
+            disabled={lockAnnualMileage}
+          />
+          {lockAnnualMileage && (
+            <p className="text-xs text-muted-foreground">
+              Wird aus dem Einsatzprofil berechnet
+            </p>
+          )}
+          {errors.annualMileage && (
+            <p className="text-xs text-destructive">{errors.annualMileage}</p>
+          )}
+        </div>
         </div>
 
         <div className="grid grid-cols-2 gap-4">

@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import type { ComparisonResult, TaxIncentiveRegion, TruckParameters } from "@shared/schema";
+import type { OperationProfile } from "@/types/operation-profile";
 import { useTenant } from "@/lib/tenant";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
@@ -25,6 +26,9 @@ interface ConsultationCTAProps {
     timeframeYears: number;
     taxIncentiveRegion: TaxIncentiveRegion;
     fleetSize: number;
+    operationProfile: OperationProfile;
+    computedAnnualMileage: number;
+    syncMileage: boolean;
   };
 }
 
